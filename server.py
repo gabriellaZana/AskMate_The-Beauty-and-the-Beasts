@@ -4,7 +4,7 @@ import common
 app = Flask(__name__)
 
 
-@app.route('/save-question', methods=['POST'])
+@app.route('/save-Question', methods=['POST'])
 def route_save_question():
     formdata = request.form
     table = import_story("question.csv")
@@ -16,7 +16,7 @@ def route_save_question():
 
 @app.route('/new-question')
 def route_new_question():
-    render_template('form.html')
+    return render_template('form.html', form="Question")
 
 
 @app.route("/")
