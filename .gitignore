@@ -14,5 +14,4 @@ __pycache__/
 teszt.py
 
 # csv files
-*/data/answer.csv
-*/data/question.csv
+*csv
