@@ -44,9 +44,12 @@ def export_story(filename, table):
         writer.writerow(row)
 
 
-def get_last_row(csv_filename):
+def id_generator(csv_filename):
     with open(csv_filename, 'r') as f:
         lastrow = None
         for lastrow in csv.reader(f):
             pass
-        return lastrow
+        if lastrow is None:
+            return "1"
+        else:
+            return str(int(lastrow[0]) + 1)
