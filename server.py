@@ -15,13 +15,15 @@ def route_question_page(id=None):
 
 @app.route('/save-answer', methods=['POST'])
 def route_save_answer(questionid):
-    table = []
-    table.append(get_last_row("data/anwser.csv"))
-    table.append(time.time())
-    table.append("0")
-    table.append(questionid)
-    table.append(request.form[Answer])
-    table.append("image")
+    data = []
+    data.append(get_last_row("data/anwser.csv"))
+    data.append(time.time())
+    data.append("0")
+    data.append(questionid)
+    data.append(request.form[Answer])
+    data.append("image")
+    table = import_story("data/answer.csv")
+    table.append(data)
     export_story("data/answer.csv", table)
     return render_template('/question/<questionid>')
 
