@@ -4,8 +4,8 @@ import common
 app = Flask(__name__)
 
 
-@app.route('/question/<id>')
-def route_question_page(id=None):
+@app.route('/question/<questionid>')
+def route_question_page(questionid=None):
     id_pos = int(id)
     q_list = common.import_story("question.csv")
     a_list = common.import_story("answer.csv")
