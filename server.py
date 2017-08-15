@@ -1,7 +1,33 @@
 from flask import Flask, render_template, redirect, request, session, url_for
 import common
+import time
+from datetime import datetime
 
 app = Flask(__name__)
+
+
+@app.route('/save-Question', methods=['POST'])
+def route_save_question():
+    label_list = ["title", "Question"]
+    formdata = request.form
+    table = common.import_story("data/question.csv")
+    print(table)
+    create_list = []
+    create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
+    for label in label_list:
+        for key, value in formdata.items():
+            if label == key:
+                create_list.append(value)
+    create_list.append("image")
+    print(create_list)
+    table.append(create_list)
+    common.export_story("data/question.csv", table)
+    return redirect('/list')
+
+
+@app.route('/new-question')
+def route_new_question():
+    return render_template('form.html', form="Question")
 
 
 @app.route("/")
@@ -22,13 +48,15 @@ def route_question_page(id=None):
 
 @app.route('/save-answer', methods=['POST'])
 def route_save_answer(questionid):
-    table = []
-    table.append(get_last_row("data/anwser.csv"))
-    table.append(time.time())
-    table.append("0")
-    table.append(questionid)
-    table.append(request.form[Answer])
-    table.append("image")
+    data = []
+    data.append(get_last_row("data/anwser.csv"))
+    data.append(time.time())
+    data.append("0")
+    data.append(questionid)
+    data.append(request.form[Answer])
+    data.append("image")
+    table = import_story("data/answer.csv")
+    table.append(data)
     export_story("data/answer.csv", table)
     return render_template('/question/<questionid>')
 
