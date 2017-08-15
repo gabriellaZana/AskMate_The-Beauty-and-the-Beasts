@@ -49,4 +49,7 @@ def get_last_row(csv_filename):
         lastrow = None
         for lastrow in csv.reader(f):
             pass
-        return lastrow
+        if lastrow == None:
+            return "1"
+        else:
+            return str(int(lastrow[0]) + 1)
