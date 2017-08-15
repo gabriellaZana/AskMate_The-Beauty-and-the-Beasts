@@ -12,3 +12,6 @@ __pycache__/
 
 # Own testing files
 teszt.py
+
+# csv files
+*csv
