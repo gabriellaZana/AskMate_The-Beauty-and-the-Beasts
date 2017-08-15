@@ -27,7 +27,7 @@ def import_story(filename):
     reader = csv.reader(file)
     table = []
     for row in reader:
-        row[1] = datetime.fromtimestamp(row[1])
+        row[1] = datetime.fromtimestamp(int(row[1]))
         row[4] = base64_to_string(row[4])
         row[5] = base64_to_string(row[5])
         table.append(row)
