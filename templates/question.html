@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> AskMate - Question </title>
+</head>
+
+<body>
+    {% for line in q_list %}
+    {% if line[0] == id_pos %}
+    <h3><label for="title">Question Title</label></h3><br>
+        <textarea rows="10" cols="70" name="title">{{ line[1] }}</textarea>
+
+    <h3><label for="text">Description</label></h3><br>
+        <textarea row="10" cols="70" name="text">{{ line[2] }}</textarea>
+
+    <h3><label for="answers">Answers</label></h3><br>
+        <table>
+            <thead>
+                <tr>
+                    <td><strong>Submission Time</td>
+                    <td><strong>Message</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for line in a_list %}
+            {% if line[3] == id_pos %}
+                <tr>
+                    <td>{{line[1]}}</td>
+                    <td>{{line[4]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    <br>
+    
+</body>
+
+</html>
