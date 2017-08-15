@@ -7,10 +7,10 @@
     <body>
         <h1>New {{ form }}</h1>
         <form action="/save-{{ form }}" method="post">
-            <label>Title</label><br>
+            <label for="title">Title</label><br>
             <input type="text" name="title"></input><br>
             <br>
-            <label>{{ form }}</label><br>
+            <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="8" cols="80"></textarea><br>
             <br>
             <button type="submit">Save {{ form }}</button>

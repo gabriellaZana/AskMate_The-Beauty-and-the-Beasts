@@ -14,12 +14,19 @@
                 <th> Views </th>
             </tr>
         {% for line in database %}
+        {% if line[7] is not defined %}
             <tr>
-                {% for item in line %}
-                <td> {{item}} </td>
-                {% endfor %}
+                <td> {{line[0]}} </td>
+                <td> {{line[4]}} </td>
+                <td> {{line[1]}} </td>
+                <td> {{line[2]}} </td>
+                <td><a href="/edit-question/{{ line[0] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="20" height="20"></a></td>
+                <td><a href="/delete-question/{{ line[0] }}"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="20" height="20"></td>
             </tr>
+        {% endif %}
         {% endfor %}
+        </table>
         <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
     </body>
 </html>
+
