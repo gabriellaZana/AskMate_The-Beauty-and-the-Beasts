@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>New {{ form }}</title>
+    </head>
+    <body>
+        <h1>New {{ form }}</h1>
+        <form action="/save-{{ form }}" method="post">
+            <label>Title</label><br>
+            <input type="text" name="title"></input><br>
+            <br>
+            <label>{{ form }}</label><br>
+            <textarea name="{{ form }}" rows="8" cols="80"></textarea><br>
+            <br>
+            <button type="submit">Save {{ form }}</button>
+        </form>
+    </body>
+</html>
