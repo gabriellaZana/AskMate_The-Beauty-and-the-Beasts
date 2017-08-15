@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> AskMate </title>
+    </head>
+    <body>
+        <h1> AskMate </h1>
+        <h2> Questions: </h2>
+        <table border="1">
+            <tr><th> ID </th>
+                <th> Question </th>
+                <th> Submission time </th>
+                <th> Views </th>
+            </tr>
+        {% for line in database %}
+            <tr>
+                {% for item in line %}
+                <td> {{item}} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
+    </body>
+</html>
