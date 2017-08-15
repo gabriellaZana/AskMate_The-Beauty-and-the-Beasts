@@ -10,17 +10,20 @@
 <body>
     {% for line in q_list %}
     {% if line[0] == id_pos %}
-    <h3><label for="title">Question Title</label></h3><br>
-        <textarea rows="10" cols="70" name="title">{{ line[1] }}</textarea>
+    <h3>Question</h3>
+    <p><label for="title"><strong>Title</strong></label></p>
+        <p><textarea rows="1" cols="70" name="title">{{ line[4] }}</textarea></p>
 
-    <h3><label for="text">Description</label></h3><br>
-        <textarea row="10" cols="70" name="text">{{ line[2] }}</textarea>
+    <p><label for="text"><stong>Description</stong></label></p>
+        <p><textarea row="20" cols="70" name="text">{{ line[5] }}</textarea></p>
+    {% endif %}
+    {% endfor %}
 
-    <h3><label for="answers">Answers</label></h3><br>
+    <h3><label for="answers">Answers</label></h3>
         <table>
             <thead>
                 <tr>
-                    <td><strong>Submission Time</td>
+                    <td><strong>Submission time</td>
                     <td><strong>Message</td>
                 </tr>
             </thead>
@@ -32,6 +35,8 @@
                     <td>{{line[1]}}</td>
                     <td>{{line[4]}}</td>
                 </tr>
+            {% endif %}
+            {% endfor %}
             </tbody>
         </table>
     <br>

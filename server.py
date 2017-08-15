@@ -37,12 +37,13 @@ def index():
     return render_template("list.html", database=database)
 
 
-@app.route('/question/<questionid>')
+@app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
-    id_pos = int(id)
+    id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-
+    print(id_pos)
+    print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
