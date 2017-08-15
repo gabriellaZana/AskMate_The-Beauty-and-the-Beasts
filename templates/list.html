@@ -15,9 +15,10 @@
             </tr>
         {% for line in database %}
             <tr>
-                {% for item in line %}
-                <td> {{item}} </td>
-                {% endfor %}
+                <td> {{line[0]}} </td>
+                <td><a href="{{ url_for('show_story', question_id= line[0]) }}"> {{line[4]}} </a></td>
+                <td> {{line[1]}} </td>
+                <td> {{line[2]}} </td>
             </tr>
         {% endfor %}
         <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
