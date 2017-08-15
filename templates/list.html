@@ -16,7 +16,7 @@
         {% for line in database %}
             <tr>
                 <td> {{line[0]}} </td>
-                <td><a href="{{ url_for('show_story', question_id= line[0]) }}"> {{line[4]}} </a></td>
+                <td><a href="{{ url_for('route_question_page', id= line[0]) }}"> {{line[4]}} </a></td>
                 <td> {{line[1]}} </td>
                 <td> {{line[2]}} </td>
             </tr>

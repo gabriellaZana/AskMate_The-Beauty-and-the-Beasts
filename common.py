@@ -1,5 +1,7 @@
 import base64
 import csv
+import time
+from datetime import datetime
 
 
 def string_to_base64(origin):
@@ -25,6 +27,7 @@ def import_story(filename):
     reader = csv.reader(file)
     table = []
     for row in reader:
+        row[1] = datetime.fromtimestamp(row[1])
         row[4] = base64_to_string(row[4])
         row[5] = base64_to_string(row[5])
         table.append(row)
@@ -35,4 +38,7 @@ def export_story(filename, table):
     file = open(filename, 'w')
     writer = csv.writer(file)
     for row in table:
+        row[1] = int(time.time())
+        row[4] = string_to_base64(row[4])
+        row[5] = string_to_base64(row[5])
         writer.writerow(row)
