@@ -42,3 +42,11 @@ def export_story(filename, table):
         row[4] = string_to_base64(row[4])
         row[5] = string_to_base64(row[5])
         writer.writerow(row)
+
+
+def get_last_row(csv_filename):
+    with open(csv_filename, 'r') as f:
+        lastrow = None
+        for lastrow in csv.reader(f):
+            pass
+        return lastrow
