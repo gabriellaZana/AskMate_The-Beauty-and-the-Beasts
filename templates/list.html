@@ -16,11 +16,13 @@
         {% for line in database %}
             <tr>
                 <td> {{line[0]}} </td>
-                <td><a href="{{ url_for('route_question_page', id= line[0]) }}"> {{line[4]}} </a></td>
+                <td> {{line[4]}} </td>
                 <td> {{line[1]}} </td>
                 <td> {{line[2]}} </td>
             </tr>
         {% endfor %}
+        </table>
         <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
     </body>
 </html>
+
