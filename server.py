@@ -10,16 +10,18 @@ app = Flask(__name__)
 def route_save_question():
     label_list = ["title", "Question"]
     formdata = request.form
-    table = import_story("question.csv")
+    table = common.import_story("data/question.csv")
+    print(table)
     create_list = []
-    create_list.extend((common.id_generator("question.csv")), time.time(), "0", "0")
+    create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
     for label in label_list:
         for key, value in formdata.items():
             if label == key:
-                create_list.append(common.string_to_base64(value))
+                create_list.append(value)
     create_list.append("image")
-    new_table = table.append(create_list)
-    common.export_story("question.csv", new_table)
+    print(create_list)
+    table.append(create_list)
+    common.export_story("data/question.csv", table)
     return redirect('/list')
 
 
