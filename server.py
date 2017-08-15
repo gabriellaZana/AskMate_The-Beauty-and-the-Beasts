@@ -4,12 +4,20 @@ app = Flask(__name__)
 
 
 @app.route('/save-answer', methods=['POST'])
-def route_save_answer():
-    pass
+def route_save_answer(questionid):
+    table = []
+    table.append(get_last_row("data/anwser.csv"))
+    table.append(time.time())
+    table.append("0")
+    table.append(questionid)
+    table.append(request.form[Answer])
+    table.append("image")
+    export_story("data/answer.csv", table)
+    return render_template('/question/<questionid>')
 
 
-@app.route('/question/<question-id>/new-answer')
-def new_answer():
+@app.route('/question/<questionid>/new-answer')
+def new_answer(questionid):
     return render_template('form.html', form="Answer")
 
 
