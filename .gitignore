@@ -12,7 +12,3 @@ __pycache__/
 
 # Own testing files
 teszt.py
-
-# csv files
-*/data/answer.csv
-*/data/question.csv
