@@ -29,3 +29,10 @@ def import_story(filename):
         row[5] = base64_to_string(row[5])
         table.append(row)
     return table
+
+
+def export_story(filename, table):
+    file = open(filename, 'w')
+    writer = csv.writer(file)
+    for row in table:
+        writer.writerow(row)
