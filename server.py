@@ -18,7 +18,7 @@ def route_save_answer():
 
 @app.route('/question/<question-id>/new-answer')
 def new_answer():
-    pass
+    return render_template('form.html', form="Answer")
 
 
 if __name__ == "__main__":
