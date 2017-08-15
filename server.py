@@ -4,6 +4,13 @@ import common
 app = Flask(__name__)
 
 
+@app.route("/")
+@app.route("/list")
+def index():
+    database = common.import_story("data/question.csv")
+    return render_template("list.html", database=database)
+
+
 @app.route('/question/<id>')
 def route_question_page(id=None):
     id_pos = int(id)
