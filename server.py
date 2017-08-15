@@ -1,17 +1,26 @@
 from flask import Flask, render_template, redirect, request, session, url_for
 import common
+import time
+from datetime import datetime
 
 app = Flask(__name__)
 
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
+    label_list = ["title", "Question"]
     formdata = request.form
     table = import_story("question.csv")
     create_list = []
-    create_list.append(id_generator("question.csv"))
-
-    return render_template('list.html', form="question")
+    create_list.extend((common.id_generator("question.csv")), time.time(), "0", "0")
+    for label in label_list:
+        for key, value in formdata.items():
+            if label == key:
+                create_list.append(common.string_to_base64(value))
+    create_list.append("image")
+    new_table = table.append(create_list)
+    common.export_story("question.csv", new_table)
+    return redirect('/list')
 
 
 @app.route('/new-question')
