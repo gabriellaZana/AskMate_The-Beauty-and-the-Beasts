@@ -78,19 +78,6 @@ def route_delete_question(questionid=None):
     return redirect('/')
 
 
-@app.route('/delete/<id>')
-def route_delete(id=None):
-    datas_list = datas_reader()
-    id_pos = int(id)
-    for line in datas_list:
-        if id_pos == int(line[0]):
-            datas_list[id_pos-1].append("deleted")
-    with open("datas.csv", "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerows(datas_list)
-    return redirect('/')
-
-
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
     return render_template('form.html', form="Answer")
