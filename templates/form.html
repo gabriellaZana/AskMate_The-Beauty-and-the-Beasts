@@ -8,7 +8,7 @@
         <h1>{{ form }}</h1>
         <form action="/save-{{ form }}" method="post">
             <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{data[4]}}"></input><br>
+            <input type="text" name="title" value="{{data[4]}}" pattern=".{10,}"   required title="10 characters minimum"></input><br>
             <br>
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="8" cols="80">{{data[5]}}</textarea><br>
