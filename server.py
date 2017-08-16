@@ -46,12 +46,7 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-<<<<<<< HEAD
-=======
     viewcount(questionid, "data/question.csv")
-    print(id_pos)
-    print(q_list)
->>>>>>> daa091333aa4f468296c17ebb69e50c19a3571ad
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
