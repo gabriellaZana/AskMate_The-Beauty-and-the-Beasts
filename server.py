@@ -55,12 +55,8 @@ def route_question_page(questionid=None):
 
 
 @app.route('/save-Answer', methods=['POST'])
-<<<<<<< HEAD
-def route_save_answer(questionid):
-=======
 def route_save_answer():
     label_list = ["questionid", "Answer"]
->>>>>>> 58d40a2d6fa8efa227b514dcc4cb1ddce3a30696
     formdata = request.form
     create_list = []
     create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
