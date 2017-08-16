@@ -10,6 +10,7 @@ app = Flask(__name__)
 def route_save_question():
     label_list = ["title", "Question"]
     formdata = request.form
+    table = common.import_story("data/question.csv")
     create_list = []
     create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
     for label in label_list:
@@ -17,13 +18,22 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     create_list.append("image")
-    common.append_story(create_list, "data/question.csv")
+    counter = True
+    for line in table:
+        if int(line[0]) == int(request.form["id"]):
+            create_list[0] = request.form["id"]
+            create_list[2] = line[2]
+            table[int(request.form["id"])-1] = create_list
+            counter = False
+    if counter:
+        table.append(create_list)
+    common.export_story("data/question.csv", table)
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
-    return render_template('form.html', form="Question")
+    return render_template('form.html', form="Question", data=["0","","","","",""])
 
 
 @app.route("/")
@@ -38,6 +48,7 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
+    viewcount(questionid, "data/question.csv")
     print(id_pos)
     print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
@@ -59,17 +70,21 @@ def route_save_answer():
     return redirect('/question/<questionid>')
 
 
-@app.route('/edit-question/<questionid>', methods=['POST'])
+@app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
-    pass #return redirect('/')
+    id_pos = int(questionid)
+    table = common.import_story("data/question.csv")
+    data = []
+    for line in table:
+        if line[0] == str(id_pos):
+            data = line
+    return render_template('form.html', data=data, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_pos = int(questionid)
     q_list = common.import_story("data/question.csv")
-    print(q_list)
-    print("valami")
     for line in q_list:
         if id_pos == int(line[0]):
             q_list[id_pos-1].append("deleted")
@@ -79,7 +94,16 @@ def route_delete_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    return render_template('form.html', form="Answer", questionid=questionid)
+    return render_template('form.html', form="Answer", data=["0","","","","",""])
+
+
+def viewcount(questionid, filename):
+    table = common.import_story(filename)
+    table[int(questionid)-1][2] = int(table[int(questionid)-1][2])
+    table[int(questionid)-1][2] += 1
+    common.export_story(filename, table)
+    return
+
 
 
 if __name__ == "__main__":
