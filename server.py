@@ -40,7 +40,11 @@ def route_new_question():
 @app.route("/list")
 def index():
     database = common.import_story("data/question.csv")
-    return render_template("list.html", database=database)
+    print(database)
+    timestamp_list = []
+    for row in database:
+        timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
+    return render_template("list.html", database=database, timestamp_list=timestamp_list)
 
 
 @app.route('/question/<questionid>/')
@@ -139,6 +143,7 @@ def route_upvote_question(questionid=None):
             q_list[id_pos-1][3] += 1
     common.export_story("data/question.csv", q_list)
     return redirect('/')
+
 
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
