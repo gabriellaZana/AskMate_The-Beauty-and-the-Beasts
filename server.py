@@ -54,7 +54,7 @@ def route_question_page(questionid=None):
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
-@app.route('/save-answer', methods=['POST'])
+@app.route('/save-Answer/<questionid>', methods=['POST'])
 def route_save_answer(questionid):
     formdata = request.form
     table = common.import_story("data/answer.csv")
@@ -93,7 +93,7 @@ def route_delete_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    return render_template('form.html', form="Answer")
+    return render_template('form.html', form="Answer", data=["0","","","","",""])
 
 
 def viewcount(questionid, filename):
