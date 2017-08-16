@@ -29,7 +29,8 @@ def import_story(filename):
     for row in reader:
         row[1] = datetime.fromtimestamp(int(row[1]))
         row[4] = base64_to_string(row[4])
-        row[5] = base64_to_string(row[5])
+        if filename == "data/question.csv":
+            row[5] = base64_to_string(row[5])
         table.append(row)
     return table
 
@@ -40,8 +41,10 @@ def export_story(filename, table):
     for row in table:
         row[1] = int(time.time())
         row[4] = string_to_base64(row[4])
-        row[5] = string_to_base64(row[5])
+        if filename == "data/question.csv":
+            row[5] = string_to_base64(row[5])
         writer.writerow(row)
+
 
 
 def id_generator(csv_filename):
@@ -53,3 +56,13 @@ def id_generator(csv_filename):
             return "1"
         else:
             return str(int(lastrow[0]) + 1)
+
+
+def append_story(new_question_or_answer, filename):
+    with open(str(filename), 'a', newline='') as outputstream:
+        writer = csv.writer(outputstream)
+        new_question_or_answer[1] = int(time.time())
+        new_question_or_answer[4] = string_to_base64(new_question_or_answer[4])
+        if filename == "data/question.csv":
+            new_question_or_answer[5] = string_to_base64(new_question_or_answer[5])
+        writer.writerow(new_question_or_answer)

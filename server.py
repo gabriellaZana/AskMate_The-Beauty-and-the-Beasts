@@ -10,8 +10,6 @@ app = Flask(__name__)
 def route_save_question():
     label_list = ["title", "Question"]
     formdata = request.form
-    table = common.import_story("data/question.csv")
-    print(table)
     create_list = []
     create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
     for label in label_list:
@@ -19,15 +17,21 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     create_list.append("image")
-    print(create_list)
-    table.append(create_list)
+    for line in table:
+        if int(line[0]) == request.form["id"]:
+            create_list[0] = request.form["id"]
+            line = create_list
+            print(line)
+    if request.form["id"] not in table:
+        table.append(create_list)
     common.export_story("data/question.csv", table)
+    common.append_story(create_list, "data/question.csv")
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
-    return render_template('form.html', form="Question")
+    return render_template('form.html', form="New Question", data=["","","","","",""])
 
 
 @app.route("/")
@@ -50,22 +54,28 @@ def route_question_page(questionid=None):
 
 @app.route('/save-answer', methods=['POST'])
 def route_save_answer(questionid):
-    data = []
-    data.append(get_last_row("data/anwser.csv"))
-    data.append(time.time())
-    data.append("0")
-    data.append(questionid)
-    data.append(request.form[Answer])
-    data.append("image")
+    formdata = request.form
     table = common.import_story("data/answer.csv")
-    table.append(data)
+    create_list = []
+    create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0", "0"))
+    for key, value in formdata.items():
+        if key == "Answer":
+            create_list.append(value)
+    create_list.append("image")
+    table.append(create_list)
     common.export_story("data/answer.csv", table)
-    return render_template('/question/<questionid>')
+    return redirect('/question/<questionid>')
 
 
-@app.route('/edit-question/<questionid>', methods=['POST'])
+@app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
-    pass #return redirect('/')
+    id_pos = int(questionid)
+    table = common.import_story("data/question.csv")
+    data = []
+    for line in table:
+        if line[0] == str(id_pos):
+            data = line
+    return render_template('form.html', data=data, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
