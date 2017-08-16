@@ -52,9 +52,6 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-    # viewcount(questionid, "data/question.csv")
-    print(id_pos)
-    print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
@@ -162,12 +159,15 @@ def new_answer(questionid):
     return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
 
 
-def viewcount(questionid, filename):
-    table = common.import_story(filename)
-    table[int(questionid)-1][2] = int(table[int(questionid)-1][2])
-    table[int(questionid)-1][2] += 1
-    common.export_story(filename, table)
-    return
+@app.route("/viewcount/<questionid>", methods=["POST"])
+def viewcount(questionid):
+    table = common.import_story("data/question.csv")
+    for record in table:
+        if record[0] == questionid:
+            record[2] = int(record[2])
+            record[2] += 1
+    common.export_story("data/question.csv", table)
+    return redirect('/question/' + questionid + "/")
 
 
 
