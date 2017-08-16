@@ -154,6 +154,18 @@ def new_answer(questionid):
     return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
 
 
+@app.route("/viewcount/<questionid>", methods=["POST"])
+def viewcount(questionid):
+    table = common.import_story("data/question.csv")
+    for record in table:
+        if record[0] == questionid:
+            record[2] = int(record[2])
+            record[2] += 1
+    common.export_story("data/question.csv", table)
+    return redirect('/question/' + questionid + "/")
+
+
+
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
     app.run(
