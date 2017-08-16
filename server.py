@@ -89,6 +89,66 @@ def route_delete_question(questionid=None):
     return redirect('/')
 
 
+@app.route('/delete-answer/<questionid>/<answerid>/')
+def route_delete_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1].append("deleted")
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/'+questionid+'/')
+
+
+@app.route('/question/<questionid>/<answerid>/vote-up/')
+def route_upvote_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    id_question = questionid
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][2] = int(q_list[id_pos-1][2])
+            q_list[id_pos-1][2] += 1
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/' + id_question + "/")
+
+
+@app.route('/question/<questionid>/<answerid>/vote-down/')
+def route_downvote_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    id_question = questionid
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][2] = int(q_list[id_pos-1][2])
+            q_list[id_pos-1][2] += -1
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/' + id_question + "/")
+
+
+@app.route('/question/<questionid>/vote-up')
+def route_upvote_question(questionid=None):
+    id_pos = int(questionid)
+    q_list = common.import_story("data/question.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][3] = int(q_list[id_pos-1][3])
+            q_list[id_pos-1][3] += 1
+    common.export_story("data/question.csv", q_list)
+    return redirect('/')
+
+@app.route('/question/<questionid>/vote-down')
+def route_downvote_question(questionid=None):
+    id_pos = int(questionid)
+    q_list = common.import_story("data/question.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][3] = int(q_list[id_pos-1][3])
+            q_list[id_pos-1][3] += -1
+    common.export_story("data/question.csv", q_list)
+    return redirect('/')
+
+
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
     return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
