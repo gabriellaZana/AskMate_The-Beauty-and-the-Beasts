@@ -37,12 +37,13 @@ def index():
     return render_template("list.html", database=database)
 
 
-@app.route('/question/<id>')
-def route_question_page(id=None):
-    id_pos = int(id)
-    q_list = common.import_story("question.csv")
-    a_list = common.import_story("answer.csv")
-
+@app.route('/question/<questionid>/')
+def route_question_page(questionid=None):
+    id_pos = questionid
+    q_list = common.import_story("data/question.csv")
+    a_list = common.import_story("data/answer.csv")
+    print(id_pos)
+    print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
@@ -55,10 +56,26 @@ def route_save_answer(questionid):
     data.append(questionid)
     data.append(request.form[Answer])
     data.append("image")
-    table = import_story("data/answer.csv")
+    table = common.import_story("data/answer.csv")
     table.append(data)
-    export_story("data/answer.csv", table)
+    common.export_story("data/answer.csv", table)
     return render_template('/question/<questionid>')
+
+
+@app.route('/edit-question/<questionid>', methods=['POST'])
+def route_edit_question(questionid=None):
+    pass #return redirect('/')
+
+
+@app.route('/delete-question/<questionid>')
+def route_delete_question(questionid=None):
+    id_pos = int(questionid)
+    q_list = common.import_story("data/question.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1].append("deleted")
+    common.export_story("data/question.csv", q_list)
+    return redirect('/')
 
 
 @app.route('/question/<questionid>/new-answer')
