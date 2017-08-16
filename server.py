@@ -10,6 +10,7 @@ app = Flask(__name__)
 def route_save_question():
     label_list = ["title", "Question"]
     formdata = request.form
+    table = common.import_story("data/question.csv")
     create_list = []
     create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
     for label in label_list:
@@ -17,21 +18,22 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     create_list.append("image")
+    counter = True
     for line in table:
-        if int(line[0]) == request.form["id"]:
+        if int(line[0]) == int(request.form["id"]):
             create_list[0] = request.form["id"]
-            line = create_list
-            print(line)
-    if request.form["id"] not in table:
+            create_list[2] = line[2]
+            table[int(request.form["id"])-1] = create_list
+            counter = False
+    if counter:
         table.append(create_list)
     common.export_story("data/question.csv", table)
-    common.append_story(create_list, "data/question.csv")
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
-    return render_template('form.html', form="New Question", data=["","","","","",""])
+    return render_template('form.html', form="Question", data=["0","","","","",""])
 
 
 @app.route("/")
@@ -82,8 +84,6 @@ def route_edit_question(questionid=None):
 def route_delete_question(questionid=None):
     id_pos = int(questionid)
     q_list = common.import_story("data/question.csv")
-    print(q_list)
-    print("valami")
     for line in q_list:
         if id_pos == int(line[0]):
             q_list[id_pos-1].append("deleted")
