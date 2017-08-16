@@ -42,8 +42,6 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-    print(id_pos)
-    print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
@@ -71,8 +69,6 @@ def route_edit_question(questionid=None):
 def route_delete_question(questionid=None):
     id_pos = int(questionid)
     q_list = common.import_story("data/question.csv")
-    print(q_list)
-    print("valami")
     for line in q_list:
         if id_pos == int(line[0]):
             q_list[id_pos-1].append("deleted")
