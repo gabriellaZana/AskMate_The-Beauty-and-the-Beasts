@@ -48,19 +48,15 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-    viewcount(questionid, "data/question.csv")
+    # viewcount(questionid, "data/question.csv")
     print(id_pos)
     print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
 @app.route('/save-Answer', methods=['POST'])
-<<<<<<< HEAD
-def route_save_answer(questionid):
-=======
 def route_save_answer():
-    label_list = ["questionid", "Answer"]
->>>>>>> 58d40a2d6fa8efa227b514dcc4cb1ddce3a30696
+    label_list = ["id", "Answer"]
     formdata = request.form
     create_list = []
     create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
@@ -71,7 +67,7 @@ def route_save_answer():
     create_list.append("image")
     print(create_list)
     common.append_story(create_list, "data/answer.csv")
-    return redirect('/question/<questionid>')
+    return redirect('/question/'+ request.form["id"])
 
 
 @app.route('/edit-question/<questionid>/')
@@ -98,7 +94,7 @@ def route_delete_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    return render_template('form.html', form="Answer", data=["0","","","","",""])
+    return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
 
 
 def viewcount(questionid, filename):
