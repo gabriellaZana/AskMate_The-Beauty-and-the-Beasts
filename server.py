@@ -67,10 +67,12 @@ def route_edit_question(questionid=None):
     pass #return redirect('/')
 
 
-@app.route('/delete-question/<questionid>')
+@app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_pos = int(questionid)
     q_list = common.import_story("data/question.csv")
+    print(q_list)
+    print("valami")
     for line in q_list:
         if id_pos == int(line[0]):
             q_list[id_pos-1].append("deleted")
