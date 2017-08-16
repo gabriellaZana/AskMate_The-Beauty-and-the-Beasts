@@ -54,7 +54,7 @@ def route_question_page(questionid=None):
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
-@app.route('/save-Answer/<questionid>', methods=['POST'])
+@app.route('/save-Answer', methods=['POST'])
 def route_save_answer(questionid):
     formdata = request.form
     table = common.import_story("data/answer.csv")
