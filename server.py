@@ -19,15 +19,20 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     create_list.append("image")
-    print(create_list)
-    table.append(create_list)
+    for line in table:
+        if int(line[0]) == request.form["id"]:
+            create_list[0] = request.form["id"]
+            line = create_list
+            print(line)
+    if request.form["id"] not in table:
+        table.append(create_list)
     common.export_story("data/question.csv", table)
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
-    return render_template('form.html', form="Question")
+    return render_template('form.html', form="New Question", data=["","","","","",""])
 
 
 @app.route("/")
@@ -62,9 +67,15 @@ def route_save_answer(questionid):
     return render_template('/question/<questionid>')
 
 
-@app.route('/edit-question/<questionid>', methods=['POST'])
+@app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
-    pass #return redirect('/')
+    id_pos = int(questionid)
+    table = common.import_story("data/question.csv")
+    data = []
+    for line in table:
+        if line[0] == str(id_pos):
+            data = line
+    return render_template('form.html', data=data, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
