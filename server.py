@@ -55,17 +55,22 @@ def route_question_page(questionid=None):
 
 
 @app.route('/save-Answer', methods=['POST'])
+<<<<<<< HEAD
 def route_save_answer(questionid):
+=======
+def route_save_answer():
+    label_list = ["questionid", "Answer"]
+>>>>>>> 58d40a2d6fa8efa227b514dcc4cb1ddce3a30696
     formdata = request.form
-    table = common.import_story("data/answer.csv")
     create_list = []
-    create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0", "0"))
-    for key, value in formdata.items():
-        if key == "Answer":
-            create_list.append(value)
+    create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
+    for label in label_list:
+        for key, value in formdata.items():
+            if label == key:
+                create_list.append(value)
     create_list.append("image")
-    table.append(create_list)
-    common.export_story("data/answer.csv", table)
+    print(create_list)
+    common.append_story(create_list, "data/answer.csv")
     return redirect('/question/<questionid>')
 
 
