@@ -90,7 +90,7 @@ def route_delete_question(questionid=None):
     question_list = common.import_story("data/question.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1].append("deleted")
+            line.append("deleted")
     common.export_story("data/question.csv", question_list)
     return redirect('/')
 
@@ -101,7 +101,7 @@ def route_delete_answer(questionid=None, answerid=None):
     question_list = common.import_story("data/answer.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1].append("deleted")
+            line.append("deleted")
     common.export_story("data/answer.csv", question_list)
     return redirect('/question/'+questionid+'/')
 
@@ -113,8 +113,8 @@ def route_upvote_answer(questionid=None, answerid=None):
     question_list = common.import_story("data/answer.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1][2] = int(question_list[id_num-1][2])
-            question_list[id_num-1][2] += 1
+            line[2] = int(line[2])
+            line[2] += 1
     common.export_story("data/answer.csv", question_list)
     return redirect('/question/' + id_question + "/")
 
@@ -126,8 +126,8 @@ def route_downvote_answer(questionid=None, answerid=None):
     question_list = common.import_story("data/answer.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1][2] = int(question_list[id_num-1][2])
-            question_list[id_num-1][2] += -1
+            line[2] = int(line[2])
+            line[2] += -1
     common.export_story("data/answer.csv", question_list)
     return redirect('/question/' + id_question + "/")
 
@@ -138,8 +138,8 @@ def route_upvote_question(questionid=None):
     question_list = common.import_story("data/question.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1][3] = int(question_list[id_num-1][3])
-            question_list[id_num-1][3] += 1
+            line[3] = int(line[3])
+            line[3] += 1
     common.export_story("data/question.csv", question_list)
     return redirect('/')
 
@@ -150,8 +150,8 @@ def route_downvote_question(questionid=None):
     question_list = common.import_story("data/question.csv")
     for line in question_list:
         if id_num == int(line[0]):
-            question_list[id_num-1][3] = int(question_list[id_num-1][3])
-            question_list[id_num-1][3] += -1
+            line[3] = int(line[3])
+            line[3] += -1
     common.export_story("data/question.csv", question_list)
     return redirect('/')
 
