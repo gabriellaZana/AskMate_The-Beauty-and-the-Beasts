@@ -45,14 +45,20 @@ def export_story(filename, table):
 
 
 def id_generator(csv_filename):
-    with open(csv_filename, 'r') as f:
-        lastrow = None
-        for lastrow in csv.reader(f):
-            pass
-        if lastrow is None:
-            return "1"
-        else:
-            return str(int(lastrow[0]) + 1)
+    file = open(csv_filename, 'r')
+    reader = csv.reader(file)
+    table = []
+    for row in reader:
+        table.append(int(row[0]))
+    return max(table) + 1
+    # with open(csv_filename, 'r') as f:
+    #     lastrow = None
+    #     for lastrow in csv.reader(f):
+    #         pass
+    #     if lastrow is None:
+    #         return "1"
+    #     else:
+    #         return str(int(lastrow[0]) + 1)
 
 
 def append_story(new_question_or_answer, filename):
