@@ -9,3 +9,59 @@
   font-family:inherit;
   font-size:inherit;
 }
+
+.logo{
+  display: block;
+  margin: 0 auto;
+}
+
+body {
+  background-color: #ffffff
+}
+
+h1 {
+    color: #ffffff;
+    background-color: #044;
+    margin: 0
+}
+
+h2 {
+  color: #ffffff;
+  background-color: #044;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  margin: 0
+}
+
+h3 {
+    color: #ffffff;
+    background-color: #044;
+    margin: 0
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr:hover {
+  background-color: #ffffff
+}
+
+table, th, td {
+   border: 1px solid black;
+   text-align: center;
+}
+
+.button {
+    background-color: #044; /* Green */
+    border: none;
+    cursor:pointer;
+    color: #ffffff;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

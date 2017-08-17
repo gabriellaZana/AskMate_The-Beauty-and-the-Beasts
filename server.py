@@ -19,11 +19,11 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     counter = True
-    for number, line in enumerate(table):
+    for line in table:
         if int(line[0]) == int(request.form["id"]):
             create_list[0] = request.form["id"]
             create_list[2] = line[2]
-            table[number] = create_list
+            table[int(request.form["id"])-1] = create_list
             counter = False
     if counter:
         table.append(create_list)
@@ -75,14 +75,13 @@ def route_save_answer():
 
 @app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
-    edit = True
-    id_num = questionid
+    id_num = int(questionid)
     table = common.import_story("data/question.csv")
     data = []
     for line in table:
-        if line[0] == id_num:
+        if line[0] == str(id_num):
             data = line
-    return render_template('form.html', data=data, edit=edit, id_num=id_num, table=table, form="Question")
+    return render_template('form.html', data=data, table=table, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')

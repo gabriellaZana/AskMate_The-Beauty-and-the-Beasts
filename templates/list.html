@@ -7,18 +7,14 @@
     </head>
     <body>
         <h1> AskMate </h1>
-        <h2> Questions: </h2>
-        <table border="1">
+        <h2> Questions </h2>
+        <table border="1" align="center">
             <tr><th>ID</th>
                 <th>Question</th>
-                <th>Description</th>
+                <th> Description </th>
                 <th><a href="/sortbySubmission">Submission time</a></th>
                 <th><a href="/sortbyViews">Views </a></th>
                 <th><a href="/sortbyVotes">Votes</a></th>
-                <th>Edit</th>
-                <th>Delete</th>
-                <th>Vote Up</th>
-                <th>Vote Down</th>
             </tr>
         {% for line in database %}
         {% if line[7] is not defined %}
@@ -41,7 +37,8 @@
         {% endif %}
         {% endfor %}
         </table>
-        <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
+        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
+        <p><img class="logo" src="static/beauty_and_the_beast_logo_by_chenwei_zachary-d55a4ap.jpg" height="500" width="1000" align="center"></p>
     </body>
 </html>
 
