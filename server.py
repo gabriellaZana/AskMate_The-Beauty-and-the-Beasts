@@ -19,11 +19,11 @@ def route_save_question():
             if label == key:
                 create_list.append(value)
     counter = True
-    for line in table:
+    for number, line in enumerate(table):
         if int(line[0]) == int(request.form["id"]):
             create_list[0] = request.form["id"]
             create_list[2] = line[2]
-            table[int(request.form["id"])-1] = create_list
+            table[number] = create_list
             counter = False
     if counter:
         table.append(create_list)
