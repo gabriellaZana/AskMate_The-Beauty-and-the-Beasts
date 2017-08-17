@@ -28,8 +28,11 @@ def import_story(filename):
     table = []
     for row in reader:
         row[4] = base64_to_string(row[4])
+        '''if filename == "data/answer.csv":
+            row[5] = base64_to_string(row[5])'''
         if filename == "data/question.csv":
             row[5] = base64_to_string(row[5])
+            row[6] = base64_to_string(row[6])
         table.append(row)
     return table
 
@@ -39,8 +42,11 @@ def export_story(filename, table):
     writer = csv.writer(file)
     for row in table:
         row[4] = string_to_base64(row[4])
+        '''if filename == "data/answer.csv":
+            row[5] = string_to_base64(str(row[5]))'''
         if filename == "data/question.csv":
             row[5] = string_to_base64(row[5])
+            row[6] = string_to_base64(str(row[6]))
         writer.writerow(row)
 
 
