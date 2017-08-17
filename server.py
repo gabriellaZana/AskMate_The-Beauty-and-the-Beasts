@@ -160,7 +160,7 @@ def new_answer(questionid):
     id_num = questionid
     add_answer = False
     question_list = common.import_story("data/question.csv")
-    return render_template('form.html', form="Answer", add_answer=add_answer, id_num=id_num, question_list=question_list, data=[questionid,"","","","",""])
+    return render_template('form.html', form="Answer", add_answer=add_answer, id_num=id_num, question_list=question_list, data=[questionid,"","","","","",""])
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
