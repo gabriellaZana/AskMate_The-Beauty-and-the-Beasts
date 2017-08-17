@@ -10,7 +10,7 @@
             {% for item in q_list %}
             {% if id_pos == item[0] %}
             <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{item[4]}}" pattern=".{1,}" required title="1 character minimum"></input><br>
+            <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
             {% endif %}
             {% endfor %}
             <br>
@@ -19,7 +19,7 @@
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
             <label for="{{ form }}">{{ form }}</label><br>
-            <input type="text" name="{{ form }}" rows="8" cols="80" value="" pattern=".{10,}" required title="10 characters minimum"></input><br>
+            <textarea name="{{ form }}" rows="20" cols="80" value="" minlength="10"></textarea><br>
             <textarea name="id" rows="8" cols="80" hidden>{{data[0]}}</textarea><br>
             <br>
             <label for="image">Image (optionally)</label><br>
