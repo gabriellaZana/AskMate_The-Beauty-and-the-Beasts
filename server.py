@@ -81,7 +81,7 @@ def route_edit_question(questionid=None):
     for line in table:
         if line[0] == id_num:
             data = line
-    return render_template('form.html', data=data, edit=edit, table=table, form="Question")
+    return render_template('form.html', data=data, edit=edit, id_num=id_num, table=table, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
