@@ -6,7 +6,16 @@
     </head>
     <body>
         <h1>{{ form }}</h1>
-        <form action="/save-{{ form }}" method="post" enctype="multipart/form-data">
+        <form action="/save-{{ form }}" method="post">       
+            {% for item in table %}
+            {% if edit and id_num == item[0] %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title" value="{{item[4]}}"></input><br>
+            <label for="{{ form }}">{{ form }}</label><br>
+            <textarea name="{{ form }}" rows="20" cols="80">{{item[5]}}</textarea><br>
+            {% endif %}
+            {% endfor %}
+
             {% if add_answer %}
             <label for="title">Title</label><br>
             <input type="text" name="title"></input><br>
@@ -14,21 +23,24 @@
             <label for="title">Title</label><br>
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
+            
             {% for item in question_list %}
-            {% if id_num == item[0] %}
+            {% if not edit and id_num == item[0] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
             {% endif %}
             {% endfor %}
             <br>
             {% for item in table %}
-            {% if id_num == item[0] %}
+            {% if not edit and id_num == item[0] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{item[4]}}" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
             {% endfor %}
+            {% if not edit %}
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80" value="" minlength="10"></textarea><br>
+            {% endif %}
             <textarea name="id" rows="8" cols="80" hidden>{{ data[0] }}</textarea><br>
             
             <br>
