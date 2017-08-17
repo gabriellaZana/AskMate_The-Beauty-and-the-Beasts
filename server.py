@@ -23,7 +23,7 @@ def route_save_question():
         if int(line[0]) == int(request.form["id"]):
             create_list[0] = request.form["id"]
             create_list[2] = line[2]
-            table(number) = create_list
+            table[number] = create_list
             counter = False
     if counter:
         table.append(create_list)
