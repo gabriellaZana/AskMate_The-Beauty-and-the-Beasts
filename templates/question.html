@@ -15,7 +15,7 @@
         <p><textarea rows="1" cols="70" name="title">{{ line[4] }}</textarea></p>
 
     <p><label for="text"><stong>Description</stong></label></p>
-        <p><textarea row="20" cols="70" name="text">{{ line[5] }}</textarea></p>
+        <p><textarea row="20" cols="70" name="text" pattern=".{10,}" required title="10 characters minimum">{{ line[5] }}</textarea></p>
     {% endif %}
     {% endfor %}
 

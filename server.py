@@ -3,13 +3,15 @@ import common
 import time
 from datetime import datetime
 
+
 app = Flask(__name__)
 
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
-    label_list = ["title", "Question"]
+    label_list = ["title", "Question", "image"]
     formdata = request.form
+    print(formdata)
     table = common.import_story("data/question.csv")
     create_list = []
     create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
@@ -17,7 +19,6 @@ def route_save_question():
         for key, value in formdata.items():
             if label == key:
                 create_list.append(value)
-    create_list.append("image")
     counter = True
     for line in table:
         if int(line[0]) == int(request.form["id"]):
@@ -33,14 +34,14 @@ def route_save_question():
 
 @app.route('/new-question')
 def route_new_question():
-    return render_template('form.html', form="Question", data=["0","","","","",""])
+    title_help = True
+    return render_template('form.html', title_help=title_help, form="Question", data=["0","","","","",""])
 
 
 @app.route("/")
 @app.route("/list")
 def index():
     database = common.import_story("data/question.csv")
-    print(database)
     timestamp_list = []
     for row in database:
         timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
@@ -66,7 +67,6 @@ def route_save_answer():
             if label == key:
                 create_list.append(value)
     create_list.append("image")
-    print(create_list)
     common.append_story(create_list, "data/answer.csv")
     return redirect('/question/'+ request.form["id"])
 
@@ -156,7 +156,10 @@ def route_downvote_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
+    title_help = False
+    id_pos = questionid
+    q_list = common.import_story("data/question.csv")
+    return render_template('form.html', form="Answer", title_help=title_help, id_pos=id_pos, q_list=q_list, data=[questionid,"","","","",""])
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
