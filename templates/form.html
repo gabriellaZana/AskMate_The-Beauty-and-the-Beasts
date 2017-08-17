@@ -8,6 +8,15 @@
     <body>
         <h1>{{ form }}</h1>
         <form action="/save-{{ form }}" method="post" enctype="multipart/form-data">
+            {% for item in table %}
+            {% if edit and id_num == item[0] %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title" value="{{item[4]}}"></input><br>
+            <label for="{{ form }}">{{ form }}</label><br>
+            <textarea name="{{ form }}" rows="20" cols="80">{{item[5]}}</textarea><br>
+            {% endif %}
+            {% endfor %}
+            
             {% if add_answer %}
             <label for="title">Title</label><br>
             <input type="text" name="title"></input><br>
