@@ -40,7 +40,6 @@ def route_new_question():
 @app.route("/list")
 def index():
     database = common.import_story("data/question.csv")
-    print(database)
     timestamp_list = []
     for row in database:
         timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
@@ -52,7 +51,10 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-    return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
+    timestamp_list = []
+    for row in a_list:
+        timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
+    return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos, timestamp_list=timestamp_list)
 
 
 @app.route('/save-Answer', methods=['POST'])
