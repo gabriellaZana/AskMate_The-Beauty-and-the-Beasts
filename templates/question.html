@@ -34,7 +34,7 @@
             {% if line[3] == id_pos %}
             {% if line[6] is not defined %}
                 <tr>
-                    <td>{{line[1]}}</td>
+                    <td>{{ timestamp_list[loop.index0] }}</td>
                     <td>{{line[4]}}</td>
                     <td>{{line[2]}}</td>
                     <td><a href="/delete-answer/{{ id_pos }}/{{ line[0] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
