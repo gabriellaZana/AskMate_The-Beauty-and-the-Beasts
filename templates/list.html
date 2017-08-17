@@ -1,17 +1,19 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="/static/style.css">
         <meta charset="utf-8">
         <title> AskMate </title>
     </head>
+
     <body>
         <h1> AskMate </h1>
         <h2> Questions </h2>
         <table border="1" align="center">
             <tr><th>ID</th>
                 <th>Question</th>
-                <th> Description </th>
+                <th>Description</th>
                 <th><a href="/sortbySubmission">Submission time</a></th>
                 <th><a href="/sortbyViews">Views </a></th>
                 <th><a href="/sortbyVotes">Votes</a></th>
@@ -24,16 +26,16 @@
         {% for line in database %}
         {% if line[7] is not defined %}
             <tr>
-                <td> {{line[0]}} </td>
+                <td>{{line[0]}}</td>
                 <td>
                     <form action="{{ url_for('viewcount', questionid=line[0]) }}" method="post">
                     <button type="submit" name="question" class="btn-link">{{line[4]}}</button>
                     </form>
                 </td>
-                <td> {{line[5]}} </td>
-                <td>{{ timestamp_list[loop.index0]}}</td>
-                <td> {{line[2]}} </td>
-                <td> {{line[3]}} </td>
+                <td>{{line[5]}}</td>
+                <td>{{timestamp_list[loop.index0]}}</td>
+                <td>{{line[2]}}</td>
+                <td>{{line[3]}}</td>
                 <td><img src="{{line[6]}}" width="200" height="150"></td>
                 <td><a href="/edit-question/{{ line[0] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
                 <td><a href="/delete-question/{{ line[0] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
@@ -43,8 +45,11 @@
         {% endif %}
         {% endfor %}
         </table>
+
         <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>        
         <p><img class="logo" src="static/beauty_and_the_beast_logo_by_chenwei_zachary-d55a4ap.jpg" height="500" width="1000" align="center"></p>
+    
     </body>
+    
 </html>
 
