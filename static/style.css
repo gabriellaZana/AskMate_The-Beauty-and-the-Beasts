@@ -15,6 +15,11 @@
   margin: 0 auto;
 }
 
+.header{
+  background-color: #044;
+  color: #ffffff
+}
+
 body {
   background-color: #ffffff
 }
@@ -31,13 +36,15 @@ h2 {
   height: 90px;
   line-height: 90px;
   text-align: center;
-  margin: 0
+  margin-top: 0;
+  margin-bottom: 1
 }
 
 h3 {
     color: #ffffff;
     background-color: #044;
-    margin: 0
+    margin-top: 0;
+    margin-bottom: 1
 }
 
 table {
@@ -47,6 +54,11 @@ table {
 
 tr:hover {
   background-color: #ffffff
+}
+
+th {
+    background-color: #044;
+    color: white;
 }
 
 table, th, td {
@@ -64,4 +76,20 @@ table, th, td {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+}
+
+a:link {
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+a:hover {
+    color: white;
+}
+
+a:active {
+    color: white;
 }
