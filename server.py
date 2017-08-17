@@ -71,18 +71,19 @@ def route_save_answer():
                 create_list.append(value)
     create_list.append("image")
     common.append_story(create_list, "data/answer.csv")
-    return redirect('/question/'+ request.form["id"])
+    return redirect('/question/' + request.form["id"])
 
 
 @app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
     id_pos = int(questionid)
+    #title_help = True
     table = common.import_story("data/question.csv")
     data = []
     for line in table:
         if line[0] == str(id_pos):
             data = line
-    return render_template('form.html', data=data, form="Question")
+    return render_template('form.html', data=data, table=table, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
@@ -159,10 +160,10 @@ def route_downvote_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    title_help = False
     id_pos = questionid
+    add_answer = False
     q_list = common.import_story("data/question.csv")
-    return render_template('form.html', form="Answer", title_help=title_help, id_pos=id_pos, q_list=q_list, data=[questionid,"","","","",""])
+    return render_template('form.html', form="Answer", add_answer=add_answer, id_pos=id_pos, q_list=q_list, data=[questionid,"","","","",""])
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
