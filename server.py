@@ -75,13 +75,14 @@ def route_save_answer():
 
 @app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
-    id_num = int(questionid)
+    edit = True
+    id_num = questionid
     table = common.import_story("data/question.csv")
     data = []
     for line in table:
         if line[0] == str(id_num):
             data = line
-    return render_template('form.html', data=data, table=table, form="Question")
+    return render_template('form.html', data=data, edit=edit, id_num=id_num, table=table, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
