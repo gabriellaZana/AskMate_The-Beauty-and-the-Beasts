@@ -63,3 +63,18 @@ def append_story(new_question_or_answer, filename):
         if filename == "data/question.csv":
             new_question_or_answer[5] = string_to_base64(new_question_or_answer[5])
         writer.writerow(new_question_or_answer)
+
+
+def sortbynumber(index=0):
+    table = import_story("data/question.csv")
+    table_original = import_story("data/question.csv")
+    for line in table:
+        line[index] = int(float(line[index]))
+    for line in table_original:
+        line[index] = int(float(line[index]))
+    table.sort(key=lambda x: x[index])
+    if table == table_original:
+        for line in table:
+            line[index] = int(line[index])
+        table.sort(key=lambda x: x[index], reverse=True)
+    export_story("data/question.csv", table)

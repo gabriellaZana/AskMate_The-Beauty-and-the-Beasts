@@ -14,15 +14,15 @@
             <label for="title">Title</label><br>
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
-            {% for item in q_list %}
-            {% if id_pos == item[0] %}
+            {% for item in question_list %}
+            {% if id_num == item[0] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
             {% endif %}
             {% endfor %}
             <br>
             {% for item in table %}
-            {% if id_pos == item[0] %}
+            {% if id_num == item[0] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{item[4]}}" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
