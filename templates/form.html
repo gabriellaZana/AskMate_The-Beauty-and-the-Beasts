@@ -7,23 +7,35 @@
     <body>
         <h1>{{ form }}</h1>
         <form action="/save-{{ form }}" method="post" enctype="multipart/form-data">
+            {% if add_answer %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title"></input><br>
+            {% elif title_help %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
+            {% endif %}
             {% for item in question_list %}
-                {% if id_num == item[0] %}
-                    <label for="title">Title</label><br>
-                    <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
-                {% endif %}
+            {% if id_num == item[0] %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
+            {% endif %}
             {% endfor %}
             <br>
-            {% if title_help %}
-                <label for="title">Title</label><br>
-                <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
+            {% for item in table %}
+            {% if id_num == item[0] %}
+            <label for="title">Title</label><br>
+            <input type="text" name="title" value="{{item[4]}}" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
+            {% endfor %}
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80" value="" minlength="10"></textarea><br>
-            <textarea name="id" rows="8" cols="80" hidden>{{data[0]}}</textarea><br>
+            <textarea name="id" rows="8" cols="80" hidden>{{ data[0] }}</textarea><br>
+            
             <br>
+            <!--
             <label for="image">Image (optionally)</label><br>
-            <input type="file" name="image" id="image" size="40" accept="image/*">
+            <input type="file" name="image" id="image" size="40" accept="image/*">-->
+            
             <br><br>
             
             <button type="submit">Save {{ form }}</button>

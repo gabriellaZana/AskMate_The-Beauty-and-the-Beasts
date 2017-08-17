@@ -81,7 +81,7 @@ def route_edit_question(questionid=None):
     for line in table:
         if line[0] == str(id_num):
             data = line
-    return render_template('form.html', data=data, form="Question")
+    return render_template('form.html', data=data, table=table, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
@@ -158,10 +158,10 @@ def route_downvote_question(questionid=None):
 
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
-    title_help = False
     id_num = questionid
+    add_answer = False
     question_list = common.import_story("data/question.csv")
-    return render_template('form.html', form="Answer", title_help=title_help, id_num=id_num, question_list=question_list, data=[questionid,"","","","",""])
+    return render_template('form.html', form="Answer", add_answer=add_answer, id_num=id_num, question_list=question_list, data=[questionid,"","","","",""])
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
