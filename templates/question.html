@@ -11,11 +11,11 @@
     {% for line in q_list %}
     {% if line[0] == id_pos %}
     <h3>Question</h3>
-    <p><label for="title"><strong>Title</strong></label></p>
-        <p><textarea rows="1" cols="70" name="title">{{ line[4] }}</textarea></p>
+    <p><strong>Title</strong></p>
+        <p><textarea readonly rows="1" cols="70">{{ line[4] }}</textarea></p>
 
-    <p><label for="text"><stong>Description</stong></label></p>
-        <p><textarea row="20" cols="70" name="text" pattern=".{10,}" required title="10 characters minimum">{{ line[5] }}</textarea></p>
+    <p><stong>Description</stong></p>
+        <p><textarea readonly row="20" cols="70">{{ line[5] }}</textarea></p>
     {% endif %}
     {% endfor %}
 
