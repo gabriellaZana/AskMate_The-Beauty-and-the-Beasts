@@ -34,7 +34,7 @@ def route_save_question():
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-    return render_template('form.html', title_help=title_help, form="Question", data=["0","","","","",""])
+    return render_template('form.html', title_help=title_help, form="Question", data=["0","","","","","",""])
 
 
 @app.route("/")
@@ -60,7 +60,7 @@ def route_question_page(questionid=None):
 
 @app.route('/save-Answer', methods=['POST'])
 def route_save_answer():
-    label_list = ["id", "Answer"]
+    label_list = ["id", "Answer", "image"]
     formdata = request.form
     create_list = []
     create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
@@ -68,7 +68,6 @@ def route_save_answer():
         for key, value in formdata.items():
             if label == key:
                 create_list.append(value)
-    create_list.append("image")
     common.append_story(create_list, "data/answer.csv")
     return redirect('/question/' + request.form["id"])
 

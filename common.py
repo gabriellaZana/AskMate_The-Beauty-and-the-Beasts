@@ -50,7 +50,10 @@ def id_generator(csv_filename):
     table = []
     for row in reader:
         table.append(int(row[0]))
-    return max(table) + 1
+    if table == []:
+        return 1
+    else:
+        return max(table) + 1
     # with open(csv_filename, 'r') as f:
     #     lastrow = None
     #     for lastrow in csv.reader(f):
