@@ -175,6 +175,26 @@ def viewcount(questionid):
     return redirect('/question/' + questionid + "/")
 
 
+<<<<<<< HEAD
+=======
+@app.route("/sortbyViews")
+def sortbyID():
+    common.sortbynumber(2)
+    return redirect("/")
+
+
+@app.route("/sortbySubmission")
+def sortbySubmission():
+    common.sortbynumber(1)
+    return redirect("/")
+
+
+@app.route("/sortbyVotes")
+def sortbyVotes():
+    common.sortbynumber(3)
+    return redirect("/")
+
+>>>>>>> 37d951a9a4dc653b45ef81168c708d72d5c8caaf
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
     app.run(

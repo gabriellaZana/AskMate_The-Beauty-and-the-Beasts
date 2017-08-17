@@ -9,11 +9,11 @@
         <h1> AskMate </h1>
         <h2> Questions: </h2>
         <table border="1">
-            <tr><th> ID </th>
-                <th> Question </th>
-                <th> Submission time </th>
-                <th> Views </th>
-                <th> Votes </th>
+            <tr><th>ID</th>
+                <th>Question</th>
+                <th><a href="/sortbySubmission">Submission time</a></th>
+                <th><a href="/sortbyViews">Views </a></th>
+                <th><a href="/sortbyVotes">Votes</a></th>
             </tr>
         {% for line in database %}
         {% if line[7] is not defined %}
