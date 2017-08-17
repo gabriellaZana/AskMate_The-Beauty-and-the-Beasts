@@ -7,16 +7,16 @@
     <body>
         <h1>{{ form }}</h1>
         <form action="/save-{{ form }}" method="post" enctype="multipart/form-data">
-            {% for item in q_list %}
-            {% if id_pos == item[0] %}
-            <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
-            {% endif %}
+            {% for item in question_list %}
+                {% if id_num == item[0] %}
+                    <label for="title">Title</label><br>
+                    <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
+                {% endif %}
             {% endfor %}
             <br>
             {% if title_help %}
-            <label for="title">Title</label><br>
-            <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
+                <label for="title">Title</label><br>
+                <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
             <label for="{{ form }}">{{ form }}</label><br>
             <input type="text" name="{{ form }}" value="" pattern=".{10,}" required title="10 characters minimum"></input><br>
