@@ -40,7 +40,11 @@ def route_new_question():
 @app.route("/list")
 def index():
     database = common.import_story("data/question.csv")
-    return render_template("list.html", database=database)
+    print(database)
+    timestamp_list = []
+    for row in database:
+        timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
+    return render_template("list.html", database=database, timestamp_list=timestamp_list)
 
 
 @app.route('/question/<questionid>/')
@@ -48,9 +52,6 @@ def route_question_page(questionid=None):
     id_pos = questionid
     q_list = common.import_story("data/question.csv")
     a_list = common.import_story("data/answer.csv")
-    # viewcount(questionid, "data/question.csv")
-    print(id_pos)
-    print(q_list)
     return render_template('question.html', q_list=q_list, a_list=a_list, id_pos=id_pos)
 
 
@@ -92,6 +93,43 @@ def route_delete_question(questionid=None):
     return redirect('/')
 
 
+@app.route('/delete-answer/<questionid>/<answerid>/')
+def route_delete_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1].append("deleted")
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/'+questionid+'/')
+
+
+@app.route('/question/<questionid>/<answerid>/vote-up/')
+def route_upvote_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    id_question = questionid
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][2] = int(q_list[id_pos-1][2])
+            q_list[id_pos-1][2] += 1
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/' + id_question + "/")
+
+
+@app.route('/question/<questionid>/<answerid>/vote-down/')
+def route_downvote_answer(questionid=None, answerid=None):
+    id_pos = int(answerid)
+    id_question = questionid
+    q_list = common.import_story("data/answer.csv")
+    for line in q_list:
+        if id_pos == int(line[0]):
+            q_list[id_pos-1][2] = int(q_list[id_pos-1][2])
+            q_list[id_pos-1][2] += -1
+    common.export_story("data/answer.csv", q_list)
+    return redirect('/question/' + id_question + "/")
+
+
 @app.route('/question/<questionid>/vote-up')
 def route_upvote_question(questionid=None):
     id_pos = int(questionid)
@@ -102,6 +140,7 @@ def route_upvote_question(questionid=None):
             q_list[id_pos-1][3] += 1
     common.export_story("data/question.csv", q_list)
     return redirect('/')
+
 
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
@@ -120,12 +159,15 @@ def new_answer(questionid):
     return render_template('form.html', form="Answer", data=[questionid,"","","","",""])
 
 
-def viewcount(questionid, filename):
-    table = common.import_story(filename)
-    table[int(questionid)-1][2] = int(table[int(questionid)-1][2])
-    table[int(questionid)-1][2] += 1
-    common.export_story(filename, table)
-    return
+@app.route("/viewcount/<questionid>", methods=["POST"])
+def viewcount(questionid):
+    table = common.import_story("data/question.csv")
+    for record in table:
+        if record[0] == questionid:
+            record[2] = int(record[2])
+            record[2] += 1
+    common.export_story("data/question.csv", table)
+    return redirect('/question/' + questionid + "/")
 
 
 
