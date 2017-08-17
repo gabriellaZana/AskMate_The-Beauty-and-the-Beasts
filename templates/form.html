@@ -23,6 +23,7 @@
             <label for="title">Title</label><br>
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
+            
             {% for item in question_list %}
             {% if not edit and id_num == item[0] %}
             <label for="title">Title</label><br>

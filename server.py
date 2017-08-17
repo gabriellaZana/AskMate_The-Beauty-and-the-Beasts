@@ -80,7 +80,7 @@ def route_edit_question(questionid=None):
     table = common.import_story("data/question.csv")
     data = []
     for line in table:
-        if line[0] == str(id_num):
+        if line[0] == id_num:
             data = line
     return render_template('form.html', data=data, edit=edit, id_num=id_num, table=table, form="Question")
 
