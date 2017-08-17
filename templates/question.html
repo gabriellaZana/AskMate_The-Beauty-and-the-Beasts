@@ -15,18 +15,23 @@
             <p><strong>Title</strong></p>
                 <p><textarea readonly rows="1" cols="70">{{ line[4] }}</textarea></p>
 
-            <p><stong>Description</stong></p>
-                <p><textarea readonly row="20" cols="70">{{ line[5] }}</textarea></p>
+            <p><strong>Description</strong></p>
+                <p><textarea readonly rows="20" cols="70">{{ line[5] }}</textarea></p>
+
+            <p><strong>Image</strong></p>
+                <p><img src="{{line[6]}}" width="200" height="150"></p>
         {% endif %}
     {% endfor %}
+    <br>
 
     <h3><label for="answers">Answers</label></h3>
         <table>
             <thead>
                 <tr>
                     <td><strong>Submission time</td>
-                    <td><strong>Message</td>
-                    <td><strong>Votes</td>
+                    <td><strong>Message</strong></td>
+                    <td><strong>Image</strong></td>
+                    <td><strong>Votes</strong></td>
                 </tr>
             </thead>
 
@@ -37,6 +42,11 @@
                     <tr>
                         <td>{{ timestamp_list[loop.index0] }}</td>
                         <td>{{ line[4] }}</td>
+                        {% if line[5] %}
+                            <td><img src="{{ line[5] }}" width="200" heigth="150"></td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                         <td>{{ line[2] }}</td>
                         <td><a href="/delete-answer/{{ id_num }}/{{ line[0] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
                         <td><a href="/question/{{ id_num }}/{{ line[0] }}/vote-up/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAACgCAMAAADHEAL6AAAAFVBMVEX///8AAAD/mf+ZmZn/zJn/M5n/mZly7fXaAAABxUlEQVR4nO3au3LCMBBAUUhI/v+T08jNzmy0shdjmHNLoueBQkVut6buF6nrPiBAgAABAgSI8wAeF+llICBAgAABAgSINoCvk3o5CAgQIECAAAGiDWL1Ij+j6udVEBAgQIAAAQLE+0AcvUhXIECAAAECBIj3hzjaPRT/nkFnEHE9ECBAgAABAsTnQWzrfocykBnEbD0QIECAAAECxHGIODHWDZE9iLKDV0EixGwdECBAgAABAkQfRDYhTjwKkTW7QHauWHU+CBAgQIAAAaIPogpShVj9h5HqRY4GAgQIECBAgOiD2Aty9EG1QZ0FUAYBAQIECBAgQCxDrIJEiNUH1NYMIp6retHZPBAgQIAAAQJEP0QGEjv6oKpCzL6YOK46DwQIECBAgADxPIgZzCpE9uCKB/0NZRdfLa4LAgQIECBAgDgPIoI8QrMLZ1Uh4rjVz0GAAAECBAgQ14WIIKtlF4oXWy1bZzcACBAgQIAAAWI3QCwD2dsMZG/tvwQQIECAAAECRBlgtsHVa/slgBiBGIEYgRiBGIEYgRjNAKrju/bt3g8ECBAgQIAA8TyIrOr47v1n4/but3wQECBAgPjvICBAfCbEH+yzElBvujPUAAAAAElFTkSuQmCC" width="40" height="40"></a></td>
