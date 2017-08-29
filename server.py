@@ -40,7 +40,7 @@ def route_new_question():
 @app.route("/")
 @app.route("/list")
 def index():
-    database = common.get_all_questions()
+    database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", database=database)
 
 
