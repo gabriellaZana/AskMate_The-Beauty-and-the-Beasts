@@ -62,9 +62,12 @@ def transform_to_tuple(dictionary):
 
 
 @connection_handler
-def query_handler(cursor, querystring):
-    cursor.execute(querystring)
-    result = cursor.fetchall()
-    return result
+def query_handler(cursor, querystring, *args, *kwargs):
+    cursor.execute(querystring, *args, **kwargs)
+    try:
+        result = cursor.fetchall()
+        return result
+    except:
+        pass
     #for row in cursor:
     #    print(type(row))
