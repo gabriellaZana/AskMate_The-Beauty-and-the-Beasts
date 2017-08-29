@@ -65,6 +65,6 @@ def transform_to_tuple(dictionary):
 def get_all_questions(cursor):
     cursor.execute("SELECT * FROM question")
     result = cursor.fetchall()
-    print(result)
+    return result
     #for row in cursor:
     #    print(type(row))
