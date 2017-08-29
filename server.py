@@ -40,11 +40,8 @@ def route_new_question():
 @app.route("/")
 @app.route("/list")
 def index():
-    database = common.import_story("data/question.csv")
-    timestamp_list = []
-    for row in database:
-        timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
-    return render_template("list.html", database=database, timestamp_list=timestamp_list)
+    database = common.get_all_questions()
+    return render_template("list.html", database=database)
 
 
 @app.route('/question/<questionid>/')

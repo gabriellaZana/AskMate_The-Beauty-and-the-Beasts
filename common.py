@@ -41,9 +41,18 @@ def connection_handler(function):
     def wrapper(*args, **kwargs):
         connection = open_database()
         # we set the cursor_factory parameter to return with a dict cursor (cursor which provide dictionaries)
-        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         ret_value = function(dict_cur, *args, **kwargs)
         dict_cur.close()
         connection.close()
         return ret_value
     return wrapper
+
+
+@connection_handler
+def get_all_questions(cursor):
+    cursor.execute("SELECT * FROM question")
+    result = cursor.fetchall()
+    print(result)
+    #for row in cursor:
+    #    print(type(row))
