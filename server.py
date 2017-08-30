@@ -18,7 +18,7 @@ def route_save_question():
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-    return render_template('form.html', title_help=title_help, form="Question", data=["0","","","","","",""])
+    return render_template('form_new_question.html', title_help=title_help, form="Question")
 
 
 @app.route("/")

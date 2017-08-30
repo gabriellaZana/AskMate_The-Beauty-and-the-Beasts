@@ -11,6 +11,7 @@
         <h1>{{ form }}</h1>
 
         <form action="/save-{{ form }}" method="post">
+          
             {% set id_num = id_num | int %}
             {% for line in database %}
             {% if edit and id_num == line['id'] %}
@@ -19,8 +20,13 @@
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80">{{line['message']}}</textarea><br>
             <textarea name="question_id" hidden>{{line['id']}}</textarea>
+            {% for line in database %}
+            <label for="image">Image URL(optionally)</label><br>
+            <input type="text" name="image" id="image" value="{{line['image']}}"></input>
+            {% endfor %}
             {% endif %}
             {% endfor %}
+
 
             {% if add_answer %}
             <label for="title">Title</label><br>
