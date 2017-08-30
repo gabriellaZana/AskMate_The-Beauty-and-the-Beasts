@@ -9,17 +9,18 @@
 </head>
 
 <body>
-    {% for line in question_list %}
-        {% if line[0] == id_num %}
+    {% set id_num = id_num | int %}
+    {% for line in question_database %}
+        {% if line['id'] == id_num %}
             <h3>Question</h3>
             <p><strong>Title</strong></p>
-                <p><textarea readonly rows="1" cols="70">{{ line[4] }}</textarea></p>
+                <p><textarea readonly rows="1" cols="70">{{ line['title'] }}</textarea></p>
 
             <p><strong>Description</strong></p>
-                <p><textarea readonly rows="20" cols="70">{{ line[5] }}</textarea></p>
+                <p><textarea readonly rows="20" cols="70">{{ line['message'] }}</textarea></p>
 
             <p><strong>Image</strong></p>
-                <p><img src="{{line[6]}}" width="200" height="150"></p>
+                <p><img src="{{line['image']}}" width="200" height="150"></p>
         {% endif %}
     {% endfor %}
     <br>
@@ -39,23 +40,22 @@
             </thead>
 
             <tbody>
-            {% for line in answer_list %}
-                {% if line[3] == id_num %}
-                {% if line[6] is not defined %}
+            {% for line in answer_database %}
+                {% if line['question_id'] == id_num %}
                     <tr>
-                        <td>{{ timestamp_list[loop.index0] }}</td>
-                        <td>{{ line[4] }}</td>
+                        <td>{{ line['submission_time'] }}</td>
+                        <td>{{ line['message'] }}</td>
 
-                        {% if line[5] %}
-                            <td><img src="{{ line[5] }}" width="200" heigth="150"></td>
+                        {% if line['image'] %}
+                            <td><img src="{{ line['image'] }}" width="200" heigth="150"></td>
                         {% else %}
                             <td></td>
                         {% endif %}
                         
-                        <td>{{ line[2] }}</td>
-                        <td><a href="/delete-answer/{{ id_num }}/{{ line[0] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
-                        <td><a href="/question/{{ id_num }}/{{ line[0] }}/vote-up/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAACgCAMAAADHEAL6AAAAFVBMVEX///8AAAD/mf+ZmZn/zJn/M5n/mZly7fXaAAABxUlEQVR4nO3au3LCMBBAUUhI/v+T08jNzmy0shdjmHNLoueBQkVut6buF6nrPiBAgAABAgSI8wAeF+llICBAgAABAgSINoCvk3o5CAgQIECAAAGiDWL1Ij+j6udVEBAgQIAAAQLE+0AcvUhXIECAAAECBIj3hzjaPRT/nkFnEHE9ECBAgAABAsTnQWzrfocykBnEbD0QIECAAAECxHGIODHWDZE9iLKDV0EixGwdECBAgAABAkQfRDYhTjwKkTW7QHauWHU+CBAgQIAAAaIPogpShVj9h5HqRY4GAgQIECBAgOiD2Aty9EG1QZ0FUAYBAQIECBAgQCxDrIJEiNUH1NYMIp6retHZPBAgQIAAAQJEP0QGEjv6oKpCzL6YOK46DwQIECBAgADxPIgZzCpE9uCKB/0NZRdfLa4LAgQIECBAgDgPIoI8QrMLZ1Uh4rjVz0GAAAECBAgQ14WIIKtlF4oXWy1bZzcACBAgQIAAAWI3QCwD2dsMZG/tvwQQIECAAAECRBlgtsHVa/slgBiBGIEYgRiBGIEYgRjNAKrju/bt3g8ECBAgQIAA8TyIrOr47v1n4/but3wQECBAgPjvICBAfCbEH+yzElBvujPUAAAAAElFTkSuQmCC" width="60" height="60"></a></td>
-                        <td><a href="/question/{{ id_num }}/{{ line[0] }}/vote-down/"><img src="https://st.depositphotos.com/1742172/2140/v/950/depositphotos_21407157-stock-illustration-farting-cat.jpg" width="100" height="100"></a></td>
+                        <td>{{ line['vote_number'] }}</td>
+                        <td><a href="/delete-answer/{{ id_num }}/{{ line['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
+                        <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-up/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAACgCAMAAADHEAL6AAAAFVBMVEX///8AAAD/mf+ZmZn/zJn/M5n/mZly7fXaAAABxUlEQVR4nO3au3LCMBBAUUhI/v+T08jNzmy0shdjmHNLoueBQkVut6buF6nrPiBAgAABAgSI8wAeF+llICBAgAABAgSINoCvk3o5CAgQIECAAAGiDWL1Ij+j6udVEBAgQIAAAQLE+0AcvUhXIECAAAECBIj3hzjaPRT/nkFnEHE9ECBAgAABAsTnQWzrfocykBnEbD0QIECAAAECxHGIODHWDZE9iLKDV0EixGwdECBAgAABAkQfRDYhTjwKkTW7QHauWHU+CBAgQIAAAaIPogpShVj9h5HqRY4GAgQIECBAgOiD2Aty9EG1QZ0FUAYBAQIECBAgQCxDrIJEiNUH1NYMIp6retHZPBAgQIAAAQJEP0QGEjv6oKpCzL6YOK46DwQIECBAgADxPIgZzCpE9uCKB/0NZRdfLa4LAgQIECBAgDgPIoI8QrMLZ1Uh4rjVz0GAAAECBAgQ14WIIKtlF4oXWy1bZzcACBAgQIAAAWI3QCwD2dsMZG/tvwQQIECAAAECRBlgtsHVa/slgBiBGIEYgRiBGIEYgRjNAKrju/bt3g8ECBAgQIAA8TyIrOr47v1n4/but3wQECBAgPjvICBAfCbEH+yzElBvujPUAAAAAElFTkSuQmCC" width="60" height="60"></a></td>
+                        <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-down/"><img src="https://st.depositphotos.com/1742172/2140/v/950/depositphotos_21407157-stock-illustration-farting-cat.jpg" width="100" height="100"></a></td>
                     </tr>
                 {% endif %}
                 {% endif %}
