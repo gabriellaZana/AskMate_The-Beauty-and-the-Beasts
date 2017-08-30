@@ -44,14 +44,6 @@ def route_save_answer():
     formdata = request.form
     common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
                             VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
-    # label_list = ["id", "Answer", "image"]
-    # create_list = []
-    # create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
-    # for label in label_list:
-    #     for key, value in formdata.items():
-    #         if label == key:
-    #             create_list.append(value)
-    # common.append_story(create_list, "data/answer.csv")
     return redirect('/question/' + request.form['question_id'])
 
 
@@ -73,11 +65,7 @@ def route_delete_question(questionid=None):
 @app.route('/delete-answer/<questionid>/<answerid>/')
 def route_delete_answer(questionid=None, answerid=None):
     id_num = int(answerid)
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line.append("deleted")
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("DELETE FROM answer WHERE id=%s",(id_num,))
     return redirect('/question/'+questionid+'/')
 
 
@@ -85,25 +73,15 @@ def route_delete_answer(questionid=None, answerid=None):
 def route_upvote_answer(questionid=None, answerid=None):
     id_num = int(answerid)
     id_question = questionid
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[2] = int(line[2])
-            line[2] += 1
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("UPDATE answer SET vote_number = vote_number+1 WHERE id=%s",(id_num,))
     return redirect('/question/' + id_question + "/")
 
 
 @app.route('/question/<questionid>/<answerid>/vote-down/')
 def route_downvote_answer(questionid=None, answerid=None):
-    id_num = int(answerid)
+    id_num = answerid
     id_question = questionid
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[2] = int(line[2])
-            line[2] += -1
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("UPDATE answer SET vote_number = vote_number-1 WHERE id=%s",(id_num,))
     return redirect('/question/' + id_question + "/")
 
 
@@ -134,23 +112,6 @@ def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
 
-
-@app.route("/sortbyViews")
-def sortbyID():
-    common.sortbynumber(2)
-    return redirect("/")
-
-
-@app.route("/sortbySubmission")
-def sortbySubmission():
-    common.sortbynumber(1)
-    return redirect("/")
-
-
-@app.route("/sortbyVotes")
-def sortbyVotes():
-    common.sortbynumber(3)
-    return redirect("/")
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
