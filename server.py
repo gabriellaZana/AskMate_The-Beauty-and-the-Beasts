@@ -78,6 +78,19 @@ def route_delete_answer(questionid=None, answerid=None):
     return redirect('/question/'+questionid+'/')
 
 
+@app.route('/comments/<comment_id>/edit')
+def edit_comment(comment_id):
+    database = common.query_handler("SELECT * FROM comment WHERE id=%s",(comment_id,))
+    return render_template("form_edit_comment.html", form="Comment", database=database)
+
+
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    questionid = common.query_handler("SELECT question_id FROM comment WHERE id=%s",(int(comment_id),))
+    common.query_handler("DELETE FROM comment WHERE id=%s",(comment_id,))
+    return redirect('/question/'+str(questionid[0]["question_id"])+'/')
+
+
 @app.route('/question/<questionid>/<answerid>/vote-up/')
 def route_upvote_answer(questionid=None, answerid=None):
     id_num = int(answerid)
