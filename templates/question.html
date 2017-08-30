@@ -24,6 +24,9 @@
         {% endif %}
     {% endfor %}
     <br>
+    {% for line in question_database %}
+    <p><button class="button" onclick="location.href='http://127.0.0.1:5000/question/{{ line['id'] }}/new-comment';">Add Comment</button></p>
+    {% endfor %}
 
     <h3><label for="answers">Answers</label></h3>
         <table border="1">
