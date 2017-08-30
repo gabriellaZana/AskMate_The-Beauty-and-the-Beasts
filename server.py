@@ -30,15 +30,10 @@ def index():
 
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
-    question_database = common.query_handler("SELECT title, message FROM question WHERE id=%s",(questionid))
-    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (questionid))
-    # id_num = questionid
-    # question_list = common.import_story("data/question.csv")
-    # answer_list = common.import_story("data/answer.csv")
-    # timestamp_list = []
-    # for row in answer_list:
-    #     timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
-    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=questionid)
+    id_num = questionid
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num))
+    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num))
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -141,7 +136,7 @@ def new_answer(questionid):
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
 def viewcount(questionid):
-    table = common.query_handler("UPDATE question SET view_number += 1 WHERE id=%s", (questionid))
+    table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid))
     return redirect('/question/' + questionid + "/")
 
 
