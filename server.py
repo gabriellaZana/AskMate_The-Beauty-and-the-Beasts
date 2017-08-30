@@ -36,7 +36,8 @@ def route_question_page(questionid=None):
     id_num = questionid
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num,))
     answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
-    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num)
+    comment_database = common.query_handler("SELECT * FROM comment WHERE question_id=%s", (id_num,))
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -50,7 +51,7 @@ def route_save_answer():
 @app.route('/save-Comment', methods=['POST'])
 def route_save_comment():
     formdata = request.form
-    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_number)
+    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count)
                             VALUES(%s, %s, %s, %s)""",(formdata['question_id'], formdata['Comment'], datetime.now(), 0))
     return redirect('/question/' + request.form['question_id'])
 
@@ -118,7 +119,7 @@ def new_answer(questionid):
 @app.route('/question/<questionid>/new-comment')
 def new_comment(questionid):
     id_num = questionid
-    add_comment = True
+    add_answer = True
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Comment", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
