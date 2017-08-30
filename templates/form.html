@@ -11,12 +11,13 @@
         <h1>{{ form }}</h1>
 
         <form action="/save-{{ form }}" method="post">
-            {% for item in table %}
-            {% if edit and id_num == item[0] %}
+            {% for line in database %}
+            {% if edit and id_num == line['id'] %}
             <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{item[4]}}"></input><br>
+            <input type="text" name="title" value="{{line['title']}}"></input><br>
             <label for="{{ form }}">{{ form }}</label><br>
-            <textarea name="{{ form }}" rows="20" cols="80">{{item[5]}}</textarea><br>
+            <textarea name="{{ form }}" rows="20" cols="80">{{line['message']}}</textarea><br>
+            <textarea name="question_id" hidden>{{line['id']}}</textarea>
             {% endif %}
             {% endfor %}
 
@@ -27,24 +28,24 @@
             <label for="title">Title</label><br>
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
-            {% for item in question_list %}
-            {% if id_num == item[0] %}
+            {% for line in database %}
+            {% if id_num == line['id'] %}
             <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{item[4]}}" readonly></input><br>
+            <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
             {% endif %}
             {% endfor %}
             <br>
-            {% for item in table %}
-            {% if not edit and id_num == item[0] %}
+            {% for line in database %}
+            {% if not edit and id_num == line['id'] %}
             <label for="title">Title</label><br>
-            <input type="text" name="title" value="{{item[4]}}" pattern=".{1,}" required title="1 character minimum"></input><br>
+            <input type="text" name="title" value="{{line['title']}}" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
             {% endfor %}
             {% if not edit %}
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80" required="required" value="" minlength="10"></textarea><br>
             {% endif %}
-            <textarea name="id" rows="8" cols="80" hidden>{{ data[0] }}</textarea><br>
+            <!--><textarea name="id" rows="8" cols="80" hidden>{{ data[0] }}</textarea><br>-->
             
             <br>
 

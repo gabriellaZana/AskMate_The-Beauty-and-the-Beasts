@@ -61,7 +61,7 @@ def transform_to_tuple(dictionary, form_keys):
 
 
 @connection_handler
-def query_handler(cursor, querystring, *args, *kwargs):
+def query_handler(cursor, querystring, *args, **kwargs):
     cursor.execute(querystring, *args, **kwargs)
     try:
         result = cursor.fetchall()
