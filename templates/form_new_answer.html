@@ -10,7 +10,11 @@
     <body>
         <h1>{{ form }}</h1>
 
+<<<<<<< HEAD
         <form action="/save-{{ form }}" method="post">
+=======
+       <form action="/save-{{ form }}" method="post">
+>>>>>>> 2c62c6781d6f7120de7c001950a843ca3c926aec
     {% set id_num = id_num | int %}
     {% if add_answer %}
     {% for line in question_database %}
@@ -25,12 +29,21 @@
 
         <label for="image">Image URL(optionally)</label><br>
             <input type="text" name="image" id="image"></input>
+<<<<<<< HEAD
     
         <input type="text" name="question_id" hidden value={{line['id']}}></input>
 
         <button class="button" type="submit">Save {{ form }}</button>
         {% endfor %}
         {% endif %}
+=======
+
+        <input type="text" name="question_id" hidden value={{ line['id']}}></input>
+
+        <button class="button" type="submit">Save {{ form }}</button>
+        {% endfor %}
+    {% endif %}
+>>>>>>> 2c62c6781d6f7120de7c001950a843ca3c926aec
         </form>
     </body>
 </html>
