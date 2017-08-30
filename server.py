@@ -21,11 +21,7 @@ def route_save_question():
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-<<<<<<< HEAD
     return render_template('form_new_question.html', title_help=title_help, form="Question")
-=======
-    return render_template('form.html', title_help=title_help, form="Question", id_num=-1)
->>>>>>> 33bd75e21e4bf02b533d906b07c3c9af63ac354a
 
 
 @app.route("/")
