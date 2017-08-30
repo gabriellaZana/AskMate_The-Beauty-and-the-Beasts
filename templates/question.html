@@ -24,6 +24,28 @@
         {% endif %}
     {% endfor %}
     <br>
+    <h3><label for="comments">Comments</label></h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td class="header"><strong>Submission time</strong></td>
+                    <td class="header"><strong>Message</strong></td>
+                    <td class="header"><strong>Edit</strong></td>
+                    <td class="header"><strong>Delete</strong></td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for line in comment_database %}
+                <tr>
+                    <td>{{ line['submission_time']}}</td>
+                    <td>{{ line['message']}}</td>
+                    <td><a href="/comments/{{ line['id'] }}/edit"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
+                    <td><a href="/comments/{{ line['id'] }}/delete"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
+            {% endfor %}
+        </table>
+
+
     {% for line in question_database %}
     <p><button class="button" onclick="location.href='http://127.0.0.1:5000/question/{{ line['id'] }}/new-comment';">Add Comment</button></p>
     {% endfor %}
@@ -32,7 +54,7 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="header"><strong>Submission time</td>
+                    <td class="header"><strong>Submission time</strong></td>
                     <td class="header"><strong>Message</strong></td>
                     <td class="header"><strong>Image</strong></td>
                     <td class="header"><strong>Votes</strong></td>
