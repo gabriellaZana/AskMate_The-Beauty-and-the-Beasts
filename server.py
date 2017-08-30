@@ -11,14 +11,17 @@ app = Flask(__name__)
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
-    common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
+    if int(request.form["question_id"]) > -1:
+        common.query_handler("UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s", (request.form["title"],request.form["Question"],request.form["image"], request.form["question_id"]))
+    else:
+        common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-    return render_template('form.html', title_help=title_help, form="Question", data=["0","","","","","",""])
+    return render_template('form.html', title_help=title_help, form="Question", id_num=-1)
 
 
 @app.route("/")
@@ -107,25 +110,15 @@ def route_downvote_answer(questionid=None, answerid=None):
 
 @app.route('/question/<questionid>/vote-up')
 def route_upvote_question(questionid=None):
-    id_num = int(questionid)
-    question_list = common.import_story("data/question.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[3] = int(line[3])
-            line[3] += 1
-    common.export_story("data/question.csv", question_list)
+    id_num = questionid
+    common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s",(id_num))
     return redirect('/')
 
 
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
-    id_num = int(questionid)
-    question_list = common.import_story("data/question.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[3] = int(line[3])
-            line[3] += -1
-    common.export_story("data/question.csv", question_list)
+    id_num = questionid
+    common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s",(id_num))
     return redirect('/')
 
 
