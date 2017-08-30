@@ -41,16 +41,18 @@ def route_question_page(questionid=None):
 
 @app.route('/save-Answer', methods=['POST'])
 def route_save_answer():
-    label_list = ["id", "Answer", "image"]
     formdata = request.form
-    create_list = []
-    create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
-    for label in label_list:
-        for key, value in formdata.items():
-            if label == key:
-                create_list.append(value)
-    common.append_story(create_list, "data/answer.csv")
-    return redirect('/question/' + request.form["id"])
+    common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+                            VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
+    # label_list = ["id", "Answer", "image"]
+    # create_list = []
+    # create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
+    # for label in label_list:
+    #     for key, value in formdata.items():
+    #         if label == key:
+    #             create_list.append(value)
+    # common.append_story(create_list, "data/answer.csv")
+    return redirect('/question/' + request.form['question_id'])
 
 
 @app.route('/edit-question/<questionid>/')
@@ -122,9 +124,9 @@ def route_downvote_question(questionid=None):
 @app.route('/question/<questionid>/new-answer')
 def new_answer(questionid):
     id_num = questionid
-    add_answer = False
-    question_list = common.import_story("data/question.csv")
-    return render_template('form.html', form="Answer", add_answer=add_answer, id_num=id_num, question_list=question_list, data=[questionid,"","","","","",""])
+    add_answer = True
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num))
+    return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])

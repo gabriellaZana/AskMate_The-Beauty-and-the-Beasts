@@ -7,23 +7,30 @@
         <title>{{ form }}</title>
     </head>
 
+    <body>
+        <h1>{{ form }}</h1>
+
+       <form action="/save-{{ form }}" method="post">
+    {% set id_num = id_num | int %}
     {% if add_answer %}
-    {% for line in database %}
+    {% for line in question_database %}
         {% if id_num == line['id'] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
         {% endif %}
-    {% endfor %}
+    
 
         <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
 
         <label for="image">Image URL(optionally)</label><br>
             <input type="text" name="image" id="image"></input>
-    {% endif %}
-    
+
+        <input type="text" name="question_id" hidden value={{ line['id']}}></input>
 
         <button class="button" type="submit">Save {{ form }}</button>
+        {% endfor %}
+    {% endif %}
         </form>
     </body>
 </html>
