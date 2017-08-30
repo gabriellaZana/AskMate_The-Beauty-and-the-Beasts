@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title>{{ form }}</title>
+    </head>
+
+    <body>
+        <h1>{{ form }}</h1>
+
+        <form action="/save-{{ form }}" method="post">
+
+        {% for line in question_database %}
+        <label for="title">Title</label><br>
+                <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+        {% endfor %}
+
+        {% for line in comment_database%}
+        <label for="{{ form }}">{{ form }}</label><br>
+                <textarea name="{{ form }}" rows="20" cols="80" required value="{{line['message']}}" minlength="10"></textarea><br>
+
+        <button class="button" type="submit">Save {{ form }}</button>
+        {% endfor %}
+        </form>
+    </body>
+</html>
