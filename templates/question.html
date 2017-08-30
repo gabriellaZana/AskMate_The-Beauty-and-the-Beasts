@@ -37,11 +37,13 @@
 
             <tbody>
             {% for line in comment_database %}
+                {% if line["question_id"] == id_num %}
                 <tr>
                     <td>{{ line['submission_time']}}</td>
                     <td>{{ line['message']}}</td>
                     <td><a href="/comments/{{ line['id'] }}/edit"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
                     <td><a href="/comments/{{ line['id'] }}/delete"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
+                {% endif %}
             {% endfor %}
         </table>
 
@@ -84,6 +86,14 @@
                         <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-down/"><img src="https://st.depositphotos.com/1742172/2140/v/950/depositphotos_21407157-stock-illustration-farting-cat.jpg" width="100" height="100"></a></td>
                         <td><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/answer/{{ line['id'] }}/new-comment';">Comment</button></td>
                     </tr>
+                    {% for row in comment_database %}
+                        {% if line['id'] == row['answer_id'] %}
+                            <tr>
+                                <td> {{row['message']}} </td>
+                                <td> {{row['submission_time']}} </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             {% endfor %}
             </tbody>
