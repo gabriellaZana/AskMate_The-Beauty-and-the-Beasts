@@ -44,14 +44,6 @@ def route_save_answer():
     formdata = request.form
     common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
                             VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
-    # label_list = ["id", "Answer", "image"]
-    # create_list = []
-    # create_list.extend((common.id_generator("data/answer.csv"), time.time(), "0"))
-    # for label in label_list:
-    #     for key, value in formdata.items():
-    #         if label == key:
-    #             create_list.append(value)
-    # common.append_story(create_list, "data/answer.csv")
     return redirect('/question/' + request.form['question_id'])
 
 
@@ -134,23 +126,6 @@ def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
 
-
-@app.route("/sortbyViews")
-def sortbyID():
-    common.sortbynumber(2)
-    return redirect("/")
-
-
-@app.route("/sortbySubmission")
-def sortbySubmission():
-    common.sortbynumber(1)
-    return redirect("/")
-
-
-@app.route("/sortbyVotes")
-def sortbyVotes():
-    common.sortbynumber(3)
-    return redirect("/")
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
