@@ -52,7 +52,7 @@ def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
     database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num,))
-    return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
+    return render_template('form_edit_question.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
@@ -103,7 +103,7 @@ def route_downvote_question(questionid=None):
 def new_answer(questionid):
     id_num = questionid
     add_answer = True
-    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num))
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
 
