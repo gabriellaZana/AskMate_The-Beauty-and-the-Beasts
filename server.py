@@ -25,10 +25,19 @@ def route_new_question():
 
 
 @app.route("/")
+def latest_5():
+    database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC LIMIT 5;")
+    return render_template("list.html", database=database)
+
+
 @app.route("/list")
 def index():
     database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", database=database)
+
+
+
+
 
 
 @app.route('/question/<questionid>/')
@@ -52,7 +61,7 @@ def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
     database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num,))
-    return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
+    return render_template('form_edit_question.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
@@ -103,7 +112,7 @@ def route_downvote_question(questionid=None):
 def new_answer(questionid):
     id_num = questionid
     add_answer = True
-    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num))
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
 
@@ -112,6 +121,14 @@ def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
 
+
+@app.route("/search", methods=["POST"])
+def search():
+    form_data = request.form
+    question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
+    print(question_database)
+    database = common.query_handler("SELECT * FROM question")
+    return render_template("list_search.html", phrase = form_data["asksearch"], question_database=question_database, database=database)
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
