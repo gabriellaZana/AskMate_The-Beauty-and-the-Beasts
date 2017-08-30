@@ -73,11 +73,7 @@ def route_delete_question(questionid=None):
 @app.route('/delete-answer/<questionid>/<answerid>/')
 def route_delete_answer(questionid=None, answerid=None):
     id_num = int(answerid)
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line.append("deleted")
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("DELETE FROM answer WHERE id=%s",(id_num,))
     return redirect('/question/'+questionid+'/')
 
 
@@ -85,25 +81,15 @@ def route_delete_answer(questionid=None, answerid=None):
 def route_upvote_answer(questionid=None, answerid=None):
     id_num = int(answerid)
     id_question = questionid
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[2] = int(line[2])
-            line[2] += 1
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("UPDATE answer SET vote_number = vote_number+1 WHERE id=%s",(id_num,))
     return redirect('/question/' + id_question + "/")
 
 
 @app.route('/question/<questionid>/<answerid>/vote-down/')
 def route_downvote_answer(questionid=None, answerid=None):
-    id_num = int(answerid)
+    id_num = answerid
     id_question = questionid
-    question_list = common.import_story("data/answer.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[2] = int(line[2])
-            line[2] += -1
-    common.export_story("data/answer.csv", question_list)
+    common.query_handler("UPDATE answer SET vote_number = vote_number-1 WHERE id=%s",(id_num,))
     return redirect('/question/' + id_question + "/")
 
 
