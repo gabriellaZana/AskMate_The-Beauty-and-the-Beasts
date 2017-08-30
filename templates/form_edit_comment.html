@@ -10,7 +10,7 @@
     <body>
         <h1>{{ form }}</h1>
 
-        <form action="/save-{{ form }}" method="post">
+        <form action="/update-{{ form }}" method="post">
 
         {% for line in question_database %}
         <label for="title">Title</label><br>
