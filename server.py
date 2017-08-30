@@ -11,25 +11,8 @@ app = Flask(__name__)
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
-    label_list = ["title", "Question", "image"]
-    formdata = request.form
-    table = common.import_story("data/question.csv")
-    create_list = []
-    create_list.extend(((common.id_generator("data/question.csv")), time.time(), "0", "0"))
-    for label in label_list:
-        for key, value in formdata.items():
-            if label == key:
-                create_list.append(value)
-    counter = True
-    for number, line in enumerate(table):
-        if int(line[0]) == int(request.form["id"]):
-            create_list[0] = request.form["id"]
-            create_list[2] = line[2]
-            table[number] = create_list
-            counter = False
-    if counter:
-        table.append(create_list)
-    common.export_story("data/question.csv", table)
+    common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
+    common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
     return redirect('/list')
 
 
@@ -75,12 +58,8 @@ def route_save_answer():
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
-    table = common.import_story("data/question.csv")
-    data = []
-    for line in table:
-        if line[0] == id_num:
-            data = line
-    return render_template('form.html', data=data, edit=edit, id_num=id_num, table=table, form="Question")
+    database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num))
+    return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
