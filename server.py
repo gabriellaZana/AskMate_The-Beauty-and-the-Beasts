@@ -11,14 +11,21 @@ app = Flask(__name__)
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
-    common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
+    if int(request.form["question_id"]) > -1:
+        common.query_handler("UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s", (request.form["title"],request.form["Question"],request.form["image"], request.form["question_id"]))
+    else:
+        common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
     return redirect('/list')
 
 
 @app.route('/new-question')
 def route_new_question():
     title_help = True
+<<<<<<< HEAD
     return render_template('form_new_question.html', title_help=title_help, form="Question")
+=======
+    return render_template('form.html', title_help=title_help, form="Question", id_num=-1)
+>>>>>>> 33bd75e21e4bf02b533d906b07c3c9af63ac354a
 
 
 @app.route("/")
@@ -30,13 +37,15 @@ def index():
 
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
-    id_num = questionid
-    question_list = common.import_story("data/question.csv")
-    answer_list = common.import_story("data/answer.csv")
-    timestamp_list = []
-    for row in answer_list:
-        timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
-    return render_template('question.html', question_list=question_list, answer_list=answer_list, id_num=id_num, timestamp_list=timestamp_list)
+    question_database = common.query_handler("SELECT title, message FROM question WHERE id=%s",(questionid))
+    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (questionid))
+    # id_num = questionid
+    # question_list = common.import_story("data/question.csv")
+    # answer_list = common.import_story("data/answer.csv")
+    # timestamp_list = []
+    # for row in answer_list:
+    #     timestamp_list.append(datetime.fromtimestamp(int(float(row[1]))))
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=questionid)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -107,25 +116,15 @@ def route_downvote_answer(questionid=None, answerid=None):
 
 @app.route('/question/<questionid>/vote-up')
 def route_upvote_question(questionid=None):
-    id_num = int(questionid)
-    question_list = common.import_story("data/question.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[3] = int(line[3])
-            line[3] += 1
-    common.export_story("data/question.csv", question_list)
+    id_num = questionid
+    common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s",(id_num))
     return redirect('/')
 
 
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
-    id_num = int(questionid)
-    question_list = common.import_story("data/question.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line[3] = int(line[3])
-            line[3] += -1
-    common.export_story("data/question.csv", question_list)
+    id_num = questionid
+    common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s",(id_num))
     return redirect('/')
 
 
@@ -139,12 +138,7 @@ def new_answer(questionid):
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
 def viewcount(questionid):
-    table = common.import_story("data/question.csv")
-    for record in table:
-        if record[0] == questionid:
-            record[2] = int(record[2])
-            record[2] += 1
-    common.export_story("data/question.csv", table)
+    table = common.query_handler("UPDATE question SET view_number += 1 WHERE id=%s", (questionid))
     return redirect('/question/' + questionid + "/")
 
 
