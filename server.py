@@ -25,10 +25,19 @@ def route_new_question():
 
 
 @app.route("/")
+def latest_5():
+    database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC LIMIT 5;")
+    return render_template("list.html", database=database)
+
+
 @app.route("/list")
 def index():
     database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", database=database)
+
+
+
+
 
 
 @app.route('/question/<questionid>/')
@@ -36,7 +45,8 @@ def route_question_page(questionid=None):
     id_num = questionid
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num,))
     answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
-    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num)
+    comment_database = common.query_handler("SELECT * FROM comment")
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -46,6 +56,30 @@ def route_save_answer():
                             VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
     return redirect('/question/' + request.form['question_id'])
 
+
+@app.route('/save-Comment', methods=['POST'])
+def route_save_comment():
+    formdata = request.form
+    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count)
+                            VALUES(%s, %s, %s, %s)""",(formdata['question_id'], formdata['Comment'], datetime.now(), 0))
+    return redirect('/question/' + request.form['question_id'])
+
+
+@app.route('/update-Comment', methods=['POST'])
+def route_update_comment():
+    formdata = request.form
+    common.query_handler("""UPDATE comment SET message=%s, edited_count = edited_count + 1
+                            WHERE id=%s""",(formdata['Comment'], formdata['comment_id']))
+    return redirect('/question/' + request.form['question_id'])
+
+
+@app.route('/save-answer-Comment', methods=['POST'])
+def route_new_comment_answer():
+    formdata = request.form
+    common.query_handler("""INSERT INTO comment (answer_id, message, submission_time, edited_count)
+                            VALUES(%s, %s, %s, %s)""",(formdata['answer_id'], formdata['Comment'], datetime.now(), 0))
+    questiondata = common.query_handler("SELECT question_id FROM answer WHERE id=%s", (formdata['answer_id'],))
+    return redirect('/question/' + str(questiondata[0]["question_id"]))
 
 @app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
@@ -58,6 +92,11 @@ def route_edit_question(questionid=None):
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_num = questionid
+    answers = common.query_handler("SELECT id FROM answer WHERE question_id=%s", (id_num,))
+    for line in answers:
+        common.query_handler("DELETE FROM comment WHERE answer_id=%s", (line["id"],))
+    common.query_handler("DELETE FROM comment WHERE question_id=%s",(id_num,))
+    common.query_handler("DELETE FROM answer WHERE question_id=%s",(id_num,))
     common.query_handler("DELETE FROM question WHERE id=%s",(id_num,))
     return redirect('/')
 
@@ -65,9 +104,36 @@ def route_delete_question(questionid=None):
 @app.route('/delete-answer/<questionid>/<answerid>/')
 def route_delete_answer(questionid=None, answerid=None):
     id_num = int(answerid)
+    common.query_handler("DELETE FROM comment WHERE answer_id=%s",(id_num,))
     common.query_handler("DELETE FROM answer WHERE id=%s",(id_num,))
     return redirect('/question/'+questionid+'/')
 
+
+@app.route('/comments/<comment_id>/edit')
+def edit_comment(comment_id):
+    answer_comment = False
+    question_database = common.query_handler("SELECT title, question.id AS question_id FROM question INNER JOIN comment ON question.id=comment.question_id WHERE comment.id=%s",(comment_id,))
+    answer_database = common.query_handler("SELECT answer.message AS message, answer.question_id AS question_id FROM answer INNER JOIN comment ON answer.id=comment.answer_id WHERE comment.id=%s",(comment_id,))
+    comment_database = common.query_handler("SELECT * FROM comment WHERE id=%s",(comment_id,))
+    if comment_database[0]['question_id'] is None:
+        answer_comment = True
+    return render_template("form_edit_comment.html",answer_comment=answer_comment, form="Comment", comment_database=comment_database, question_database=question_database, answer_database=answer_database)
+
+
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    question = common.query_handler("SELECT question_id, answer_id FROM comment WHERE id=%s",(int(comment_id),))
+    common.query_handler("DELETE FROM comment WHERE id=%s", (comment_id,))
+    if question[0]["question_id"] is None:
+        answer = common.query_handler("SELECT question_id FROM answer WHERE id=%s",(question[0]["answer_id"],))
+        return redirect('/question/'+str(answer[0]["question_id"])+'/')
+    return redirect('/question/'+str(question[0]["question_id"])+'/')
+
+
+@app.route('/answer/<answer_id>/new-comment')
+def new_comment_answer(answer_id):
+    answer_database = common.query_handler("SELECT * FROM answer WHERE id=%s", (answer_id,))
+    return render_template('form_answer_comment.html', form="Comment", answer_database=answer_database)
 
 @app.route('/question/<questionid>/<answerid>/vote-up/')
 def route_upvote_answer(questionid=None, answerid=None):
@@ -107,11 +173,33 @@ def new_answer(questionid):
     return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
 
+@app.route('/question/<questionid>/new-comment')
+def new_comment(questionid):
+    id_num = questionid
+    add_answer = True
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
+    return render_template('form_new_answer.html', form="Comment", add_answer=add_answer, id_num=id_num, question_database=question_database)
+
+
 @app.route("/viewcount/<questionid>", methods=["POST"])
 def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
 
+
+@app.route("/question/<questionid>/new-tag")
+def new_tag(questionid):
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (questionid,))
+    tag_database = common.query_handler("SELECT * FROM tag")
+    return render_template("new_tag.html", question_database=question_database, tag_database=tag_database)
+
+@app.route("/search", methods=["POST"])
+def search():
+    form_data = request.form
+    question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
+    print(question_database)
+    database = common.query_handler("SELECT * FROM question")
+    return render_template("list_search.html", phrase = form_data["asksearch"], question_database=question_database, database=database)
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"

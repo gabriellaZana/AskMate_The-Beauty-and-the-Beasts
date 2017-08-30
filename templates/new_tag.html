@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title>New Tag</title>
+    </head>
+
+    <body>
+        <h1>Add New Tag</h1>
+
+        <form action="/save-tag" method="post">
+            {% for line in question_database %}
+            <label for="title">Title</label><br>
+                <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+
+            <label for="Tag">Tag</label><br>
+                <textarea name="Tag" rows="20" cols="80" required value="" minlength="10"></textarea><br>
+    
+            <input type="text" name="question_id" hidden value={{line['id']}}></input>
+            {% endfor %}
+            <select name="tags">
+                    <option>None</option>
+            {% for row in tag_database %}
+                    <option>{{row["name"]}}</option>
+            {% endfor %}
+            </select>
+            <button class="button" type="submit">Save Tag</button>
+        
+        </form>
+    </body>
+</html>
