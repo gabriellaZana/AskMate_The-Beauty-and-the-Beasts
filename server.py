@@ -83,6 +83,11 @@ def route_edit_question(questionid=None):
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_num = questionid
+    answers = common.query_handler("SELECT id FROM answer WHERE question_id=%s", (id_num,))
+    for line in answers:
+        common.query_handler("DELETE FROM comment WHERE answer_id=%s", (line["id"],))
+    common.query_handler("DELETE FROM comment WHERE question_id=%s",(id_num,))
+    common.query_handler("DELETE FROM answer WHERE question_id=%s",(id_num,))
     common.query_handler("DELETE FROM question WHERE id=%s",(id_num,))
     return redirect('/')
 
@@ -90,6 +95,7 @@ def route_delete_question(questionid=None):
 @app.route('/delete-answer/<questionid>/<answerid>/')
 def route_delete_answer(questionid=None, answerid=None):
     id_num = int(answerid)
+    common.query_handler("DELETE FROM comment WHERE answer_id=%s",(id_num,))
     common.query_handler("DELETE FROM answer WHERE id=%s",(id_num,))
     return redirect('/question/'+questionid+'/')
 
