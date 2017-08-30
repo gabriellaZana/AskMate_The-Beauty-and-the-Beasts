@@ -10,7 +10,7 @@
     <body>
         <h1>{{ form }}</h1>
 
-       <form action="/save-{{ form }}" method="post">
+        <form action="/save-{{ form }}" method="post">
     {% set id_num = id_num | int %}
     {% if add_answer %}
     {% for line in question_database %}
