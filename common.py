@@ -61,9 +61,12 @@ def transform_to_tuple(dictionary, form_keys):
 
 
 @connection_handler
-def get_all_questions(cursor):
-    cursor.execute("SELECT * FROM question")
-    result = cursor.fetchall()
-    print(result)
+def query_handler(cursor, querystring, *args, *kwargs):
+    cursor.execute(querystring, *args, **kwargs)
+    try:
+        result = cursor.fetchall()
+        return result
+    except:
+        pass
     #for row in cursor:
     #    print(type(row))
