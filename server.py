@@ -34,8 +34,8 @@ def index():
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
     id_num = questionid
-    question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num))
-    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num))
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num,))
+    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
     return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num)
 
 
@@ -57,14 +57,14 @@ def route_save_answer():
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
-    database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num))
+    database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num,))
     return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_num = questionid
-    common.query_handler("DELETE FROM question WHERE id=%s",(id_num))
+    common.query_handler("DELETE FROM question WHERE id=%s",(id_num,))
     return redirect('/')
 
 
@@ -108,14 +108,14 @@ def route_downvote_answer(questionid=None, answerid=None):
 @app.route('/question/<questionid>/vote-up')
 def route_upvote_question(questionid=None):
     id_num = questionid
-    common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s",(id_num))
+    common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s",(id_num,))
     return redirect('/')
 
 
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
     id_num = questionid
-    common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s",(id_num))
+    common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s",(id_num,))
     return redirect('/')
 
 
@@ -129,7 +129,7 @@ def new_answer(questionid):
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
 def viewcount(questionid):
-    table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid))
+    table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
 
 
