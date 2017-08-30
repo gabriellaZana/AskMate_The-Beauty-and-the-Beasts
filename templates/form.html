@@ -11,6 +11,7 @@
         <h1>{{ form }}</h1>
 
         <form action="/save-{{ form }}" method="post">
+            {% set id_num = id_num | int %}
             {% for line in database %}
             {% if edit and id_num == line['id'] %}
             <label for="title">Title</label><br>
@@ -28,12 +29,13 @@
             <label for="title">Title</label><br>
             <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
             {% endif %}
-            {% for line in database %}
+            
+            <!-- {% for line in database %}
             {% if id_num == line['id'] %}
             <label for="title">Title</label><br>
             <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
             {% endif %}
-            {% endfor %}
+            {% endfor %} -->
             <br>
             {% for line in database %}
             {% if not edit and id_num == line['id'] %}
@@ -43,14 +45,14 @@
             {% endfor %}
             {% if not edit %}
             <label for="{{ form }}">{{ form }}</label><br>
-            <textarea name="{{ form }}" rows="20" cols="80" required="required" value="" minlength="10"></textarea><br>
+            <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
             {% endif %}
-            <!--><textarea name="id" rows="8" cols="80" hidden>{{ data[0] }}</textarea><br>-->
             
             <br>
-
+            {% for line in database %}
             <label for="image">Image URL(optionally)</label><br>
-            <input type="text" name="image" id="image" value="{{data[6]}}"></input>
+            <input type="text" name="image" id="image" value="{{line['image']}}"></input>
+            {% endfor %}
             
             <br><br>
             
