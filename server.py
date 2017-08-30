@@ -12,7 +12,6 @@ app = Flask(__name__)
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
     common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
-    common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
     return redirect('/list')
 
 
@@ -60,18 +59,14 @@ def route_save_answer():
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
-    database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num))
+    database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num))
     return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
-    id_num = int(questionid)
-    question_list = common.import_story("data/question.csv")
-    for line in question_list:
-        if id_num == int(line[0]):
-            line.append("deleted")
-    common.export_story("data/question.csv", question_list)
+    id_num = questionid
+    common.query_handler("DELETE FROM question WHERE id=%s",(id_num))
     return redirect('/')
 
 
