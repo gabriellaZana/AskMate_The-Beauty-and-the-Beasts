@@ -3,7 +3,6 @@ from config import Config
 import psycopg2
 import psycopg2.extras
 from datetime import datetime
-form_keys = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
 def print_info(variable):
@@ -50,7 +49,7 @@ def connection_handler(function):
     return wrapper
 
 
-def transform_to_tuple(dictionary):
+def transform_to_tuple(dictionary, form_keys):
     help_list = []
     for column in form_keys:
         for key, value in dictionary.items():

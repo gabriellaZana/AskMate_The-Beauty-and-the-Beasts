@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, request, session, url_for
 import common
 import time
 from datetime import datetime
+question_keys = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+answer_keys = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 app = Flask(__name__)
