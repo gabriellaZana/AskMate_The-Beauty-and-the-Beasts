@@ -8,23 +8,26 @@
     </head>
 
     <body>
+        {% set id_num = id_num |int %}
         <h1>{{ form }}</h1>
 
         <form action="/save-{{ form }}" method="post">
-            {% if title_help %}
+            {% for line in database %}
+            {% if edit and id_num == line['id'] %}
             <label for="title">Title</label><br>
-                <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
+                <input type="text" name="title" value="{{line['title']}}"></input><br>
 
             <label for="{{ form }}">{{ form }}</label><br>
-                <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
-
+                <textarea name="{{ form }}" rows="20" cols="80">{{line['message']}}</textarea><br>
+                
             <label for="image">Image URL(optionally)</label><br>
-                <input type="text" name="image" id="image"></input>
-            
-            <input type="text" name="question_id" hidden value=-1>-1</input>
-    
+                <input type="text" name="image" id="image" value="{{line['image']}}"></input>
+
+            <textarea name="question_id" hidden>{{line['id']}}</textarea>
+
             <button class="button" type="submit">Save {{ form }}</button>
             {% endif %}
+            {% endfor %}
         </form>
     </body>
 </html>
