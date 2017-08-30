@@ -61,6 +61,7 @@
                     <td class="header"><strong>Delete</strong></td>
                     <td class="header"><strong>Vote Up</strong></td>
                     <td class="header"><strong>Vote Down</strong></td>
+                    <td class="header"><strong>Comment</strong></td>
                 </tr>
             </thead>
 
@@ -81,6 +82,7 @@
                         <td><a href="/delete-answer/{{ id_num }}/{{ line['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
                         <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-up/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAACgCAMAAADHEAL6AAAAFVBMVEX///8AAAD/mf+ZmZn/zJn/M5n/mZly7fXaAAABxUlEQVR4nO3au3LCMBBAUUhI/v+T08jNzmy0shdjmHNLoueBQkVut6buF6nrPiBAgAABAgSI8wAeF+llICBAgAABAgSINoCvk3o5CAgQIECAAAGiDWL1Ij+j6udVEBAgQIAAAQLE+0AcvUhXIECAAAECBIj3hzjaPRT/nkFnEHE9ECBAgAABAsTnQWzrfocykBnEbD0QIECAAAECxHGIODHWDZE9iLKDV0EixGwdECBAgAABAkQfRDYhTjwKkTW7QHauWHU+CBAgQIAAAaIPogpShVj9h5HqRY4GAgQIECBAgOiD2Aty9EG1QZ0FUAYBAQIECBAgQCxDrIJEiNUH1NYMIp6retHZPBAgQIAAAQJEP0QGEjv6oKpCzL6YOK46DwQIECBAgADxPIgZzCpE9uCKB/0NZRdfLa4LAgQIECBAgDgPIoI8QrMLZ1Uh4rjVz0GAAAECBAgQ14WIIKtlF4oXWy1bZzcACBAgQIAAAWI3QCwD2dsMZG/tvwQQIECAAAECRBlgtsHVa/slgBiBGIEYgRiBGIEYgRjNAKrju/bt3g8ECBAgQIAA8TyIrOr47v1n4/but3wQECBAgPjvICBAfCbEH+yzElBvujPUAAAAAElFTkSuQmCC" width="60" height="60"></a></td>
                         <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-down/"><img src="https://st.depositphotos.com/1742172/2140/v/950/depositphotos_21407157-stock-illustration-farting-cat.jpg" width="100" height="100"></a></td>
+                        <td><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/answer/{{ line['id'] }}/new-comment';">Comment</button></td>
                     </tr>
                 {% endif %}
             {% endfor %}
