@@ -26,14 +26,16 @@ def route_new_question():
 
 @app.route("/")
 def latest_5():
+    search = False
     database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC LIMIT 5;")
-    return render_template("list.html", database=database)
+    return render_template("list.html", database=database, search = search)
 
 
 @app.route("/list")
 def index():
+    search = False
     database = common.query_handler("SELECT * FROM question")
-    return render_template("list.html", database=database)
+    return render_template("list.html", database=database, search = search)
 
 
 
@@ -189,11 +191,11 @@ def viewcount(questionid):
 
 @app.route("/search", methods=["POST"])
 def search():
+    search = True
     form_data = request.form
     question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
-    print(question_database)
     database = common.query_handler("SELECT * FROM question")
-    return render_template("list_search.html", phrase = form_data["asksearch"], question_database=question_database, database=database)
+    return render_template("list.html", phrase = form_data["asksearch"], question_database=question_database, database=database, search = search)
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
