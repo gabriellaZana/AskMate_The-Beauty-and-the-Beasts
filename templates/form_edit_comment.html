@@ -11,13 +11,20 @@
         <h1>{{ form }}</h1>
 
         <form action="/update-{{ form }}" method="post">
-
-        {% for line in question_database %}
-        <label for="title">Title</label><br>
-                <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
-                <input type="text" name="question_id" hidden value={{line['question_id']}}></input>
-        {% endfor %}
-
+        {% if answer_comment %}
+            {% for line in answer_database %}
+            <label for="title">Title</label><br>
+                    <input type="text" name="title" value="{{line['message']}}" readonly></input><br>
+                    <input type="text" name="question_id" hidden value={{line['question_id']}}></input>
+            {% endfor %}
+        {% else %}
+            {% for line in question_database %}
+            <label for="title">Title</label><br>
+                    <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+                    <input type="text" name="question_id" hidden value={{line['question_id']}}></input>
+            {% endfor %}
+        {% endif %}
+        
         {% for line in comment_database%}
         <label for="{{ form }}">{{ form }}</label><br>
                 <textarea name="{{ form }}" rows="20" cols="80" required value="{{line['message']}}" minlength="10">{{line['message']}}</textarea><br>

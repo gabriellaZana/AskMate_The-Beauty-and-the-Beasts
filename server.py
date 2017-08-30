@@ -96,16 +96,23 @@ def route_delete_answer(questionid=None, answerid=None):
 
 @app.route('/comments/<comment_id>/edit')
 def edit_comment(comment_id):
-    question_database = common.query_handler("SELECT * FROM question INNER JOIN comment ON question.id=comment.question_id WHERE comment.id=%s",(comment_id,))
+    answer_comment = False
+    question_database = common.query_handler("SELECT title, question.id AS question_id FROM question INNER JOIN comment ON question.id=comment.question_id WHERE comment.id=%s",(comment_id,))
+    answer_database = common.query_handler("SELECT answer.message AS message, answer.question_id AS question_id FROM answer INNER JOIN comment ON answer.id=comment.answer_id WHERE comment.id=%s",(comment_id,))
     comment_database = common.query_handler("SELECT * FROM comment WHERE id=%s",(comment_id,))
-    return render_template("form_edit_comment.html", form="Comment", comment_database=comment_database, question_database=question_database)
+    if comment_database[0]['question_id'] is None:
+        answer_comment = True
+    return render_template("form_edit_comment.html",answer_comment=answer_comment, form="Comment", comment_database=comment_database, question_database=question_database, answer_database=answer_database)
 
 
 @app.route('/comments/<comment_id>/delete')
 def delete_comment(comment_id):
-    questionid = common.query_handler("SELECT question_id FROM comment WHERE id=%s",(int(comment_id),))
-    common.query_handler("DELETE FROM comment WHERE id=%s",(comment_id,))
-    return redirect('/question/'+str(questionid[0]["question_id"])+'/')
+    question = common.query_handler("SELECT question_id, answer_id FROM comment WHERE id=%s",(int(comment_id),))
+    common.query_handler("DELETE FROM comment WHERE id=%s", (comment_id,))
+    if question[0]["question_id"] is None:
+        answer = common.query_handler("SELECT question_id FROM answer WHERE id=%s",(question[0]["answer_id"],))
+        return redirect('/question/'+str(answer[0]["question_id"])+'/')
+    return redirect('/question/'+str(question[0]["question_id"])+'/')
 
 
 @app.route('/answer/<answer_id>/new-comment')
