@@ -58,7 +58,7 @@ def route_save_answer():
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
-    database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num))
+    database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num))
     return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
