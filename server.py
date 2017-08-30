@@ -47,12 +47,20 @@ def route_save_answer():
     return redirect('/question/' + request.form['question_id'])
 
 
+@app.route('/save-Comment', methods=['POST'])
+def route_save_comment():
+    formdata = request.form
+    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_number)
+                            VALUES(%s, %s, %s, %s)""",(formdata['question_id'], formdata['Comment'], datetime.now(), 0))
+    return redirect('/question/' + request.form['question_id'])
+
+
 @app.route('/edit-question/<questionid>/')
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
     database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num,))
-    return render_template('form.html', edit=edit, id_num=id_num, database=database, form="Question")
+    return render_template('form_edit_question.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
@@ -103,8 +111,16 @@ def route_downvote_question(questionid=None):
 def new_answer(questionid):
     id_num = questionid
     add_answer = True
-    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num))
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num, question_database=question_database)
+
+
+@app.route('/question/<questionid>/new-comment')
+def new_comment(questionid):
+    id_num = questionid
+    add_comment = True
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
+    return render_template('form_new_answer.html', form="Comment", add_answer=add_answer, id_num=id_num, question_database=question_database)
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
