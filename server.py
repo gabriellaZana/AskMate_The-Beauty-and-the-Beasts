@@ -178,6 +178,13 @@ def viewcount(questionid):
     return redirect('/question/' + questionid + "/")
 
 
+@app.route("/question/<questionid>/new-tag")
+def new_tag(questionid):
+    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (questionid,))
+    tag_database = common.query_handler("SELECT * FROM tag")
+    return render_template("new_tag.html", question_database=question_database, tag_database=tag_database)
+
+
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
     app.run(
