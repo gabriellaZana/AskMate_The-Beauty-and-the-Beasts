@@ -18,12 +18,13 @@
             <label for="{{ form }}">{{ form }}</label><br>
             <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
 
-            {% for line in database %}
+            
             <label for="image">Image URL(optionally)</label><br>
-            <input type="text" name="image" id="image" value="{{line['image']}}"></input>
-            {% endfor %}
-            {% endif %}
+            <input type="text" name="image" id="image"></input>
 
+            
+            <input type="text" name="question_id" hidden value=-1>-1</input>
+            {% endif %}
             <button class="button" type="submit">Save {{ form }}</button>
         </form>
     </body>
