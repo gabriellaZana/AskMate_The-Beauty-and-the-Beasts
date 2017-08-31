@@ -12,20 +12,20 @@
 
         <form action="/save-{{ form }}" method="post">
             {% if title_help %}
-                <label for="title">Title</label><br>
-                <input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br>
+                <p><label for="title"><strong>Title</strong></label><br></p>
+                <p><input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br></p>
 
-                <label for="{{ form }}">{{ form }}</label><br>
-                <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
+                <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
+                <p><textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br></p>
 
                 
-                <label for="image">Image URL(optionally)</label><br>
-                <input type="text" name="image" id="image"></input>
+                <p><label for="image"><strong>Image URL(optionally)</strong></label><br></p>
+                <p><input type="text" name="image" id="image"></input></p>
 
                 
                 <input type="text" name="question_id" hidden value=-1></input>
             {% endif %}
-            <button class="button" type="submit">Save {{ form }}</button>
+            <p><button class="button" type="submit">Save {{ form }}</button></p>
         </form>
     </body>
 </html>

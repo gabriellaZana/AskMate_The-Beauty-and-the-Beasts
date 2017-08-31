@@ -28,8 +28,8 @@
     <table>
         <tr>
             {% for line in tag_database %}
-            <td>{{line['name']}}</td>
-            <td><a href="/question/{{question_database[0]['id']}}/tag/{{line['id']}}/delete"><img src="http://www.clker.com/cliparts/M/F/9/r/c/6/x-mark-red-hi.png" width="30" height="30"></a></td>
+            <td><img src="http://www.pngmart.com/files/3/Blank-Tag-Transparent-PNG.png" width="40" height="40"><span class="tag">{{line['name']}}</span></td>
+            <p><td><a href="/question/{{question_database[0]['id']}}/tag/{{line['id']}}/delete"><img src="http://www.clker.com/cliparts/M/F/9/r/c/6/x-mark-red-hi.png" width="30" height="30"></a></td>
             {% endfor %}  
         </tr>
     </table> 

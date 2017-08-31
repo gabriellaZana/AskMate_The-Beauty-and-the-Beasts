@@ -12,11 +12,11 @@
 
         <form action="/save-tag" method="post">
             {% for line in question_database %}
-                <label for="title">Title</label><br>
-                    <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+                <p><label for="title"><strong>Title</strong></label><br></p>
+                    <p><input type="text" name="title" size="70" value="{{line['title']}}" readonly></input><br></p>
 
-                <label for="Tag">Tag</label><br>
-                    <input type="text" name="Tag"></input><br>
+                <p><label for="Tag"><strong>Tag</strong></label><br></p>
+                    <p><input type="text" size="70" name="Tag"></input><br></p>
         
                 <input type="text" name="question_id" hidden value={{line['id']}}></input>
             {% endfor %}
@@ -28,7 +28,8 @@
                     <option>{{row["name"]}}</option>
             {% endfor %}
             </select>
-            <button class="button" type="submit">Save Tag</button>
+            <br>
+            <p><button class="button" type="submit">Save Tag</button>
         
         </form>
     </body>

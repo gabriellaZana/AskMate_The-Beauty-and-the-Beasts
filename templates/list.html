@@ -21,13 +21,13 @@
                 <th>Question</th>
                 <th>Description</th>
                 {% if not sort %}
-                <th class=sort><a href="/list/sort/time/ASC">Submission time</a></th>
-                <th class=sort><a href="/list/sort/view/ASC">Views </a></th>
-                <th class=sort><a href="/list/sort/vote/ASC">Votes</a></th>
+                <th class=sort><a href="/list/sort/time/ASC" class=sort>Submission time</a></th>
+                <th class=sort><a href="/list/sort/view/ASC" class=sort>Views </a></th>
+                <th class=sort><a href="/list/sort/vote/ASC" class=sort>Votes</a></th>
                 {% else %}
-                <th class=sort><a href="/list/sort/time/DESC">Submission time</a></th>
-                <th class=sort><a href="/list/sort/view/DESC">Views </a></th>
-                <th class=sort><a href="/list/sort/vote/DESC">Votes</a></th>
+                <th class=sort><a href="/list/sort/time/DESC" class=sort>Submission time</a></th>
+                <th class=sort><a href="/list/sort/view/DESC" class=sort>Views </a></th>
+                <th class=sort><a href="/list/sort/vote/DESC" class=sort>Votes</a></th>
                 {% endif %}
                 
                 <th>Image</th>
@@ -42,9 +42,9 @@
                     {% if line['id'] == dict['id'] %}
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
-                        <td class="question-title">
+                        <td>
                             <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
-                            <button type="submit" name="question" class="btn-link">{{line['title']}}</button>
+                            <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                             </form>
                         </td>
                         <td>{{line['message']}}</td>
@@ -64,9 +64,9 @@
             {% for line in database %}
                 <tr class="highlight">
                     <td>{{line['id']}}</td>
-                    <td class="question-title">
+                    <td>
                         <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
-                        <button type="submit" name="question" class="btn-link">{{line['title']}}</button>
+                        <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                         </form>
                     </td>
                     <td>{{line['message']}}</td>
