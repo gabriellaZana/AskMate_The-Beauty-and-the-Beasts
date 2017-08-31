@@ -9,10 +9,10 @@
 
     <body>
         <h1 id="top"> AskMate 2.0 </h1>
-        <h3>By The Beauty & The Beasts</h3>
+        <h3>By The Beauty & The Beasts - Bence & Gabó, Ákos, Zoli</h3>
         <h2 id="top"> Questions </h2>
-        <form id=search action="/search" method="post">
-            <input type="search" name="asksearch">
+        <form id="search" action="/search" method="post">
+            <input class="search" type="search" name="asksearch">
             <button class=button type="submit" name="submitquestion"> Search </button>
         </form>
         <br>
@@ -40,9 +40,9 @@
             {% for line in database %}
                 {% for dict in question_database %}
                     {% if line['id'] == dict['id'] %}
-                    <tr>
+                    <tr class="highlight">
                         <td>{{line['id']}}</td>
-                        <td>
+                        <td class="question-title">
                             <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
                             <button type="submit" name="question" class="btn-link">{{line['title']}}</button>
                             </form>
@@ -62,9 +62,9 @@
             {% endfor %}            
         {% else %}
             {% for line in database %}
-                <tr>
+                <tr class="highlight">
                     <td>{{line['id']}}</td>
-                    <td>
+                    <td class="question-title">
                         <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
                         <button type="submit" name="question" class="btn-link">{{line['title']}}</button>
                         </form>

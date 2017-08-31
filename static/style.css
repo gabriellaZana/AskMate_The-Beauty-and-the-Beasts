@@ -55,7 +55,7 @@ h3 {
     border-radius: 10px;
 }   
 
-tr:hover {
+.highlight:hover {
     background-color: #ffffff;
 }
 
@@ -68,9 +68,12 @@ th {
 
 td {
     color: black;
-    background-color: #E6EBE0;
     font-size: 18px;
     padding: 10px;
+}
+
+tr {
+    background-color: #E6EBE0;
 }
 
 table {
@@ -111,6 +114,11 @@ button:hover, .sort:hover {
     color: #ED6A5A;
 }
 
+.question-title:hover {
+    color: #ED6A5A;
+    background-color: white;
+}
+
 input, textarea {
     border-radius: 10px;
     background-color: #E6EBE0;
@@ -120,4 +128,15 @@ input, textarea {
     text-align: right;
     padding-right: 30px;
     font: "couriar new";
+    
 }
+
+.search {
+    width: 200px;
+}
+
+.search:focus {
+    width: 1000px;
+    transition: width 2s;
+}
+
