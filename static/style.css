@@ -6,8 +6,6 @@
   color:#0000EE;
   padding:0;
   text-decoration:underline;
-  font-family:inherit;
-  font-size:inherit;
 }
 
 .logo{
@@ -15,33 +13,36 @@
   margin: 0 auto;
 }
 
-.header{
-  background-color: #044;
-  color: #ffffff
+#top {
+    border-radius: 10px;
 }
 
 body {
-  background-color: #ffffff
+    background-color: #F4F1BB;
+    font-family: "courier new", arial;
+    font-size: 16px;
 }
 
 h1 {
-    color: #ffffff;
-    background-color: #044;
-    margin: 0
+    color: white;
+    background-color: #ED6A5A;
+    margin: 0;
+    font-size: 80px;
 }
 
 h2 {
-  color: #ffffff;
-  background-color: #044;
+  color: white;
+  background-color: #ED6A5A;
   height: 90px;
   line-height: 90px;
   text-align: center;
   margin-top: 0;
-  margin-bottom: 1
+  margin-bottom: 1;
+  font-size: 50px;
 }
 
 h3 {
-    color: #ffffff;
+    color: white;
     background-color: #044;
     margin-top: 0;
     margin-bottom: 1
@@ -57,25 +58,28 @@ tr:hover {
 }
 
 th {
-    background-color: #044;
+    background-color: #ED6A5A;
     color: white;
+    font-size: 20px;
 }
 
 table, th, td {
-   border: 1px solid black;
+   border: 1px black;
    text-align: center;
+   border-radius: 10px;
 }
 
 .button {
-    background-color: #044; /* Green */
+    background-color: #ED6A5A; /* Green */
     border: none;
     cursor:pointer;
-    color: #ffffff;
+    color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    border-radius: 10px;
 }
 
 a:link {
@@ -92,4 +96,9 @@ a:hover {
 
 a:active {
     color: white;
+}
+
+input, textarea {
+    border-radius: 10px;
+    background-color: #E6EBE0;
 }
