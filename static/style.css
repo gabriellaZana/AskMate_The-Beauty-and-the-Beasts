@@ -1,11 +1,15 @@
 .btn-link{
-  border:none;
-  outline:none;
-  background:none;
-  cursor:pointer;
-  color:#0000EE;
-  padding:0;
-  text-decoration:underline;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  color:black;
+  padding: 0;
+  text-decoration: underline;
+  font-family: "courier new", arial;
+  font-size: 20px;
+  font-weight: bold;
+
 }
 
 .logo{
@@ -48,25 +52,27 @@ h3 {
     margin-bottom: 1
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
 tr:hover {
-  background-color: #ffffff
+  background-color: #ffffff;
 }
 
 th {
     background-color: #ED6A5A;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
+    padding: 10px;
+}
+
+td {
+    color: black;
+    background-color: #E6EBE0;
+    font-size: 18px;
+    padding: 10px;
 }
 
 table, th, td {
-   border: 1px black;
-   text-align: center;
-   border-radius: 10px;
+    text-align: center;
+    border-radius: 20px;
 }
 
 .button {
@@ -78,8 +84,10 @@ table, th, td {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 22px;
     border-radius: 10px;
+    font-family: "courier new", arial;
+    font-weight: bold;
 }
 
 a:link {
@@ -101,4 +109,10 @@ a:active {
 input, textarea {
     border-radius: 10px;
     background-color: #E6EBE0;
+}
+
+#search {
+    text-align: right;
+    padding-right: 30px;
+    font: "couriar new";
 }
