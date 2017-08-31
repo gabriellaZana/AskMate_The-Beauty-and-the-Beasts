@@ -24,7 +24,7 @@ def connection_handler(function):
         connection.close()
         return ret_value
     return wrapper
-        
+
 
 @connection_handler
 def query_handler(cursor, querystring, *args, **kwargs):

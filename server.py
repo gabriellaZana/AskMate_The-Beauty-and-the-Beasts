@@ -38,7 +38,7 @@ def search():
     form_data = request.form
     question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id
                                                 FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %s || '%%' 
+                                                WHERE question.title ILIKE '%%' || %s || '%%'
                                                 OR answer.message ILIKE '%%' || %s || '%%'
                                                 OR question.message ILIKE '%%' || %s || '%%' ;""",
                                              (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
@@ -58,12 +58,12 @@ def route_new_question():
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
     if int(request.form["question_id"]) > -1:
-        common.query_handler("""UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s;""", 
+        common.query_handler("""UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s;""",
                              (request.form["title"], request.form["Question"], request.form["image"],
                               request.form["question_id"]))
     else:
         common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                                VALUES(%s,%s,%s,%s,%s,%s);""", 
+                                VALUES(%s,%s,%s,%s,%s,%s);""",
                              (datetime.now(), 0, 0, request.form["title"], request.form["Question"],
                               request.form["image"]))
     return redirect('/list')
@@ -191,7 +191,8 @@ def route_new_comment_answer():
 def route_save_comment():
     formdata = request.form
     common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count)
-                            VALUES(%s, %s, %s, %s)""", (formdata['question_id'], formdata['Comment'], datetime.now(), 0))
+                            VALUES(%s, %s, %s, %s)""", (formdata['question_id'],
+                         formdata['Comment'], datetime.now(), 0))
     return redirect('/question/' + request.form['question_id'])
 
 
@@ -223,10 +224,10 @@ def edit_comment(comment_id):
 
 @app.route('/comments/<comment_id>/delete')
 def delete_comment(comment_id):
-    question = common.query_handler("SELECT question_id, answer_id FROM comment WHERE id=%s",(int(comment_id),))
+    question = common.query_handler("SELECT question_id, answer_id FROM comment WHERE id=%s", (int(comment_id),))
     common.query_handler("DELETE FROM comment WHERE id=%s", (comment_id,))
     if question[0]["question_id"] is None:
-        answer = common.query_handler("SELECT question_id FROM answer WHERE id=%s",(question[0]["answer_id"],))
+        answer = common.query_handler("SELECT question_id FROM answer WHERE id=%s", (question[0]["answer_id"],))
         return redirect('/question/'+str(answer[0]["question_id"])+'/')
     return redirect('/question/'+str(question[0]["question_id"])+'/')
 
@@ -259,7 +260,7 @@ def route_save_tag():
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
 def route_delete_tag(question_id, tag_id):
-    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s",(question_id, tag_id))
+    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s", (question_id, tag_id))
     return redirect('/question/'+question_id+'/')
 
 
