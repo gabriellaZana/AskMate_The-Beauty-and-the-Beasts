@@ -64,7 +64,7 @@ def route_save_question():
     else:
         common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
                                 VALUES(%s,%s,%s,%s,%s,%s);""",
-                             (datetime.now(), 0, 0, request.form["title"], request.form["Question"],
+                             (datetime.now().replace(microsecond=0), 0, 0, request.form["title"], request.form["Question"],
                               request.form["image"]))
     return redirect('/list')
 
@@ -133,7 +133,7 @@ def route_save_answer():
     formdata = request.form
     common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
                             VALUES(%s, %s, %s, %s, %s)""",
-                         (datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
+                         (datetime.now().replace(microsecond=0), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
     return redirect('/question/' + request.form['question_id'])
 
 
@@ -182,7 +182,7 @@ def new_comment_answer(answer_id):
 def route_new_comment_answer():
     formdata = request.form
     common.query_handler("""INSERT INTO comment (answer_id, message, submission_time, edited_count)
-                            VALUES(%s, %s, %s, %s)""", (formdata['answer_id'], formdata['Comment'], datetime.now(), 0))
+                            VALUES(%s, %s, %s, %s)""", (formdata['answer_id'], formdata['Comment'], datetime.now().replace(microsecond=0), 0))
     questiondata = common.query_handler("SELECT question_id FROM answer WHERE id=%s", (formdata['answer_id'],))
     return redirect('/question/' + str(questiondata[0]["question_id"]))
 
@@ -192,7 +192,7 @@ def route_save_comment():
     formdata = request.form
     common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count)
                             VALUES(%s, %s, %s, %s)""", (formdata['question_id'],
-                         formdata['Comment'], datetime.now(), 0))
+                         formdata['Comment'], datetime.now().replace(microsecond=0), 0))
     return redirect('/question/' + request.form['question_id'])
 
 
