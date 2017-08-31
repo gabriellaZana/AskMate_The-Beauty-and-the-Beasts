@@ -18,9 +18,16 @@
             <tr><th>ID</th>
                 <th>Question</th>
                 <th>Description</th>
-                <th><a href="/sortbySubmission">Submission time</a></th>
-                <th><a href="/sortbyViews">Views </a></th>
-                <th><a href="/sortbyVotes">Votes</a></th>
+                {% if not sort %}
+                <th><a href="/list/sort/time/ASC">Submission time</a></th>
+                <th><a href="/list/sort/view/ASC">Views </a></th>
+                <th><a href="/list/sort/vote/ASC">Votes</a></th>
+                {% else %}
+                <th><a href="/list/sort/time/DESC">Submission time</a></th>
+                <th><a href="/list/sort/view/DESC">Views </a></th>
+                <th><a href="/list/sort/vote/DESC">Votes</a></th>
+                {% endif %}
+                
                 <th>Image</th>
                 <th>Edit</th>
                 <th>Delete</th>

@@ -33,9 +33,10 @@ def latest_5():
 
 @app.route("/list")
 def index():
+    sort = None
     search = False
     database = common.query_handler("SELECT * FROM question")
-    return render_template("list.html", database=database, search = search)
+    return render_template("list.html", database=database, search = search, sort=sort)
 
 
 
@@ -196,6 +197,7 @@ def new_tag(questionid):
     tag_database = common.query_handler("SELECT * FROM tag")
     return render_template("new_tag.html", question_database=question_database, tag_database=tag_database)
 
+
 @app.route("/search", methods=["POST"])
 def search():
     search = True
@@ -203,6 +205,31 @@ def search():
     question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
     database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", phrase = form_data["asksearch"], question_database=question_database, database=database, search = search)
+
+
+@app.route("/list/sort/<condition>/<direction>")
+def sort_questions(condition, direction):
+    sort = True
+    search = False
+    if condition == "time":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+    elif condition == "view":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+    elif condition == "vote":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
+    return render_template("list.html", database=database, search=search, sort=sort)
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
