@@ -8,7 +8,8 @@
     </head>
 
     <body>
-        <h1 id="top"> AskMate </h1>
+        <h1 id="top"> AskMate 2.0 </h1>
+        <h3>By The Beauty & The Beasts</h3>
         <h2 id="top"> Questions </h2>
         <form id=search action="/search" method="post">
             <input type="search" name="asksearch">
@@ -20,13 +21,13 @@
                 <th>Question</th>
                 <th>Description</th>
                 {% if not sort %}
-                <th><a href="/list/sort/time/ASC">Submission time</a></th>
-                <th><a href="/list/sort/view/ASC">Views </a></th>
-                <th><a href="/list/sort/vote/ASC">Votes</a></th>
+                <th class=sort><a href="/list/sort/time/ASC">Submission time</a></th>
+                <th class=sort><a href="/list/sort/view/ASC">Views </a></th>
+                <th class=sort><a href="/list/sort/vote/ASC">Votes</a></th>
                 {% else %}
-                <th><a href="/list/sort/time/DESC">Submission time</a></th>
-                <th><a href="/list/sort/view/DESC">Views </a></th>
-                <th><a href="/list/sort/vote/DESC">Votes</a></th>
+                <th class=sort><a href="/list/sort/time/DESC">Submission time</a></th>
+                <th class=sort><a href="/list/sort/view/DESC">Views </a></th>
+                <th class=sort><a href="/list/sort/vote/DESC">Votes</a></th>
                 {% endif %}
                 
                 <th>Image</th>
