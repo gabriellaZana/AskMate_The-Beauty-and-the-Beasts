@@ -220,7 +220,7 @@ def new_tag(questionid):
 def search():
     search = True
     form_data = request.form
-    question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
+    question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title ILIKE '%%' || %s || '%%' OR answer.message ILIKE '%%' || %s || '%%' ;",(form_data['asksearch'],(form_data['asksearch'],)))
     database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", phrase = form_data["asksearch"], question_database=question_database, database=database, search = search)
 
