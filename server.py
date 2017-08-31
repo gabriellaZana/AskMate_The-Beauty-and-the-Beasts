@@ -48,7 +48,8 @@ def route_question_page(questionid=None):
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num,))
     answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
     comment_database = common.query_handler("SELECT * FROM comment")
-    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database)
+    tag_database = common.query_handler("SELECT * FROM tag INNER JOIN question_tag ON tag.id=question_tag.tag_id WHERE question_tag.question_id=%s",(id_num,))
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database, tag_database=tag_database)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -58,6 +59,20 @@ def route_save_answer():
                             VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
     return redirect('/question/' + request.form['question_id'])
 
+
+@app.route('/save-tag', methods=['POST'])
+def route_save_tag():
+    if request.form["tags"] == "None":
+        common.query_handler("""INSERT INTO tag (name) VALUES(%s)""",(request.form['Tag'],))
+        tagid = common.query_handler('SELECT * FROM tag WHERE name=%s',(request.form['Tag'],))
+        common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",(request.form['question_id'], tagid[0]['id']))
+    else:
+        tagid = common.query_handler('SELECT * FROM tag WHERE name=%s',(request.form['tags'],))
+        try:
+            common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",(request.form['question_id'], tagid[0]['id']))
+        except:
+            pass
+    return redirect('/question/' + request.form['question_id'])
 
 @app.route('/save-Comment', methods=['POST'])
 def route_save_comment():
@@ -111,6 +126,11 @@ def route_delete_answer(questionid=None, answerid=None):
     common.query_handler("DELETE FROM answer WHERE id=%s",(id_num,))
     return redirect('/question/'+questionid+'/')
 
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete")
+def route_delete_tag(question_id,tag_id):
+    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s",(question_id, tag_id))
+    return redirect('/question/'+question_id+'/')
 
 @app.route('/comments/<comment_id>/edit')
 def edit_comment(comment_id):
