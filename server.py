@@ -97,6 +97,7 @@ def route_delete_question(questionid=None):
     answers = common.query_handler("SELECT id FROM answer WHERE question_id=%s", (id_num,))
     for line in answers:
         common.query_handler("DELETE FROM comment WHERE answer_id=%s", (line["id"],))
+    common.query_handler("DELETE FROM question_tag WHERE question_id=%s",(id_num,))
     common.query_handler("DELETE FROM comment WHERE question_id=%s",(id_num,))
     common.query_handler("DELETE FROM answer WHERE question_id=%s",(id_num,))
     common.query_handler("DELETE FROM question WHERE id=%s",(id_num,))
