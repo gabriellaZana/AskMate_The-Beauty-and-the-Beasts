@@ -12,13 +12,13 @@
 
         <form action="/save-tag" method="post">
             {% for line in question_database %}
-            <label for="title">Title</label><br>
-                <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+                <label for="title">Title</label><br>
+                    <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
 
-            <label for="Tag">Tag</label><br>
-                <input type="text" name="Tag"></input><br>
-    
-            <input type="text" name="question_id" hidden value={{line['id']}}></input>
+                <label for="Tag">Tag</label><br>
+                    <input type="text" name="Tag"></input><br>
+        
+                <input type="text" name="question_id" hidden value={{line['id']}}></input>
             {% endfor %}
             <br>
             <h3>Or Choose an Existing One</h3><br>

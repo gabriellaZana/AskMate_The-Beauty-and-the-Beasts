@@ -13,20 +13,20 @@
 
         <form action="/save-{{ form }}" method="post">
             {% for line in database %}
-            {% if edit and id_num == line['id'] %}
-            <label for="title">Title</label><br>
-                <input type="text" name="title" value="{{line['title']}}"></input><br>
+                {% if edit and id_num == line['id'] %}
+                    <label for="title">Title</label><br>
+                        <input type="text" name="title" value="{{line['title']}}"></input><br>
 
-            <label for="{{ form }}">{{ form }}</label><br>
-                <textarea name="{{ form }}" rows="20" cols="80">{{line['message']}}</textarea><br>
-                
-            <label for="image">Image URL(optionally)</label><br>
-                <input type="text" name="image" id="image" value="{{line['image']}}"></input>
+                    <label for="{{ form }}">{{ form }}</label><br>
+                        <textarea name="{{ form }}" rows="20" cols="80">{{line['message']}}</textarea><br>
+                        
+                    <label for="image">Image URL(optionally)</label><br>
+                        <input type="text" name="image" id="image" value="{{line['image']}}"></input>
 
-            <textarea name="question_id" hidden>{{line['id']}}</textarea>
+                    <textarea name="question_id" hidden>{{line['id']}}</textarea>
 
-            <button class="button" type="submit">Save {{ form }}</button>
-            {% endif %}
+                    <button class="button" type="submit">Save {{ form }}</button>
+                {% endif %}
             {% endfor %}
         </form>
     </body>
