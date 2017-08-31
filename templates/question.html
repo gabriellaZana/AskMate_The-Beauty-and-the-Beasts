@@ -24,6 +24,15 @@
         {% endif %}
     {% endfor %}
     <br>
+    <h3><label for="tags">Tags</label></h3>
+    <table>
+        <tr>
+            {% for line in tag_database %}
+            <td>{{line['name']}}</td>
+            <td><a href="/question/{{question_database[0]['id']}}/tag/{{line['id']}}/delete"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkmJuSnNsjBMbQyIskh3HCUfObctz9ssRiQbNqhmC3DEGv6aLKBigXCms" width="30" height="30"></a></td>
+            {% endfor %}  
+        </tr>
+    </table> 
     <p><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/question/{{ id_num }}/new-tag';">Add Tag</button></p>
     <br>
     <h3><label for="comments">Comments</label></h3>

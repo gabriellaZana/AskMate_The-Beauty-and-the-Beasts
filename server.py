@@ -14,7 +14,9 @@ def route_save_question():
     if int(request.form["question_id"]) > -1:
         common.query_handler("UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s", (request.form["title"],request.form["Question"],request.form["image"], request.form["question_id"]))
     else:
-        common.query_handler("INSERT INTO question (submission_time, view_number, vote_number, title, message, image) VALUES(%s,%s,%s,%s,%s,%s)", (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
+        common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
+                                VALUES(%s,%s,%s,%s,%s,%s)""", 
+                                (datetime.now(),0,0,request.form["title"],request.form["Question"],request.form["image"]))
     return redirect('/list')
 
 
@@ -49,7 +51,8 @@ def route_question_page(questionid=None):
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s",(id_num,))
     answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
     comment_database = common.query_handler("SELECT * FROM comment")
-    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database)
+    tag_database = common.query_handler("SELECT * FROM tag INNER JOIN question_tag ON tag.id=question_tag.tag_id WHERE question_tag.question_id=%s",(id_num,))
+    return render_template('question.html', question_database=question_database, answer_database=answer_database, id_num=id_num, comment_database=comment_database, tag_database=tag_database)
 
 
 @app.route('/save-Answer', methods=['POST'])
@@ -59,6 +62,20 @@ def route_save_answer():
                             VALUES(%s, %s, %s, %s, %s)""",(datetime.now(), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
     return redirect('/question/' + request.form['question_id'])
 
+
+@app.route('/save-tag', methods=['POST'])
+def route_save_tag():
+    if request.form["tags"] == "None":
+        common.query_handler("""INSERT INTO tag (name) VALUES(%s)""",(request.form['Tag'],))
+        tagid = common.query_handler('SELECT * FROM tag WHERE name=%s',(request.form['Tag'],))
+        common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",(request.form['question_id'], tagid[0]['id']))
+    else:
+        tagid = common.query_handler('SELECT * FROM tag WHERE name=%s',(request.form['tags'],))
+        try:
+            common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",(request.form['question_id'], tagid[0]['id']))
+        except:
+            pass
+    return redirect('/question/' + request.form['question_id'])
 
 @app.route('/save-Comment', methods=['POST'])
 def route_save_comment():
@@ -113,11 +130,20 @@ def route_delete_answer(questionid=None, answerid=None):
     return redirect('/question/'+questionid+'/')
 
 
+@app.route("/question/<question_id>/tag/<tag_id>/delete")
+def route_delete_tag(question_id,tag_id):
+    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s",(question_id, tag_id))
+    return redirect('/question/'+question_id+'/')
+
 @app.route('/comments/<comment_id>/edit')
 def edit_comment(comment_id):
     answer_comment = False
-    question_database = common.query_handler("SELECT title, question.id AS question_id FROM question INNER JOIN comment ON question.id=comment.question_id WHERE comment.id=%s",(comment_id,))
-    answer_database = common.query_handler("SELECT answer.message AS message, answer.question_id AS question_id FROM answer INNER JOIN comment ON answer.id=comment.answer_id WHERE comment.id=%s",(comment_id,))
+    question_database = common.query_handler("""SELECT title, question.id AS question_id FROM question 
+                                                INNER JOIN comment ON question.id=comment.question_id 
+                                                WHERE comment.id=%s""",(comment_id,))
+    answer_database = common.query_handler("""SELECT answer.message AS message, answer.question_id 
+                                              AS question_id FROM answer INNER JOIN comment ON answer.id=comment.answer_id 
+                                              WHERE comment.id=%s""",(comment_id,))
     comment_database = common.query_handler("SELECT * FROM comment WHERE id=%s",(comment_id,))
     if comment_database[0]['question_id'] is None:
         answer_comment = True
@@ -202,7 +228,12 @@ def new_tag(questionid):
 def search():
     search = True
     form_data = request.form
-    question_database = common.query_handler("SELECT DISTINCT question.id, answer.question_id FROM question FULL JOIN answer ON question.id = answer.question_id WHERE question.title LIKE '%%' || %s || '%%';",(form_data['asksearch'],))
+    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id 
+                                                FROM question FULL JOIN answer ON question.id = answer.question_id 
+                                                WHERE question.title ILIKE '%%' || %s || '%%' 
+                                                OR answer.message ILIKE '%%' || %s || '%%'
+                                                OR question.message ILIKE '%%' || %s || '%%' ;""",
+                                                (form_data['asksearch'],form_data['asksearch'],form_data['asksearch'],))
     database = common.query_handler("SELECT * FROM question")
     return render_template("list.html", phrase = form_data["asksearch"], question_database=question_database, database=database, search = search)
 
