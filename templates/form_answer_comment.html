@@ -12,15 +12,15 @@
 
         <form action="/save-answer-{{ form }}" method="post">
         {% for line in answer_database %}
-                <label for="title">Answer Message</label><br>
-                <input type="text" name="title" value="{{line['message']}}" readonly></input><br>
+                <p><label for="title"><strong>Message</strong></label><br></p>
+                <p><input type="text" name="title" value="{{line['message']}}" readonly></input><br></p>
 
-            <label for="{{ form }}">{{ form }}</label><br>
-                <textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br>
+            <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
+                <p><textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br></p>
     
             <input type="text" name="answer_id" hidden value={{line['id']}}></input>
 
-            <button class="button" type="submit">Save {{ form }}</button>
+            <p><button class="button" type="submit">Save {{ form }}</button></p>
         {% endfor %}
         </form>
     </body>

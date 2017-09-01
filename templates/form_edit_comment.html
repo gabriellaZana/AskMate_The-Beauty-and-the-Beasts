@@ -13,23 +13,23 @@
         <form action="/update-{{ form }}" method="post">
         {% if answer_comment %}
             {% for line in answer_database %}
-                <label for="title">Title</label><br>
-                        <input type="text" name="title" value="{{line['message']}}" readonly></input><br>
+                <p><label for="title"><strong>Title</strong></label><br></p>
+                        <p><input type="text" name="title" value="{{line['message']}}" readonly></input><br></p>
                         <input type="text" name="question_id" hidden value={{line['question_id']}}></input>
             {% endfor %}
         {% else %}
             {% for line in question_database %}
-                <label for="title">Title</label><br>
-                        <input type="text" name="title" value="{{line['title']}}" readonly></input><br>
+                <p><label for="title"><strong>Title</strong></label><br></p>
+                        <p><input type="text" name="title" value="{{line['title']}}" readonly></input><br></p>
                         <input type="text" name="question_id" hidden value={{line['question_id']}}></input>
             {% endfor %}
         {% endif %}
         
         {% for line in comment_database%}
-            <label for="{{ form }}">{{ form }}</label><br>
-                    <textarea name="{{ form }}" rows="20" cols="80" required value="{{line['message']}}" minlength="10">{{line['message']}}</textarea><br>
+            <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
+                    <p><textarea name="{{ form }}" rows="20" cols="80" required value="{{line['message']}}" minlength="10">{{line['message']}}</textarea><br></p>
             <input type="text" name="comment_id" hidden value={{line['id']}}></input>
-            <button class="button" type="submit">Save {{ form }}</button>
+            <p><button class="button" type="submit">Save {{ form }}</button></p>
         {% endfor %}
         </form>
     </body>

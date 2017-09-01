@@ -1,23 +1,3 @@
-.btn-link{
-  border: none;
-  outline: none;
-  color:black;
-  background: none;
-  padding: 0;
-  font-family: "courier new", arial;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.logo{
-    display: block;
-    margin: 0 auto;
-}
-
-#top {
-    border-radius: 10px;
-}
-
 body {
     background-color: #F4F1BB;
     font-family: "courier new", arial;
@@ -56,8 +36,14 @@ h3 {
     border-radius: 10px;
 }   
 
-.highlight:hover {
-    background-color: #ffffff;
+table {
+    border: none;
+}
+
+table, th, td {
+    border: none;
+    text-align: center;
+    border-radius: 20px;
 }
 
 th {
@@ -77,14 +63,64 @@ tr {
     background-color: #E6EBE0;
 }
 
-table {
-    border: none;
+p, label {
+    font-size: 20px;
 }
 
-table, th, td {
-    border: none;
-    text-align: center;
-    border-radius: 20px;
+textarea, input {
+    font-size: 16px;
+}
+
+input, textarea, .select {
+    border-radius: 10px;
+    background-color: #E6EBE0;
+    font-family: "courier new", arial;
+    font-size: 15px;
+}
+
+a:link {
+    text-decoration: none;
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+button:hover, .sort:hover {
+    background-color: #E6EBE0;
+    color: #ED6A5A;
+}
+
+#top {
+    border-radius: 10px;
+}
+
+#search {
+    text-align: right;
+    padding-right: 30px;
+    font: "couriar new";
+    
+}
+
+.btn-link{
+  border: none;
+  outline: none;
+  color:black;
+  background: none;
+  padding: 0;
+  font-family: "courier new", arial;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logo{
+    display: block;
+    margin: 0 auto;
+}
+
+.highlight:hover {
+    background-color: #ffffff;
 }
 
 .button {
@@ -102,58 +138,24 @@ table, th, td {
     font-weight: bold;
 }
 
-a:link {
-    text-decoration: none;
-    color: white;
-}
-
-a:visited {
-    color: white;
-}
-
-button:hover, .sort:hover {
-    background-color: #E6EBE0;
-    color: #ED6A5A;
-}
-
 .question-title:hover {
     color: #ED6A5A;
     background-color: white;
 }
 
-
-input, textarea {
-    border-radius: 10px;
-    background-color: #E6EBE0;
-}
-
-#search {
-    text-align: right;
-    padding-right: 30px;
-    font: "couriar new";
-    
-}
-
-.search {
-    width: 200px;
+.search, .title {
+    width: 240px;
     transition: width 2s;
 }
 
-.search:focus {
+.search:focus, .title:focus {
     width: 1000px;
     transition: width 2s;
-}
-
-p, label {
-    font-size: 20px;
-}
-
-textarea, input {
-    font-size: 16px;
 }
 
 .tag {
     display: inline-block;
     vertical-align: middle;
 }
+
 

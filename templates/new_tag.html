@@ -22,14 +22,13 @@
             {% endfor %}
             <br>
             <h3>Or Choose an Existing One</h3><br>
-            <select name="tags">
+            <select class="select" name="tags">
                     <option>None</option>
             {% for row in tag_database %}
                     <option>{{row["name"]}}</option>
             {% endfor %}
             </select>
-            <br>
-            <p><button class="button" type="submit">Save Tag</button>
+            <button class="button" type="submit">Save Tag</button>
         
         </form>
     </body>

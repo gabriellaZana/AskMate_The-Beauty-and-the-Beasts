@@ -16,7 +16,7 @@
             {% for line in question_database %}
                 {% if id_num == line['id'] %}
                     <p><label for="title"><strong>Title</strong></label><br></p>
-                    <p><input type="text" name="title" size="117" value="{{line['title']}}" readonly></input><br>
+                    <p><input type="text" name="title" size="82" value="{{line['title']}}" readonly></input><br>
                 {% endif %}
 
                 <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br>

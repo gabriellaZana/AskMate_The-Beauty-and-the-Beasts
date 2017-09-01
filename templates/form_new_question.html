@@ -13,14 +13,14 @@
         <form action="/save-{{ form }}" method="post">
             {% if title_help %}
                 <p><label for="title"><strong>Title</strong></label><br></p>
-                <p><input type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br></p>
+                <p><input class="title" type="text" name="title" pattern=".{1,}" required title="1 character minimum"></input><br></p>
 
                 <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
                 <p><textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br></p>
 
                 
                 <p><label for="image"><strong>Image URL(optionally)</strong></label><br></p>
-                <p><input type="text" name="image" id="image"></input></p>
+                <p><input class="title" type="text" name="image" id="image" size="30"></input></p>
 
                 
                 <input type="text" name="question_id" hidden value=-1></input>
