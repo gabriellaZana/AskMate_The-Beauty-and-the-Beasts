@@ -32,7 +32,7 @@
                     <th>Vote Up</th>
                     <th>Vote Down</th>
                 </tr>
-                {% for line in database %}
+                {% for line in questions %}
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
@@ -68,7 +68,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for line in answer_database %}
+                {% for line in answers %}
                         <tr>
                             <td>{{ line['submission_time'] }}</td>
                             <td>{{ line['message'] }}</td>
@@ -98,7 +98,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for line in comment_database %}
+                    {% for line in comments %}
                         <tr>
                             <td> {{row['message']}} </td>
                             <td> {{row['submission_time']}} </td>

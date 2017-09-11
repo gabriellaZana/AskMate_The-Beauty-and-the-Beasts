@@ -314,9 +314,13 @@ def sort_questions(condition, direction):
     return render_template("form_user.html", database=database, search=search, sort=sort)
 
 
-@app.route("/user/<users_id>")
-def user_activity(users_id):
-    
+@app.route("/user/<user_id>")
+def user_activity(user_id):
+    questions = common.query_handler("SELECT * FROM question WHERE users_id=%s", (user_id))
+    answers = common.query_handler("SELECT * FROM answer WHERE users_id=%s", (user_id))
+    comments = common.query_handler("SELECT * FROM comment WHERE users_id=%s", (user_id))
+    return render_template("form_user.html", questions=questions, anwers=answers, comments=comments)
+
 
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
