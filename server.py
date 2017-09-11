@@ -289,6 +289,35 @@ def sort_questions(condition, direction):
     return render_template("list.html", database=database, search=search, sort=sort)
 
 
+@app.route("/form_user/sort/<condition>/<direction>")
+def sort_questions(condition, direction):
+    sort = True
+    search = False
+    if condition == "time":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+    elif condition == "view":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+    elif condition == "vote":
+        if direction == "ASC":
+            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
+    return render_template("form_user.html", database=database, search=search, sort=sort)
+
+
+@app.route("/user/<users_id>")
+def user_activity(users_id):
+    
+
 if __name__ == "__main__":
     app.secret_key = "whoeventriestoguessthis"
     app.run(
