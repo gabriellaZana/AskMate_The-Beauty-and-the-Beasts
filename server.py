@@ -14,7 +14,9 @@ app = Flask(__name__)
 @app.route("/")
 def latest_5():
     search = False
-    database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC LIMIT 5;")
+    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+                                     LEFT JOIN users ON users.id=users_id
+                                     ORDER BY question.submission_time DESC LIMIT 5;""")
     return render_template("list.html", database=database, search=search)
 
 
@@ -22,8 +24,15 @@ def latest_5():
 def index():
     sort = None
     search = False
-    database = common.query_handler("SELECT * FROM question")
+    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+                                     LEFT JOIN users ON users.id=users_id;""")
     return render_template("list.html", database=database, search=search)
+
+
+@app.route("/all-users")
+def all_users():
+    database = common.query_handler("SELECT submission_time, user_name, reputation FROM users;")
+    return render_template("user.html", database=database)
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
@@ -80,7 +89,8 @@ def route_save_user():
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-    return render_template('form_new_question.html', title_help=title_help, form="Question")
+    database = common.query_handler("""SELECT id, user_name, id FROM users;""")
+    return render_template('form_new_question.html', title_help=title_help, form="Question", database=database)
 
 
 @app.route('/save-Question', methods=['POST'])
@@ -90,10 +100,10 @@ def route_save_question():
                              (request.form["title"], request.form["Question"], request.form["image"],
                               request.form["question_id"]))
     else:
-        common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                                VALUES(%s,%s,%s,%s,%s,%s);""",
+        common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image, users_id)
+                                VALUES(%s,%s,%s,%s,%s,%s,%s);""",
                              (datetime.now().replace(microsecond=0), 0, 0, request.form["title"], request.form["Question"],
-                              request.form["image"]))
+                              request.form["image"], request.form["user"]))
     return redirect('/list')
 
 

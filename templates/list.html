@@ -19,6 +19,7 @@
         <table border="1" align="center">
             <tr><th>ID</th>
                 <th>Question</th>
+                <th>Added by</th>
                 <th>Description</th>
                 {% if not sort %}
                 <th class=sort><a href="/list/sort/time/ASC" class=sort>Submission time</a></th>
@@ -47,6 +48,7 @@
                             <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                             </form>
                         </td>
+                        <td>{{line['user_name']}}</td>
                         <td>{{line['message']}}</td>
                         <td>{{line['submission_time']}}</td>
                         <td>{{line['view_number']}}</td>
@@ -69,6 +71,7 @@
                         <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                         </form>
                     </td>
+                    <td>{{line['user_name']}}</td>
                     <td>{{line['message']}}</td>
                     <td>{{line['submission_time']}}</td>
                     <td>{{line['view_number']}}</td>
@@ -83,9 +86,10 @@
         {% endif %}
         </table>
 
-        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button></p>
-        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/registration';"> Add new user </button></p>
-        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/list';"> List all questions </button></p> 
+        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button>
+            <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/list';"> List all questions </button></p>
+        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/registration';"> Add new user </button>
+            <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/all-users'"> List all users </button></p>
         <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/tags';"> List all tags </button></p>       
         <p><img class="logo" src="/static/beauty_and_the_beast_logo_by_chenwei_zachary-d55a4ap.png" height="500" width="1000" align="center"></p>
     
