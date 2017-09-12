@@ -295,30 +295,51 @@ def sort_questions(condition, direction):
     search = False
     if condition == "time":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY submission_time
+                                               ASC""", (user_id,))
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY submission_time
+                                               DESC""", (user_id,))
     elif condition == "view":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY view_number
+                                               ASC""", (user_id,))
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY view_number
+                                               DESC""", (user_id,))
     elif condition == "vote":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY vote_number
+                                               ASC""", (user_id,))
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY vote_number
+                                               DESC""", (user_id,))
     return render_template("form_user.html", database=database, search=search, sort=sort)
 
 
 @app.route("/user/<user_id>")
 def user_activity(user_id):
-    questions = common.query_handler("SELECT * FROM question WHERE users_id=%s", (user_id))
-    answers = common.query_handler("SELECT * FROM answer WHERE users_id=%s", (user_id))
-    comments = common.query_handler("SELECT * FROM comment WHERE users_id=%s", (user_id))
+    questions = common.query_handler("""SELECT * FROM question
+                                        WHERE users_id=%s""", (user_id,))
+    answers = common.query_handler("""SELECT * FROM answer
+                                      WHERE users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT * FROM comment
+                                       WHERE users_id=%s""", (user_id,))
     return render_template("form_user.html", questions=questions, anwers=answers, comments=comments)
 
 
