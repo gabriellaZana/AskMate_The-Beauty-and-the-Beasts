@@ -318,7 +318,7 @@ def sort_questions(condition, direction):
 
 
 @app.route("/form_user/sort/<condition>/<direction>")
-def sort_questions(condition, direction):
+def sort_user_questions(condition, direction):
     sort = True
     search = False
     if condition == "time":
