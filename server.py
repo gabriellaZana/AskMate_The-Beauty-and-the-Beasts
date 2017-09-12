@@ -196,6 +196,7 @@ def route_downvote_answer(questionid=None, answerid=None):
 @app.route('/question/<question_id>/<answer_id>/accept-answer')
 def accept_answer(question_id, answer_id):
     common.query_handler("UPDATE answer SET accepted='1' WHERE id=%s", (answer_id,))
+    common.reputation_counter('15', 'answer', answer_id )
     return redirect("/question/"+question_id+"/")
 
 
