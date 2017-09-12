@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title> AskMate </title>
+    </head>
+
+    <body>
+        <h1 id="top"> AskMate 2.0 </h1>
+        <h3>By The Beauty & The Beasts - Bence & Gabó, Ákos, Zoli</h3>
+        <h2 id="top"> Tags </h2>
+        <br>
+        <table border="1" align="center">
+            <tr><th>Tag Name</th>
+                <th>Number of Questions</th>
+            </tr>
+            {% for line in database %}
+            <tr>
+                <td>{{line['name']}}</td>
+                <td>{{line['question_number']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/list';"> List all questions </button></p>        
+        <p><img class="logo" src="/static/beauty_and_the_beast_logo_by_chenwei_zachary-d55a4ap.png" height="500" width="1000" align="center"></p>
+    
+    </body>
+    
+</html>
