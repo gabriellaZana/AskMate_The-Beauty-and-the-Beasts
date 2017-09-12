@@ -8,8 +8,8 @@
     </head>
 
     <body>
-        <h1 id="top"> User Activity </h1>
-        <h2 id="top"> Questions </h2>
+        <h1 id="top"> User Activity - {{ users[0]['user_name'] }} </h1>
+        <h3 id="top"> Questions </h3>
         <br>
             <table border="1" align="center">
                 <tr>
@@ -17,20 +17,16 @@
                     <th>Question</th>
                     <th>Description</th>
                     {% if not sort %}
-                    <th class=sort><a href="/form_user/sort/time/ASC" class=sort>Submission time</a></th>
-                    <th class=sort><a href="/form_user/sort/view/ASC" class=sort>Views </a></th>
-                    <th class=sort><a href="/form_user/sort/vote/ASC" class=sort>Votes</a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/time/ASC" class=sort>Submission time</a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/view/ASC" class=sort>Views </a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/vote/ASC" class=sort>Votes</a></th>
                     {% else %}
-                    <th class=sort><a href="/form_user/sort/time/DESC" class=sort>Submission time</a></th>
-                    <th class=sort><a href="/form_user/sort/view/DESC" class=sort>Views </a></th>
-                    <th class=sort><a href="/form_user/sort/vote/DESC" class=sort>Votes</a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/time/DESC" class=sort>Submission time</a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/view/DESC" class=sort>Views </a></th>
+                    <th class=sort><a href="/form_user/{{questions[0]['users_id']}}/sort/vote/DESC" class=sort>Votes</a></th>
                     {% endif %}
                     
                     <th>Image</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <th>Vote Up</th>
-                    <th>Vote Down</th>
                 </tr>
                 {% for line in questions %}
                     <tr class="highlight">
@@ -45,10 +41,6 @@
                         <td>{{line['view_number']}}</td>
                         <td>{{line['vote_number']}}</td>
                         <td><img src="{{line['image']}}" width="200" height="150"></td>
-                        <td><a href="/edit-question/{{ line['id'] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
-                        <td><a href="/delete-question/{{ line['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
-                        <td><a href="/question/{{ line['id'] }}/vote-up"><img src="http://www.pngmart.com/files/5/Black-Cat-PNG-HD.png" width="60" height="60"></a></td>
-                        <td><a href="/question/{{ line['id'] }}/vote-down"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -61,10 +53,6 @@
                         <td class="header"><strong>Message</strong></td>
                         <td class="header"><strong>Image</strong></td>
                         <td class="header"><strong>Votes</strong></td>
-                        <td class="header"><strong>Delete</strong></td>
-                        <td class="header"><strong>Vote Up</strong></td>
-                        <td class="header"><strong>Vote Down</strong></td>
-                        <td class="header"><strong>Comment</strong></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,10 +68,6 @@
                             {% endif %}
                             
                             <td>{{ line['vote_number'] }}</td>
-                            <td><a href="/delete-answer/{{ id_num }}/{{ line['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
-                            <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-up/"><img src="http://www.pngmart.com/files/5/Black-Cat-PNG-HD.png" width="60" height="60"></a></td>
-                            <td><a href="/question/{{ id_num }}/{{ line['id'] }}/vote-down/"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
-                            <td><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/answer/{{ line['id'] }}/new-comment';">Comment</button></td>
                         </tr>
                 {% endfor %}
                 </tbody>
@@ -100,14 +84,15 @@
                 <tbody>
                     {% for line in comments %}
                         <tr>
-                            <td> {{row['message']}} </td>
-                            <td> {{row['submission_time']}} </td>
-                            <td><a href="/comments/{{ row['id'] }}/edit"><img src="http://icongal.com/gallery/download/93429/256/png" width="30" height="30"></a></td>
-                            <td><a href="/comments/{{ row['id'] }}/delete"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="30" height="30"></a></td>
+                            <td> {{ line ['message'] }} </td>
+                            <td> {{ line ['submission_time'] }} </td>
                         </tr>
                     {% endfor %}
                 </tbody>
+                <br>
             </table>
+            <br>
+            <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/all-users';"> Back </button></p>
 
 
 

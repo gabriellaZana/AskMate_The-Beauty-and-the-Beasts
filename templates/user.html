@@ -19,7 +19,7 @@
 
             {% for row in database %}
             <tr>
-                <td><strong> {{ row['user_name'] }} </strong></td>
+                <td><strong><a href="http://127.0.0.1:5000/user/{{row['id']}}"> {{ row['user_name'] }} </a></strong></td>
                 <td> {{ row['submission_time'] }} </td>
                 <td> {{ row['reputation'] }} </td>
             </tr>
