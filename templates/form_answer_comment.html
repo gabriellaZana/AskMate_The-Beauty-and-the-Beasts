@@ -17,6 +17,13 @@
 
             <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
                 <p><textarea name="{{ form }}" rows="20" cols="80" required value="" minlength="10"></textarea><br></p>
+
+            <p><label for="user"><strong>Added by</strong></label></p>
+                <select class="select" id="user" name="user">
+                    {% for line in users_database %}
+                    <option value="{{ line['id'] }}"> {{ line['user_name'] }} </option>
+                    {% endfor %}
+                </select>
     
             <input type="text" name="answer_id" hidden value={{line['id']}}></input>
 

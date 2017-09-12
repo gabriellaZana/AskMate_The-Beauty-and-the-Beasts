@@ -28,9 +28,17 @@
         {% for line in comment_database%}
             <p><label for="{{ form }}"><strong>{{ form }}</strong></label><br></p>
                     <p><textarea name="{{ form }}" rows="20" cols="80" required value="{{line['message']}}" minlength="10">{{line['message']}}</textarea><br></p>
-            <input type="text" name="comment_id" hidden value={{line['id']}}></input>
+            
+
+            <p><label for="user"><strong>Added by</strong></label></p>
+                <select class="select" id="user" name="user">
+                    <option value="{{ line['users_id'] }}"> {{ line['user_name'] }} </option>
+                </select>
             <p><button class="button" type="submit">Save {{ form }}</button></p>
+
+            <input type="text" name="comment_id" hidden value={{line['id']}}></input>
         {% endfor %}
+
         </form>
     </body>
 </html>

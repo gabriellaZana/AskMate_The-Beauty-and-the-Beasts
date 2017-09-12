@@ -22,8 +22,16 @@
                 <p><label for="image"><strong>Image URL(optionally)</strong></label><br></p>
                 <p><input class="title" type="text" name="image" id="image" size="30"></input></p>
 
+                <p><label for="user"><strong>Added by</strong></label></p>
+                <select class="select" id="user" name="user">
+                    {% for line in database %}
+                    <option value="{{ line['id'] }}"> {{ line['user_name'] }} </option>
+                    {% endfor %}
+                </select>
+
                 
                 <input type="text" name="question_id" hidden value=-1></input>
+    
             {% endif %}
             <p><button class="button" type="submit">Save {{ form }}</button></p>
         </form>
