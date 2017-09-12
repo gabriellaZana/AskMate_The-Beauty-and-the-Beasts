@@ -113,8 +113,10 @@ def route_question_page(questionid=None):
     question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
                                              FROM question LEFT JOIN users ON users.id=users_id
                                              WHERE question.id=%s""", (id_num,))
-    answer_database = common.query_handler("SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s", (id_num,))
-    comment_database = common.query_handler("SELECT comment.id, question_id, comment.submission_time, message, user_name FROM comment LEFT JOIN users ON users.id=users_id;")
+    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name
+                                            FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s""", (id_num,))
+    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
+                                             FROM comment LEFT JOIN users ON users.id=users_id""")
     tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
                                            WHERE question_tag.question_id=%s;""", (id_num,))
@@ -229,14 +231,16 @@ def new_comment(questionid):
 @app.route('/answer/<answer_id>/new-comment')
 def new_comment_answer(answer_id):
     answer_database = common.query_handler("SELECT * FROM answer WHERE id=%s", (answer_id,))
-    return render_template('form_answer_comment.html', form="Comment", answer_database=answer_database)
+    users_database = common.query_handler("SELECT * FROM users;")
+    return render_template('form_answer_comment.html', form="Comment", answer_database=answer_database,
+                           users_database=users_database)
 
 
 @app.route('/save-answer-Comment', methods=['POST'])
 def route_new_comment_answer():
     formdata = request.form
-    common.query_handler("""INSERT INTO comment (answer_id, message, submission_time, edited_count)
-                            VALUES(%s, %s, %s, %s)""", (formdata['answer_id'], formdata['Comment'], datetime.now().replace(microsecond=0), 0))
+    common.query_handler("""INSERT INTO comment (answer_id, message, submission_time, edited_count, users_id)
+                            VALUES(%s, %s, %s, %s, %s)""", (formdata['answer_id'], formdata['Comment'], datetime.now().replace(microsecond=0), 0, formdata['user']))
     questiondata = common.query_handler("SELECT question_id FROM answer WHERE id=%s", (formdata['answer_id'],))
     return redirect('/question/' + str(questiondata[0]["question_id"]))
 
@@ -253,8 +257,8 @@ def route_save_comment():
 @app.route('/update-Comment', methods=['POST'])
 def route_update_comment():
     formdata = request.form
-    common.query_handler("""UPDATE comment SET message=%s, edited_count = edited_count + 1
-                            WHERE id=%s""", (formdata['Comment'], formdata['comment_id']))
+    common.query_handler("""UPDATE comment SET message=%s, edited_count = edited_count + 1, users_id=%s
+                            WHERE id=%s""", (formdata['Comment'], formdata['user'], formdata['comment_id']))
     return redirect('/question/' + request.form['question_id'])
 
 
@@ -268,7 +272,10 @@ def edit_comment(comment_id):
                                               AS question_id FROM answer
                                               INNER JOIN comment ON answer.id=comment.answer_id
                                               WHERE comment.id=%s""", (comment_id,))
-    comment_database = common.query_handler("SELECT * FROM comment WHERE id=%s", (comment_id,))
+    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, message, comment.submission_time, edited_count, users_id, user_name
+                                                FROM comment LEFT JOIN users
+                                                ON users_id=users.id
+                                                WHERE comment.id=%s""", (comment_id,))
     if comment_database[0]['question_id'] is None:
         answer_comment = True
     return render_template("form_edit_comment.html", answer_comment=answer_comment, form="Comment",
