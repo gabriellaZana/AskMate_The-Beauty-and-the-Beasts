@@ -110,8 +110,10 @@ def route_save_question():
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
     id_num = questionid
-    question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
-    answer_database = common.query_handler("SELECT * FROM answer WHERE question_id=%s", (id_num,))
+    question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
+                                             FROM question LEFT JOIN users ON users.id=users_id
+                                             WHERE question.id=%s""", (id_num,))
+    answer_database = common.query_handler("SELECT answer.submission_time, vote_number, question_id, message, image, accepted, user_name FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s", (id_num,))
     comment_database = common.query_handler("SELECT * FROM comment")
     tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
@@ -163,17 +165,18 @@ def route_downvote_question(questionid=None):
 def new_answer(questionid):
     id_num = questionid
     add_answer = True
+    users_database = common.query_handler("SELECT * FROM users;")
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Answer", add_answer=add_answer, id_num=id_num,
-                           question_database=question_database)
+                           question_database=question_database, users_database=users_database)
 
 
 @app.route('/save-Answer', methods=['POST'])
 def route_save_answer():
     formdata = request.form
-    common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                            VALUES(%s, %s, %s, %s, %s)""",
-                         (datetime.now().replace(microsecond=0), 0, formdata['question_id'], formdata['Answer'], formdata['image']))
+    common.query_handler("""INSERT INTO answer (submission_time, vote_number, question_id, message, image, users_id)
+                            VALUES(%s, %s, %s, %s, %s, %s)""",
+                         (datetime.now().replace(microsecond=0), 0, formdata['question_id'], formdata['Answer'], formdata['image'], formdata['user']))
     return redirect('/question/' + request.form['question_id'])
 
 

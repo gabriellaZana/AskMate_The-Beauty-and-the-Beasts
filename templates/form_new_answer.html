@@ -26,6 +26,13 @@
                 <p><label for="image"><strong>URL(optionally)</strong></label><br>
                     <p><input type="text" name="image" id="image"></input>
                 {% endif %}
+
+                <p><label for="user"><strong>Added by</strong></label></p>
+                <select class="select" id="user" name="user">
+                    {% for line in users_database %}
+                    <option value="{{ line['id'] }}"> {{ line['user_name'] }} </option>
+                    {% endfor %}
+                </select>
         
                 <input type="text" name="question_id" hidden value={{line['id']}}></input>
 

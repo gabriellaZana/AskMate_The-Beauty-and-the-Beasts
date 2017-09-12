@@ -17,7 +17,7 @@
                 <p><textarea readonly rows="1" cols="70">{{ line['title'] }}</textarea></p>
 
             <p><strong>Added by</strong></p>
-                <p><textarea readonly rows="1" cols="70"> {{ line['user_name'] }} </textarea></p>
+                <p><textarea readonly rows="1" cols="70">{{ line['user_name'] }}</textarea></p>
 
             <p><strong>Description</strong></p>
                 <p><textarea readonly rows="20" cols="70">{{ line['message'] }}</textarea></p>
@@ -72,6 +72,7 @@
                 <tr>
                     <td class="header"><strong>Submission time</strong></td>
                     <td class="header"><strong>Message</strong></td>
+                    <td class="header"><strong>Added by</strong></td>
                     <td class="header"><strong>Image</strong></td>
                     <td class="header"><strong>Votes</strong></td>
                     <td class="header"><strong>Delete</strong></td>
@@ -88,6 +89,7 @@
                     <tr>
                         <td>{{ line['submission_time'] }}</td>
                         <td>{{ line['message'] }}</td>
+                        <td>{{ line['user_name'] }}</td>
 
                         {% if line['image'] %}
                             <td><img src="{{ line['image'] }}" width="200" heigth="150"></td>
@@ -105,6 +107,9 @@
                         {% else %}
                         <td><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/question/{{ id_num }}/{{ line['id'] }}/accept-answer';">Mark as Accepted</button></td>
                         {% endif %}
+                    </tr>
+                    <tr>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     {% for row in comment_database %}
                         {% if line['id'] == row['answer_id'] %}
