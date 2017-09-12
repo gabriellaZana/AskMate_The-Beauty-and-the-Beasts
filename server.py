@@ -46,6 +46,34 @@ def search():
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)
 
+
+@app.route('/tags')
+def route_tags():
+    database = common.query_handler("SELECT name, COUNT(question_id) AS question_number \
+                                     FROM tag JOIN question_tag ON tag.id=question_tag.tag_id \
+                                     GROUP BY name")
+    return render_template("tags.html", database=database)
+
+
+# REGISTRASION
+
+@app.route('/registration')
+def route_registration():
+    return render_template("form_registration.html", isValid=True)
+
+
+@app.route('/save-user', methods=["POST"])
+def route_save_user():
+    existing_users = common.query_handler("SELECT user_name FROM users")
+    current_user = request.form["username"]
+    for line in existing_users:
+        if line["user_name"] == current_user:
+            return render_template("form_registration.html", isValid=False)
+    common.query_handler("INSERT INTO users (submission_time, user_name, reputation) \
+                          VALUES (%s, %s, %s)",
+                         (datetime.now().replace(microsecond=0), current_user, 0))
+    return redirect("/")
+
 # QUESTION
 
 

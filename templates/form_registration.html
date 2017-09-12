@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title>Registration</title>
+    </head>
+
+    <body>
+        <h1>Register New User</h1>
+
+        <form action="/save-user" method="post">
+            {% if isValid %}
+                <p><label for="title"><strong>Username</strong></label><br></p>
+                <p><input class="title" type="text" name="username" pattern=".{1,}" required title="1 character minimum"></input><br></p>
+            {% else %}
+                <p><label for="title"><strong>Username already taken, choose another one</strong></label><br></p>
+                <p><input class="title" type="text" name="username" pattern=".{1,}" required title="1 character minimum"></input><br></p>
+            {% endif %}
+            <p><button class="button" type="submit">Save User</button></p>
+        </form>
+    </body>
+</html>
