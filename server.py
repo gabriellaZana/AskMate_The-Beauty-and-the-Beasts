@@ -113,8 +113,8 @@ def route_question_page(questionid=None):
     question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
                                              FROM question LEFT JOIN users ON users.id=users_id
                                              WHERE question.id=%s""", (id_num,))
-    answer_database = common.query_handler("SELECT answer.submission_time, vote_number, question_id, message, image, accepted, user_name FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s", (id_num,))
-    comment_database = common.query_handler("SELECT * FROM comment")
+    answer_database = common.query_handler("SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s", (id_num,))
+    comment_database = common.query_handler("SELECT comment.id, question_id, comment.submission_time, message, user_name FROM comment LEFT JOIN users ON users.id=users_id;")
     tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
                                            WHERE question_tag.question_id=%s;""", (id_num,))
@@ -220,9 +220,10 @@ def accept_answer(question_id, answer_id):
 def new_comment(questionid):
     id_num = questionid
     add_answer = True
+    users_database = common.query_handler("SELECT * FROM users;")
     question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
     return render_template('form_new_answer.html', form="Comment", add_answer=add_answer, id_num=id_num,
-                           question_database=question_database)
+                           question_database=question_database, users_database=users_database)
 
 
 @app.route('/answer/<answer_id>/new-comment')
@@ -243,9 +244,9 @@ def route_new_comment_answer():
 @app.route('/save-Comment', methods=['POST'])
 def route_save_comment():
     formdata = request.form
-    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count)
-                            VALUES(%s, %s, %s, %s)""", (formdata['question_id'],
-                         formdata['Comment'], datetime.now().replace(microsecond=0), 0))
+    common.query_handler("""INSERT INTO comment (question_id, message, submission_time, edited_count, users_id)
+                            VALUES(%s, %s, %s, %s, %s)""", (formdata['question_id'],
+                         formdata['Comment'], datetime.now().replace(microsecond=0), 0, formdata['user']))
     return redirect('/question/' + request.form['question_id'])
 
 

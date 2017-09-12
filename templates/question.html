@@ -44,6 +44,7 @@
                 <tr>
                     <td class="header"><strong>Submission time</strong></td>
                     <td class="header"><strong>Message</strong></td>
+                    <td class="header"><strong>Added by</strong></td>
                     <td class="header"><strong>Edit</strong></td>
                     <td class="header"><strong>Delete</strong></td>
                 </tr>
@@ -55,6 +56,7 @@
                 <tr>
                     <td>{{ line['submission_time']}}</td>
                     <td>{{ line['message']}}</td>
+                    <td>{{ line['user_name']}}</td>
                     <td><a href="/comments/{{ line['id'] }}/edit"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
                     <td><a href="/comments/{{ line['id'] }}/delete"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
                 {% endif %}
@@ -114,7 +116,7 @@
                     {% for row in comment_database %}
                         {% if line['id'] == row['answer_id'] %}
                             <tr>
-                                <td class='header'>Comment</td>
+                                <td class='header'><strong>Comment</strong></td>
                                 <td> {{row['message']}} </td>
                                 <td> {{row['submission_time']}} </td>
                                 <td><a href="/comments/{{ row['id'] }}/edit"><img src="http://icongal.com/gallery/download/93429/256/png" width="30" height="30"></a></td>
