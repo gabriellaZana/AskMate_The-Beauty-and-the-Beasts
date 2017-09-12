@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title> AskMate - Users </title>
+    </head>
+
+    <body>
+        <p><h1> All Users </h1></p>
+
+        <table border="1" align="center">
+            <tr>
+                <th> Username </th>
+                <th> Date of registration </th>
+                <th> Reputation </th>
+            </tr>
+
+            {% for row in database %}
+            <tr>
+                <td><strong> {{ row['user_name'] }} </strong></td>
+                <td> {{ row['submission_time'] }} </td>
+                <td> {{ row['reputation'] }} </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><button class="button" type="submit" onclick="location.href='http://127.0.0.1:5000/';">Back</button></p>
+    </body>
+</html>
