@@ -134,6 +134,7 @@ def route_delete_question(questionid=None):
 @app.route('/question/<questionid>/vote-up')
 def route_upvote_question(questionid=None):
     id_num = questionid
+    common.reputation_counter("5", 'question', id_num )
     common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s", (id_num,))
     return redirect('/')
 
@@ -141,6 +142,7 @@ def route_upvote_question(questionid=None):
 @app.route('/question/<questionid>/vote-down')
 def route_downvote_question(questionid=None):
     id_num = questionid
+    common.reputation_counter("-2", 'question', id_num )
     common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s", (id_num,))
     return redirect('/')
 
@@ -177,6 +179,7 @@ def route_delete_answer(questionid=None, answerid=None):
 def route_upvote_answer(questionid=None, answerid=None):
     id_num = int(answerid)
     id_question = questionid
+    common.reputation_counter('10', 'answer', id_num )
     common.query_handler("UPDATE answer SET vote_number = vote_number+1 WHERE id=%s", (id_num,))
     return redirect('/question/' + id_question + "/")
 
@@ -185,6 +188,7 @@ def route_upvote_answer(questionid=None, answerid=None):
 def route_downvote_answer(questionid=None, answerid=None):
     id_num = answerid
     id_question = questionid
+    common.reputation_counter('-2', 'answer', id_num )
     common.query_handler("UPDATE answer SET vote_number = vote_number-1 WHERE id=%s", (id_num,))
     return redirect('/question/' + id_question + "/")
 
