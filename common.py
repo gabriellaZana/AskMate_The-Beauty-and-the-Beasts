@@ -34,3 +34,8 @@ def query_handler(cursor, querystring, *args, **kwargs):
         return result
     except:
         pass
+
+
+def reputation_counter(amount, table, table_id):
+    user_id = query_handler("SELECT users_id FROM " + table + " WHERE id = %s", (table_id,))
+    query_handler("UPDATE users SET reputation = reputation + " + amount + " WHERE id = %s", (user_id[0]['users_id'],))
