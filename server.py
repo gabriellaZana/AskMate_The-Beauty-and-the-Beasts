@@ -192,6 +192,13 @@ def route_downvote_answer(questionid=None, answerid=None):
     common.query_handler("UPDATE answer SET vote_number = vote_number-1 WHERE id=%s", (id_num,))
     return redirect('/question/' + id_question + "/")
 
+
+@app.route('/question/<question_id>/<answer_id>/accept-answer')
+def accept_answer(question_id, answer_id):
+    common.query_handler("UPDATE answer SET accepted='1' WHERE id=%s", (answer_id,))
+    return redirect("/question/"+question_id+"/")
+
+
 # COMMENT
 
 
