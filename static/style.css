@@ -84,7 +84,7 @@ a:link {
 }
 
 a:visited {
-    color: white;
+    color: black;
 }
 
 button:hover, .sort:hover {
