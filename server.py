@@ -335,19 +335,19 @@ def sort_questions(condition, direction):
     search = False
     if condition == "time":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time DESC")
     elif condition == "view":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number DESC")
     elif condition == "vote":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number ASC")
         elif direction == "DESC":
             sort = False
             database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
