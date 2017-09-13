@@ -51,7 +51,7 @@ def search():
                                                 OR answer.message ILIKE '%%' || %s || '%%'
                                                 OR question.message ILIKE '%%' || %s || '%%' ;""",
                                              (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
-    database = common.query_handler("SELECT * FROM question")
+    database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)
 
@@ -331,22 +331,22 @@ def sort_questions(condition, direction):
     search = False
     if condition == "time":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time DESC")
     elif condition == "view":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number DESC")
     elif condition == "vote":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number DESC")
     return render_template("list.html", database=database, search=search, sort=sort)
 
 
@@ -418,8 +418,4 @@ if __name__ == "__main__":
         debug=True,
         port=5000
     )
-<<<<<<< HEAD
-
-=======
     
->>>>>>> b0e5502f70c2defdccef553c7701ebf92931b5e2
