@@ -44,27 +44,27 @@
                 <th>Vote Down</th>
             </tr>
             {% for question in questions %}
-                <tr class="highlight">
-                    <td>{{question['id']}}</td>
-                    <td>
-                        <a href="{{ url_for('viewcount', questionid=question['id']) }}" class="btn-link question-title">{{question['title']|safe}}</a>
-                    </td>
-                    {% if not question['users_id'] %}
-                    <td>{{question['user_name']}}</td>
-                    {% else %}
-                    <td><strong><a href="/user/{{ question['users_id'] }}"> {{question['user_name']}} </a></strong></td>
-                    {% endif %}
-                    <td>{{question['message']}}</td>
-                    <td>{{question['submission_time']}}</td>
-                    <td>{{question['view_number']}}</td>
-                    <td>{{question['vote_number']}}</td>
-                    <td><img src="{{question['image']}}" width="200" height="150"></td>
-                    <td><a href="/edit-question/{{ question['id'] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
-                    <td><a href="/delete-question/{{ question['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
-                    <td><a href="/question/{{ question['id'] }}/vote-up"><img src="http://www.pngmart.com/files/5/Black-Cat-PNG-HD.png" width="60" height="60"></a></td>
-                    <td><a href="/question/{{ question['id'] }}/vote-down"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
-                </tr>
-            {% endfor %}
+                    <tr class="highlight">
+                        <td>{{question['id']}}</td>
+                        <td>
+                            <a href="{{ url_for('viewcount', questionid=question['id']) }}" class="btn-link question-title">{{question['title'] | safe}}</a>
+                        </td>
+                        {% if not question['users_id'] %}
+                        <td>{{question['user_name']}}</td>
+                        {% else %}
+                        <td><strong><a href="/user/{{ question['users_id'] }}"> {{question['user_name']}} </a></strong></td>
+                        {% endif %}
+                        <td>{{question['message']}}</td>
+                        <td>{{question['submission_time']}}</td>
+                        <td>{{question['view_number']}}</td>
+                        <td>{{question['vote_number']}}</td>
+                        <td><img src="{{question['image']}}" width="200" height="150"></td>
+                        <td><a href="/edit-question/{{ question['id'] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
+                        <td><a href="/delete-question/{{ question['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
+                        <td><a href="/question/{{ question['id'] }}/vote-up"><img src="http://www.pngmart.com/files/5/Black-Cat-PNG-HD.png" width="60" height="60"></a></td>
+                        <td><a href="/question/{{ question['id'] }}/vote-down"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
+                    </tr>
+            {% endfor %}            
         </table>
 
         <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button>
