@@ -12,7 +12,11 @@
 
         <table border="1" align="center">
             <tr>
-                <th> Username </th>
+                {% if not sort %}
+                <th class=sort><a href="/all-users/ASC" class=sort>Username</a></th>
+                {% else %}
+                <th class=sort><a href="/all-users/DESC" class=sort>Username</a></th>
+                {% endif %}
                 <th> Date of registration </th>
                 <th> Reputation </th>
             </tr>
