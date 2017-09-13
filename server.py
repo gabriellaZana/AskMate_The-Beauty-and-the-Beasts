@@ -35,7 +35,7 @@ def all_users():
     return render_template("user.html", database=database)
 
 
-@app.route("/viewcount/<questionid>", methods=["POST"])
+@app.route("/viewcount/<questionid>")
 def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
@@ -45,12 +45,11 @@ def viewcount(questionid):
 def search():
     search = True
     form_data = request.form
-    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id
+    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id, Replace(question.title, %{search}s, '<span class="fancy">%{search}s</span>')
                                                 FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %s || '%%'
-                                                OR answer.message ILIKE '%%' || %s || '%%'
-                                                OR question.message ILIKE '%%' || %s || '%%' ;""",
-                                             (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
+                                                WHERE question.title ILIKE '%%' || %{search}s || '%%'
+                                                OR answer.message ILIKE '%%' || %{search}s || '%%'
+                                                OR question.message ILIKE '%%' || %{search}s || '%%' ;""", {search: form_data['asksearch']})
     database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)

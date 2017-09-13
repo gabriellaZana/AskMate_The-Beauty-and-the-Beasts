@@ -32,9 +32,7 @@
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
-                            <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
-                            <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
-                            </form>
+                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
                         </td>
                         <td>{{line['message']}}</td>
                         <td>{{line['submission_time']}}</td>
@@ -60,9 +58,7 @@
                 {% for line in answers %}
                         <tr>
                             <td>
-                                <form action="{{ url_for('viewcount', questionid=line['question_id']) }}" method="post">
-                                <button type="submit" name="question" class="btn-link question-title">{{line['quest']}}</button>
-                                </form>
+                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
                             </td>
                             <td>{{ line['submission_time'] }}</td>
                             <td>{{ line['message'] }}</td>
@@ -92,9 +88,8 @@
                     {% for line in comments %}
                         <tr>
                             {% if line['questid'] is none %}
-                            <td> <form action="{{ url_for('viewcount', questionid=line['question_id']) }}" method="post">
-                                <button type="submit" name="question" class="btn-link question-title">{{ line['ansme'] }}</button>
-                                </form> 
+                            <td> 
+                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{ line['ansme'] }}</a>
                             </td>
                             {% else %}
                             <td>

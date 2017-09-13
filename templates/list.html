@@ -50,9 +50,7 @@
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
-                            <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
-                            <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
-                            </form>
+                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
                         </td>
                         {% if not line['users_id'] %}
                         <td>{{line['user_name']}}</td>
@@ -77,9 +75,7 @@
                 <tr class="highlight">
                     <td>{{line['id']}}</td>
                     <td>
-                        <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
-                        <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
-                        </form>
+                        <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
                     </td>
                     {% if not line['users_id'] %}
                     <td>{{line['user_name']}}</td>
