@@ -110,12 +110,12 @@ def route_save_question():
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
     id_num = questionid
-    question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
+    question_database = common.query_handler("""SELECT question.id, question.submission_time, users_id, view_number, vote_number, title, message, image, user_name
                                              FROM question LEFT JOIN users ON users.id=users_id
                                              WHERE question.id=%s""", (id_num,))
-    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name
+    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, users_id, vote_number, question_id, message, image, accepted, user_name
                                             FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s""", (id_num,))
-    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
+    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, users_id, comment.submission_time, message, user_name
                                              FROM comment LEFT JOIN users ON users.id=users_id""")
     tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
