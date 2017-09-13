@@ -31,7 +31,7 @@ def index():
 
 @app.route("/all-users")
 def all_users():
-    database = common.query_handler("SELECT submission_time, user_name, reputation FROM users;")
+    database = common.query_handler("SELECT * FROM users;")
     return render_template("user.html", database=database)
 
 
@@ -348,6 +348,68 @@ def sort_questions(condition, direction):
             sort = False
             database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
     return render_template("list.html", database=database, search=search, sort=sort)
+
+
+@app.route("/form_user/<user_id>/sort/<condition>/<direction>")
+def sort_user_questions(condition, direction, user_id):
+    sort = True
+    search = False
+    if condition == "time":
+        if direction == "ASC":
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY submission_time
+                                               ASC""", (user_id,))
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY submission_time
+                                               DESC""", (user_id,))
+    elif condition == "view":
+        if direction == "ASC":
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY view_number
+                                               ASC""", (user_id,))
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY view_number
+                                               DESC""", (user_id,))
+    elif condition == "vote":
+        if direction == "ASC":
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY vote_number
+                                               ASC""", (user_id,))
+        elif direction == "DESC":
+            sort = False
+            database = common.query_handler("""SELECT * FROM question
+                                               WHERE users_id=%s
+                                               ORDER BY vote_number
+                                               DESC""", (user_id,))
+    answers = common.query_handler("""SELECT * FROM answer
+                                      WHERE users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT * FROM comment
+                                       WHERE users_id=%s""", (user_id,))
+    users = common.query_handler("""SELECT * FROM users
+                                    WHERE id=%s""", (user_id,))
+    return render_template("form_user.html", questions=database, sort=sort, anwers=answers, comments=comments, users=users)
+
+
+@app.route("/user/<user_id>")
+def user_activity(user_id):
+    users = common.query_handler("""SELECT * FROM users
+                                    WHERE id=%s""", (user_id,))
+    questions = common.query_handler("""SELECT * FROM question
+                                        WHERE users_id=%s""", (user_id,))
+    answers = common.query_handler("""SELECT * FROM answer
+                                      WHERE users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT * FROM comment
+                                       WHERE users_id=%s""", (user_id,))
+    return render_template("form_user.html", questions=questions, answers=answers, comments=comments, users=users)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8">
+        <title> User </title>
+    </head>
+
+    <body>
+        <h1 id="top"> User Activity - {{ users[0]['user_name'] }} </h1>
+        <h3 id="top"> Questions </h3>
+        <br>
+            <table border="1" align="center">
+                <tr>
+                    <th>ID</th>
+                    <th>Question</th>
+                    <th>Description</th>
+                    {% if not sort %}
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/time/ASC" class=sort>Submission time</a></th>
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/view/ASC" class=sort>Views </a></th>
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/vote/ASC" class=sort>Votes</a></th>
+                    {% else %}
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/time/DESC" class=sort>Submission time</a></th>
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/view/DESC" class=sort>Views </a></th>
+                    <th class=sort><a href="/form_user/{{users[0]['id']}}/sort/vote/DESC" class=sort>Votes</a></th>
+                    {% endif %}
+                    
+                    <th>Image</th>
+                </tr>
+                {% for line in questions %}
+                    <tr class="highlight">
+                        <td>{{line['id']}}</td>
+                        <td>
+                            <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post">
+                            <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
+                            </form>
+                        </td>
+                        <td>{{line['message']}}</td>
+                        <td>{{line['submission_time']}}</td>
+                        <td>{{line['view_number']}}</td>
+                        <td>{{line['vote_number']}}</td>
+                        <td><img src="{{line['image']}}" width="200" height="150"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        <br>
+        <h3><label for="answers">Answers</label></h3>
+            <table border="1" align="center">
+                <thead>
+                    <tr>
+                        <td class="header"><strong>Submission time</strong></td>
+                        <td class="header"><strong>Message</strong></td>
+                        <td class="header"><strong>Image</strong></td>
+                        <td class="header"><strong>Votes</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for line in answers %}
+                        <tr>
+                            <td>{{ line['submission_time'] }}</td>
+                            <td>{{ line['message'] }}</td>
+
+                            {% if line['image'] %}
+                                <td><img src="{{ line['image'] }}" width="200" heigth="150"></td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            
+                            <td>{{ line['vote_number'] }}</td>
+                        </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br>
+        <h3><label for="comments">Comments</label></h3>
+            <table border="1" align="center">
+                <thead>
+                    <tr>
+                        <td class="header"><strong>Comment message</strong></td>
+                        <td class="header"><strong>Submission time</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in comments %}
+                        <tr>
+                            <td> {{ line ['message'] }} </td>
+                            <td> {{ line ['submission_time'] }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <br>
+            </table>
+            <br>
+            <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/all-users';"> Back </button></p>
+
+
+
