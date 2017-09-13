@@ -305,10 +305,14 @@ def new_tag(questionid):
 @app.route('/save-tag', methods=['POST'])
 def route_save_tag():
     if request.form["tags"] == "None":
-        common.query_handler("""INSERT INTO tag (name) VALUES(%s)""", (request.form['Tag'],))
         tagid = common.query_handler('SELECT * FROM tag WHERE name=%s', (request.form['Tag'],))
-        common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",
-                             (request.form['question_id'], tagid[0]['id']))
+        if tagid[0]['name'] != request.form['Tag']:
+            common.query_handler("""INSERT INTO tag (name) VALUES(%s)""", (request.form['Tag'],))
+        try:
+            common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",
+                                 (request.form['question_id'], tagid[0]['id']))
+        except:
+            pass
     else:
         tagid = common.query_handler('SELECT * FROM tag WHERE name=%s', (request.form['tags'],))
         try:
