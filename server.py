@@ -51,7 +51,7 @@ def search():
                                                 OR answer.message ILIKE '%%' || %s || '%%'
                                                 OR question.message ILIKE '%%' || %s || '%%' ;""",
                                              (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
-    database = common.query_handler("SELECT * FROM question")
+    database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)
 
