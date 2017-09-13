@@ -46,8 +46,8 @@ def tags():
 def usernames():
     return common.query_handler("SELECT user_name FROM users")
 
-def insert_users(current_user)    
-    return common.query_handler("INSERT INTO users (submission_time, user_name, reputation) \
+def insert_users(current_user):    
+    common.query_handler("INSERT INTO users (submission_time, user_name, reputation) \
                           VALUES (%s, %s, %s)",
                          (datetime.now().replace(microsecond=0), current_user, 0))
 
@@ -60,18 +60,18 @@ def username_id():
 
 # 2 /save-Question
 def update_question(formdata):
-    return common.query_handler("""UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s;""",
+    common.query_handler("""UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s;""",
                              (formdata["title"], formdata["Question"], formdata["image"],
                               formdata["question_id"]))
         
 def new_question(formdata):        
-    return common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image, users_id)
+    common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image, users_id)
                                 VALUES(%s,%s,%s,%s,%s,%s,%s);""",
                              (datetime.now().replace(microsecond=0), 0, 0, formdata["title"], formdata["Question"],
                               formdata["image"], formdata["user"]))
 
 # 3 /question/<questionid>/
-def select_question(questionid)
+def select_question(questionid):
     return common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
                                              FROM question LEFT JOIN users ON users.id=users_id
                                              WHERE question.id=%s""", (questionid,))
@@ -84,7 +84,7 @@ def select_comment():
     return common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
                                              FROM comment LEFT JOIN users ON users.id=users_id""")
     
-def select_tag(questionid)    
+def select_tag(questionid):    
     return common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
                                            WHERE question_tag.question_id=%s;""", (questionid,))
@@ -95,7 +95,7 @@ def question_by_id(questionid):
 
 # 5 /delete-question/<questionid>
 def answer_on_question(questionid):
-    return common.query_handler("SELECT id FROM answer WHERE question_id=%s", (id_num,))
+    return common.query_handler("SELECT id FROM answer WHERE question_id=%s", (questionid,))
     
 def delete_comment_from_answer(line):
     common.query_handler("DELETE FROM comment WHERE answer_id=%s", (line["id"],))
@@ -143,7 +143,7 @@ def answer_vote_down(answerid):
     common.query_handler("UPDATE answer SET vote_number = vote_number-1 WHERE id=%s", (answerid,))
 
 #6 /question/<question_id>/<answer_id>/accept-answer
-def accept_answer(answerid)
+def accept_answer(answerid):
     common.query_handler("UPDATE answer SET accepted='1' WHERE id=%s", (answerid,))
 
 
@@ -157,18 +157,18 @@ def accept_answer(answerid)
     # question_database = common.query_handler("SELECT * FROM question WHERE id=%s", (id_num,))
 
 #2 /answer/<answer_id>/new-comment
-def answer_by_id(answerid)
+def answer_by_id(answerid):
     return common.query_handler("SELECT * FROM answer WHERE id=%s", (answerid,))
     
     # select_all_users()
     # users_database = common.query_handler("SELECT * FROM users;")
 
 #3 /save-answer-Comment
-def comment_on_answer(formdata)
+def comment_on_answer(formdata):
     common.query_handler("""INSERT INTO comment (answer_id, message, submission_time, edited_count, users_id)
                             VALUES(%s, %s, %s, %s, %s)""", (formdata['answer_id'], formdata['Comment'], datetime.now().replace(microsecond=0), 0, formdata['user']))
     
-def questionid_to_answer(formdata)    
+def questionid_to_answer(formdata):    
     return common.query_handler("SELECT question_id FROM answer WHERE id=%s", (formdata['answer_id'],))
 
 #4 /save-Comment
@@ -253,9 +253,9 @@ def sort_by_condition(condition):
 def user_sort(condition, user_id):
     condition_list = ["submission_time ASC", "submission_time DESC", "view_number ASC", "view_number DESC", "vote_number ASC", "vote_number DESC"]
     if condition in condition_list:
-        return common.query_handler("SELECT * FROM question WHERE users_id=%s ORDER BY " + condition), (user_id,))
+        return common.query_handler("SELECT * FROM question WHERE users_id=%s ORDER BY " + condition, (user_id,))
     else:
-        return common.query_handler("SELECT * FROM question WHERE users_id=%s ORDER BY submission_time ASC"), (user_id,))
+        return common.query_handler("SELECT * FROM question WHERE users_id=%s ORDER BY submission_time ASC", (user_id,))
         
 def answer_to_userid(user_id):
     return common.query_handler("""SELECT * FROM answer
@@ -283,7 +283,7 @@ def sort_users(condition):
     # users = common.query_handler("""SELECT * FROM users
     #                                 WHERE id=%s""", (user_id,))
     
-def question_to_userid(user_id)    
+def question_to_userid(user_id):    
     return common.query_handler("""SELECT * FROM question
                                         WHERE users_id=%s""", (user_id,))
     # anwer_to_userid(user_id)

@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, session, url_for
 import common
 import time
 from datetime import datetime
+import queries
 question_keys = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 answer_keys = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
@@ -14,9 +15,7 @@ app = Flask(__name__)
 @app.route("/")
 def latest_5():
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
-                                     LEFT JOIN users ON users.id=users_id
-                                     ORDER BY question.submission_time DESC LIMIT 5;""")
+    database = queries.index()
     return render_template("list.html", database=database, search=search)
 
 
@@ -24,20 +23,19 @@ def latest_5():
 def index():
     sort = None
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
-                                     LEFT JOIN users ON users.id=users_id;""")
+    database = queries.indexlist()
     return render_template("list.html", database=database, search=search)
 
 
 @app.route("/all-users")
 def all_users():
-    database = common.query_handler("SELECT * FROM users;")
+    database = queries.all_users()
     return render_template("user.html", database=database)
 
 
 @app.route("/viewcount/<questionid>", methods=["POST"])
 def viewcount(questionid):
-    table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
+    table = queries.viewcount(questionid)
     return redirect('/question/' + questionid + "/")
 
 
@@ -45,22 +43,15 @@ def viewcount(questionid):
 def search():
     search = True
     form_data = request.form
-    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id
-                                                FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %s || '%%'
-                                                OR answer.message ILIKE '%%' || %s || '%%'
-                                                OR question.message ILIKE '%%' || %s || '%%' ;""",
-                                             (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
-    database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
+    question_database = queries.search(form_data) 
+    database = queries.question_user() 
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)
 
 
 @app.route('/tags')
 def route_tags():
-    database = common.query_handler("SELECT name, COUNT(question_id) AS question_number \
-                                     FROM tag JOIN question_tag ON tag.id=question_tag.tag_id \
-                                     GROUP BY name")
+    database = queries.tags()
     return render_template("tags.html", database=database)
 
 
@@ -73,14 +64,12 @@ def route_registration():
 
 @app.route('/save-user', methods=["POST"])
 def route_save_user():
-    existing_users = common.query_handler("SELECT user_name FROM users")
+    existing_users = queries.usernames()
     current_user = request.form["username"]
     for line in existing_users:
         if line["user_name"] == current_user:
             return render_template("form_registration.html", isValid=False)
-    common.query_handler("INSERT INTO users (submission_time, user_name, reputation) \
-                          VALUES (%s, %s, %s)",
-                         (datetime.now().replace(microsecond=0), current_user, 0))
+    queries.insert_users(current_user)
     return redirect("/")
 
 # QUESTION
@@ -89,37 +78,27 @@ def route_save_user():
 @app.route('/new-question')
 def route_new_question():
     title_help = True
-    database = common.query_handler("""SELECT id, user_name, id FROM users;""")
+    database = queries.username_id()
     return render_template('form_new_question.html', title_help=title_help, form="Question", database=database)
 
 
 @app.route('/save-Question', methods=['POST'])
 def route_save_question():
-    if int(request.form["question_id"]) > -1:
-        common.query_handler("""UPDATE question SET title=%s, message=%s, image=%s WHERE id=%s;""",
-                             (request.form["title"], request.form["Question"], request.form["image"],
-                              request.form["question_id"]))
+    formdata = request.form
+    if int(formdata["question_id"]) > -1:
+        queries.update_question(formdata)
     else:
-        common.query_handler("""INSERT INTO question (submission_time, view_number, vote_number, title, message, image, users_id)
-                                VALUES(%s,%s,%s,%s,%s,%s,%s);""",
-                             (datetime.now().replace(microsecond=0), 0, 0, request.form["title"], request.form["Question"],
-                              request.form["image"], request.form["user"]))
+        queries.new_question(formdata)
     return redirect('/list')
 
 
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
     id_num = questionid
-    question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
-                                             FROM question LEFT JOIN users ON users.id=users_id
-                                             WHERE question.id=%s""", (id_num,))
-    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name
-                                            FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s""", (id_num,))
-    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
-                                             FROM comment LEFT JOIN users ON users.id=users_id""")
-    tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
-                                           ON tag.id=question_tag.tag_id
-                                           WHERE question_tag.question_id=%s;""", (id_num,))
+    question_database = queries.select_question(id_num)
+    answer_database = queries.select_answer(id_num)
+    comment_database = queries.select_comment()
+    tag_database = queries.select_tag(id_num)
     return render_template('question.html', question_database=question_database, answer_database=answer_database,
                            id_num=id_num, comment_database=comment_database, tag_database=tag_database)
 
@@ -128,20 +107,17 @@ def route_question_page(questionid=None):
 def route_edit_question(questionid=None):
     edit = True
     id_num = questionid
-    database = common.query_handler("SELECT * FROM question WHERE id=%s;", (id_num,))
+    database = queries.question_by_id(id_num)
     return render_template('form_edit_question.html', edit=edit, id_num=id_num, database=database, form="Question")
 
 
 @app.route('/delete-question/<questionid>/')
 def route_delete_question(questionid=None):
     id_num = questionid
-    answers = common.query_handler("SELECT id FROM answer WHERE question_id=%s", (id_num,))
+    answers = queries.answer_on_question(id_num)
     for line in answers:
-        common.query_handler("DELETE FROM comment WHERE answer_id=%s", (line["id"],))
-    common.query_handler("DELETE FROM question_tag WHERE question_id=%s", (id_num,))
-    common.query_handler("DELETE FROM comment WHERE question_id=%s", (id_num,))
-    common.query_handler("DELETE FROM answer WHERE question_id=%s", (id_num,))
-    common.query_handler("DELETE FROM question WHERE id=%s", (id_num,))
+        queries.delete_comment_from_answer(line)
+    queries.delete_question(id_num)
     return redirect('/')
 
 
@@ -149,7 +125,7 @@ def route_delete_question(questionid=None):
 def route_upvote_question(questionid=None):
     id_num = questionid
     common.reputation_counter("5", 'question', id_num )
-    common.query_handler("UPDATE question SET vote_number = vote_number+1 WHERE id=%s", (id_num,))
+    queries.question_vote_up(id_num)
     return redirect('/')
 
 
@@ -157,7 +133,7 @@ def route_upvote_question(questionid=None):
 def route_downvote_question(questionid=None):
     id_num = questionid
     common.reputation_counter("-2", 'question', id_num )
-    common.query_handler("UPDATE question SET vote_number = vote_number-1 WHERE id=%s", (id_num,))
+    queries.question_vote_down(id_num)
     return redirect('/')
 
 # ANSWER
