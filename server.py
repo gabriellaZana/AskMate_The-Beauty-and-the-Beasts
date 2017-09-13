@@ -394,10 +394,17 @@ def sort_user_questions(condition, direction, user_id):
                                                WHERE users_id=%s
                                                ORDER BY vote_number
                                                DESC""", (user_id,))
-    answers = common.query_handler("""SELECT * FROM answer
-                                      WHERE users_id=%s""", (user_id,))
-    comments = common.query_handler("""SELECT * FROM comment
-                                       WHERE users_id=%s""", (user_id,))
+    answers = common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id,
+                                             answer.message, answer.image, question.title AS quest
+                                      FROM answer
+                                      JOIN question ON question_id=question.id
+                                      WHERE answer.users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT comment.question_id AS questid, comment.submission_time, comment.message,
+                                              answer.message AS ansme, question.title AS quest, answer.question_id
+                                       FROM comment
+                                       LEFT JOIN question ON comment.question_id=question.id
+                                       LEFT JOIN answer ON comment.answer_id=answer.id
+                                       WHERE comment.users_id=%s""", (user_id,))
     users = common.query_handler("""SELECT * FROM users
                                     WHERE id=%s""", (user_id,))
     return render_template("form_user.html", questions=database, sort=sort, anwers=answers, comments=comments, users=users)
@@ -431,7 +438,6 @@ def user_activity(user_id):
                                        LEFT JOIN question ON comment.question_id=question.id
                                        LEFT JOIN answer ON comment.answer_id=answer.id
                                        WHERE comment.users_id=%s""", (user_id,))
-    print(comments)
     return render_template("form_user.html", questions=questions, answers=answers, comments=comments, users=users)
 
 
