@@ -409,12 +409,18 @@ def user_activity(user_id):
                                     WHERE id=%s""", (user_id,))
     questions = common.query_handler("""SELECT * FROM question
                                         WHERE users_id=%s""", (user_id,))
-    answers = common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id, answer.message, answer.image, question.title AS quest
+    answers = common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id,
+                                             answer.message, answer.image, question.title AS quest
                                       FROM answer
                                       JOIN question ON question_id=question.id
                                       WHERE answer.users_id=%s""", (user_id,))
-    comments = common.query_handler("""SELECT * FROM comment
-                                       WHERE users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT comment.question_id AS questid, comment.submission_time, comment.message,
+                                              answer.message AS ansme, question.title AS quest, answer.question_id
+                                       FROM comment
+                                       LEFT JOIN question ON comment.question_id=question.id
+                                       LEFT JOIN answer ON comment.answer_id=answer.id
+                                       WHERE comment.users_id=%s""", (user_id,))
+    print(comments)
     return render_template("form_user.html", questions=questions, answers=answers, comments=comments, users=users)
 
 
