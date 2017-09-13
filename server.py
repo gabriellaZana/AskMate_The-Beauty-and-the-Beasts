@@ -51,7 +51,7 @@ def search():
                                                 OR answer.message ILIKE '%%' || %s || '%%'
                                                 OR question.message ILIKE '%%' || %s || '%%' ;""",
                                              (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
-    database = common.query_handler("SELECT * FROM question")
+    database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
                            database=database, search=search)
 
@@ -305,10 +305,14 @@ def new_tag(questionid):
 @app.route('/save-tag', methods=['POST'])
 def route_save_tag():
     if request.form["tags"] == "None":
-        common.query_handler("""INSERT INTO tag (name) VALUES(%s)""", (request.form['Tag'],))
         tagid = common.query_handler('SELECT * FROM tag WHERE name=%s', (request.form['Tag'],))
-        common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",
-                             (request.form['question_id'], tagid[0]['id']))
+        if tagid[0]['name'] != request.form['Tag']:
+            common.query_handler("""INSERT INTO tag (name) VALUES(%s)""", (request.form['Tag'],))
+        try:
+            common.query_handler("""INSERT INTO question_tag (question_id, tag_id) VALUES(%s, %s)""",
+                                 (request.form['question_id'], tagid[0]['id']))
+        except:
+            pass
     else:
         tagid = common.query_handler('SELECT * FROM tag WHERE name=%s', (request.form['tags'],))
         try:
@@ -331,22 +335,22 @@ def sort_questions(condition, direction):
     search = False
     if condition == "time":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY submission_time DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time DESC")
     elif condition == "view":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY view_number DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY view_number DESC")
     elif condition == "vote":
         if direction == "ASC":
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number ASC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number ASC")
         elif direction == "DESC":
             sort = False
-            database = common.query_handler("SELECT * FROM question ORDER BY vote_number DESC")
+            database = common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number DESC")
     return render_template("list.html", database=database, search=search, sort=sort)
 
 
