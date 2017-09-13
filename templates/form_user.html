@@ -32,7 +32,7 @@
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
-                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
+                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{ line['title'] }}</a>
                         </td>
                         <td>{{line['message']}}</td>
                         <td>{{line['submission_time']}}</td>
