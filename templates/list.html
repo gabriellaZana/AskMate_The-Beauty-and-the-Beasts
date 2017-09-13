@@ -21,14 +21,20 @@
                 <th>Question</th>
                 <th>Added by</th>
                 <th>Description</th>
+                {% if not search %}
                 {% if not sort %}
-                <th class=sort><a href="/list/sort/time/ASC" class=sort>Submission time</a></th>
+                <th class=sort><a href="/list/sort/time/ASC" class=sort>Submission time</a></th>    
                 <th class=sort><a href="/list/sort/view/ASC" class=sort>Views </a></th>
                 <th class=sort><a href="/list/sort/vote/ASC" class=sort>Votes</a></th>
                 {% else %}
                 <th class=sort><a href="/list/sort/time/DESC" class=sort>Submission time</a></th>
                 <th class=sort><a href="/list/sort/view/DESC" class=sort>Views </a></th>
                 <th class=sort><a href="/list/sort/vote/DESC" class=sort>Votes</a></th>
+                {% endif %}
+                {% else %}
+                <th>Submission time</th>
+                <th>Views</th>
+                <th>Votes</th>
                 {% endif %}
                 
                 <th>Image</th>
@@ -48,7 +54,11 @@
                             <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                             </form>
                         </td>
+                        {% if not line['users_id'] %}
                         <td>{{line['user_name']}}</td>
+                        {% else %}
+                        <td><strong><a href="/user/{{ line['users_id'] }}"> {{line['user_name']}} </a></strong></td>
+                        {% endif %}
                         <td>{{line['message']}}</td>
                         <td>{{line['submission_time']}}</td>
                         <td>{{line['view_number']}}</td>
@@ -71,7 +81,11 @@
                         <button type="submit" name="question" class="btn-link question-title">{{line['title']}}</button>
                         </form>
                     </td>
+                    {% if not line['users_id'] %}
                     <td>{{line['user_name']}}</td>
+                    {% else %}
+                    <td><strong><a href="/user/{{ line['users_id'] }}"> {{line['user_name']}} </a></strong></td>
+                    {% endif %}
                     <td>{{line['message']}}</td>
                     <td>{{line['submission_time']}}</td>
                     <td>{{line['view_number']}}</td>
