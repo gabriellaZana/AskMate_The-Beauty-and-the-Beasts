@@ -16,7 +16,7 @@
             <button class=button type="submit" name="submitquestion"> Search  <img src="http://www.icone-png.com/png/2/1508.png" width="25" height="25"></button>
         </form>
         <br>
-        <table border="1" align="center">
+        <div><table border="1" align="center">
             <tr><th>ID</th>
                 <th>Question</th>
                 <th>Added by</th>
@@ -47,7 +47,11 @@
                     <tr class="highlight">
                         <td>{{question['id']}}</td>
                         <td>
+<<<<<<< HEAD
+                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
+=======
                             <a href="{{ url_for('viewcount', questionid=question['id']) }}" class="btn-link question-title">{{question['title'] | safe}}</a>
+>>>>>>> 082e0d8007af9f199ebb1cd55ae44a59faf0fb1d
                         </td>
                         {% if not question['users_id'] %}
                         <td>{{question['user_name']}}</td>
@@ -65,7 +69,35 @@
                         <td><a href="/question/{{ question['id'] }}/vote-down"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
                     </tr>
             {% endfor %}            
+<<<<<<< HEAD
+        {% else %}
+            {% for line in database %}
+                <tr class="highlight">
+                    <td>{{line['id']}}</td>
+                    <td>
+                        <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
+                    </td>
+                    {% if not line['users_id'] %}
+                    <td>{{line['user_name']}}</td>
+                    {% else %}
+                    <td><strong><a href="/user/{{ line['users_id'] }}"> {{line['user_name']}} </a></strong></td>
+                    {% endif %}
+                    <td>{{line['message']}}</td>
+                    <td>{{line['submission_time']}}</td>
+                    <td>{{line['view_number']}}</td>
+                    <td>{{line['vote_number']}}</td>
+                    <td><img src="{{line['image']}}" width="200" height="150"></td>
+                    <td><a href="/edit-question/{{ line['id'] }}/"><img src="http://icongal.com/gallery/download/93429/256/png" width="40" height="40"></a></td>
+                    <td><a href="/delete-question/{{ line['id'] }}/"><img src="http://www.iconsfind.com/wp-content/uploads/2015/11/20151104_563973ab0e1a6-210x210.png" width="40" height="40"></a></td>
+                    <td><a href="/question/{{ line['id'] }}/vote-up"><img src="http://www.pngmart.com/files/5/Black-Cat-PNG-HD.png" width="60" height="60"></a></td>
+                    <td><a href="/question/{{ line['id'] }}/vote-down"><img src="https://cdn.shopify.com/s/files/1/2023/9623/products/No_Hours_cat_fart_pin_500x.png?v=1495509783" width="100" height="100"></a></td>
+                </tr>
+            {% endfor %}    
+        {% endif %}
+        </table></div>
+=======
         </table>
+>>>>>>> 082e0d8007af9f199ebb1cd55ae44a59faf0fb1d
 
         <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button>
             <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/list';"> List all questions </button></p>

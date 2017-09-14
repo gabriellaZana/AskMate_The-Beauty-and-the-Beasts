@@ -36,6 +36,11 @@ h3 {
     border-radius: 10px;
 }   
 
+div {
+    margin-left: 120px;
+    margin-right: 120px;
+}
+
 table {
     border: none;
 }
@@ -43,7 +48,7 @@ table {
 table, th, td {
     border: none;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 th {
@@ -80,10 +85,18 @@ input, textarea, .select {
 
 a:link {
     text-decoration: none;
+<<<<<<< HEAD
     color: black;
+=======
+>>>>>>> 66bc71a9692e08337910253c8eeaafa01fd5d94b
 }
 
 a:visited {
+    color: black;
+}
+
+a.sort {
+    text-decoration: none;
     color: black;
 }
 
