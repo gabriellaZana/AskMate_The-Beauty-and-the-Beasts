@@ -36,6 +36,11 @@ h3 {
     border-radius: 10px;
 }   
 
+div {
+    margin-left: 120px;
+    margin-right: 120px;
+}
+
 table {
     border: none;
 }
@@ -43,7 +48,7 @@ table {
 table, th, td {
     border: none;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 th {
@@ -80,10 +85,15 @@ input, textarea, .select {
 
 a:link {
     text-decoration: none;
-    color: white;
+    color: black;
 }
 
 a:visited {
+    color: black;
+}
+
+a.sort {
+    text-decoration: none;
     color: black;
 }
 
@@ -103,7 +113,7 @@ button:hover, .sort:hover {
     
 }
 
-.btn-link{
+.btn-link {
   border: none;
   outline: none;
   color:black;
@@ -158,4 +168,9 @@ button:hover, .sort:hover {
     vertical-align: middle;
 }
 
-
+.fancy {
+    color: #ED6A5A;
+    background-color: black;
+    padding: 5px;
+    border-radius:8px;
+}

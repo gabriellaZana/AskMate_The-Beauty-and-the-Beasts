@@ -16,7 +16,7 @@ app = Flask(__name__)
 def latest_5():
     search = False
     database = queries.index()
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=database, search=search)
 
 
 @app.route("/list")
@@ -24,7 +24,7 @@ def index():
     sort = None
     search = False
     database = queries.indexlist()
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=database, search=search)
 
 
 @app.route("/all-users")
@@ -33,7 +33,7 @@ def all_users():
     return render_template("user.html", database=database)
 
 
-@app.route("/viewcount/<questionid>", methods=["POST"])
+@app.route("/viewcount/<questionid>")
 def viewcount(questionid):
     table = queries.viewcount(questionid)
     return redirect('/question/' + questionid + "/")
@@ -41,11 +41,11 @@ def viewcount(questionid):
 
 @app.route("/search", methods=["POST"])
 def search():
-    search = True
     form_data = request.form
+    search = True
     replacement = {"search": form_data["asksearch"], "marks": '<span class="fancy">{}</span>'.format(form_data['asksearch'])}
-    questions = queries.search(form_data) 
-    return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
+    questions = queries.search(replacement) 
+    return render_template("list.html", phrase=form_data["asksearch"], replacement=replacement,
                            questions=questions, search=search)
 
 

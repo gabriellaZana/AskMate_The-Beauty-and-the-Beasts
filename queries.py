@@ -23,7 +23,7 @@ def viewcount(questionid):
     return common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
 
 # 5 /search
-def search(form_data):
+def search(replacement):
     return common.query_handler("""SELECT DISTINCT question.id, question.message, question.users_id, user_name,
                                                         question.submission_time, question.view_number, question.vote_number,
                                                         question.image, answer.question_id,
@@ -242,7 +242,7 @@ def insert_tag_to_question(formdata, tagid):
 
 # 3 /question/<question_id>/tag/<tag_id>/delete
 def delete_tag(questionid, tag_id):
-    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s", (question_id, tag_id))
+    common.query_handler("DELETE FROM question_tag WHERE question_id=%s AND tag_id=%s", (questionid, tag_id))
 
 #4 /list/sort/<condition>/<direction>
 def sort_by_condition(condition):
