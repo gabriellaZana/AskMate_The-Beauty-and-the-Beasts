@@ -80,7 +80,7 @@ input, textarea, .select {
 
 a:link {
     text-decoration: none;
-    color: white;
+    color: black;
 }
 
 a:visited {
@@ -159,7 +159,8 @@ button:hover, .sort:hover {
 }
 
 .fancy {
-    color: yellow;
+    color: #ED6A5A;
     background-color: black;
     padding: 5px;
+    border-radius:8px;
 }

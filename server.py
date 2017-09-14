@@ -356,7 +356,7 @@ def sort_questions(condition, direction):
         elif direction == "DESC":
             sort = False
             database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number DESC")
-    return render_template("list.html", database=database, search=search, sort=sort)
+    return render_template("list.html", questions=database, search=search, sort=sort)
 
 
 @app.route("/form_user/<user_id>/sort/<condition>/<direction>")

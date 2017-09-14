@@ -46,13 +46,10 @@
         <h3><label for="answers">Answers</label></h3>
             {% for line in answers %}
             <table border="1" align="center">
-            
                 <tr>
-                    <th>
-                        <form action="{{ url_for('viewcount', questionid=line['question_id']) }}" method="post" class="btn-link question-title">
-                        <button type="submit" name="question" class="btn-link question-title">{{line['quest']}}</button>
-                        </form>
-                    </th>
+                    <td>
+                        <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
+                    </td>
                 </tr>
             </table>
 
@@ -67,10 +64,6 @@
                 </thead>
                 <tbody>
                         <tr>
-                            <td>
-                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
-                            </td>
-                            <td>{{ line['submission_time'] }}</td>
                             <td>{{ line['message'] }}</td>
                             {% if line['image'] %}
                                 <td><img src="{{ line['image'] }}" width="200" heigth="150"></td>
@@ -84,38 +77,39 @@
             </table>
             <br><br>
             {% endfor %}
-            <br>
+            <br>    
         <h3><label for="comments">Comments</label></h3>
+                {% for line in comments %}
+            <table border="1" align="center">
+                {% if line['questid'] is none %}
+                <td> 
+                    <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{ line['ansme'] }}</a>
+                </td>
+                {% else %}
+                <td>
+                    <a href="{{ url_for('viewcount', questionid=line['questid']) }}" class="btn-link question-title">{{ line['quest'] }}</a>
+                </td>
+                {% endif %}
+            </table>
             <table border="1" align="center">
                 <thead>
                     <tr>
-                        <td class="header"><strong>Question/Answer</strong></td>
-                        <td class="header"><strong>Comment message</strong></td>
+                        <td class="header"><strong>Comment</strong></td>
                         <td class="header"><strong>Submission time</strong></td>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for line in comments %}
                         <tr>
-                            {% if line['questid'] is none %}
-                            <td> 
-                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{ line['ansme'] }}</a>
-                            </td>
-                            {% else %}
-                            <td>
-                                <form action="{{ url_for('viewcount', questionid=line['questid']) }}" method="post">
-                                <button type="submit" name="question" class="btn-link question-title">{{ line['quest'] }}</button>
-                                </form>
-                            </td>
-                            {% endif %}
                             <td> {{ line ['message'] }} </td>
                             <td> {{ line ['submission_time'] }} </td>
                         </tr>
-                    {% endfor %}
+                    
+                    
                 </tbody>
-                <br>
+            
             </table>
-            <br>
+            <br><br>
+            {% endfor %}
             <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/all-users';"> Back </button></p>
 
 
