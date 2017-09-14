@@ -11,7 +11,7 @@
         <h1> User Activity - {{ users[0]['user_name'] }} </h1>
         <h3> Questions </h3>
         <br>
-            <table border="1" align="center">
+            <div><table border="1" align="center">
                 <tr>
                     <th>ID</th>
                     <th>Question</th>
@@ -41,7 +41,7 @@
                         <td><img src="{{line['image']}}" width="200" height="150"></td>
                     </tr>
                 {% endfor %}
-            </table>
+            </table></div>
         <br>
         <h3><label for="answers">Answers</label></h3>
             {% for line in answers %}
