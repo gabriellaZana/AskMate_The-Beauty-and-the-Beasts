@@ -81,11 +81,11 @@ def select_question(questionid):
                                              WHERE question.id=%s""", (questionid,))
     
 def select_answer(questionid):    
-    return common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name
+    return common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, users_id, user_name
                                             FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s""", (questionid,))
     
 def select_comment():    
-    return common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
+    return common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, users_id, user_name
                                              FROM comment LEFT JOIN users ON users.id=users_id""")
     
 def select_tag(questionid):    
