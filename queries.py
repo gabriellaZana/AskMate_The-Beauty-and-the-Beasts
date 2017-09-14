@@ -24,12 +24,16 @@ def viewcount(questionid):
 
 # 5 /search
 def search(form_data):
-    return common.query_handler("""SELECT DISTINCT question.id, answer.question_id
-                                                FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %s || '%%'
-                                                OR answer.message ILIKE '%%' || %s || '%%'
-                                                OR question.message ILIKE '%%' || %s || '%%' ;""",
-                                             (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
+    return common.query_handler("""SELECT DISTINCT question.id, question.message, question.users_id, user_name,
+                                                        question.submission_time, question.view_number, question.vote_number,
+                                                        question.image, answer.question_id,
+                                                        Replace(question.title, %(search)s, %(marks)s) AS title
+                                                FROM question
+                                                  LEFT JOIN users ON question.users_id=users.id
+                                                  FULL JOIN answer ON question.id = answer.question_id
+                                                WHERE question.title ILIKE '%%' || %(search)s || '%%'
+                                                  OR answer.message ILIKE '%%' || %(search)s || '%%'
+                                                  OR question.message ILIKE '%%' || %(search)s || '%%' ;""", replacement)
 
 def question_user():
     return common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")

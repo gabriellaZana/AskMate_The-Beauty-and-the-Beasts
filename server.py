@@ -43,10 +43,10 @@ def viewcount(questionid):
 def search():
     search = True
     form_data = request.form
-    question_database = queries.search(form_data) 
-    database = queries.question_user() 
+    replacement = {"search": form_data["asksearch"], "marks": '<span class="fancy">{}</span>'.format(form_data['asksearch'])}
+    questions = queries.search(form_data) 
     return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
-                           database=database, search=search)
+                           questions=questions, search=search)
 
 
 @app.route('/tags')
@@ -339,7 +339,7 @@ def sort_user_questions(condition, direction, user_id):
     answers = queries.answer_to_userid(user_id)
     comments = queries.comment_to_userid(user_id)
     users = queries.user_by_id(user_id)
-    return render_template("form_user.html", questions=database, sort=sort, anwers=answers, comments=comments, users=users)
+    return render_template("form_user.html", questions=database, sort=sort, answers=answers, comments=comments, users=users)
 
 
 @app.route("/all-users/<direction>")
