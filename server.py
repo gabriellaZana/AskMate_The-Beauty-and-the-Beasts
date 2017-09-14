@@ -14,19 +14,19 @@ app = Flask(__name__)
 @app.route("/")
 def latest_5():
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+    questions = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
                                      LEFT JOIN users ON users.id=users_id
                                      ORDER BY question.submission_time DESC LIMIT 5;""")
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=questions, search=search)
 
 
 @app.route("/list")
 def index():
     sort = None
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+    questions = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
                                      LEFT JOIN users ON users.id=users_id;""")
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=questions, search=search)
 
 
 @app.route("/all-users")
@@ -35,7 +35,7 @@ def all_users():
     return render_template("user.html", database=database)
 
 
-@app.route("/viewcount/<questionid>", methods=["POST"])
+@app.route("/viewcount/<questionid>")
 def viewcount(questionid):
     table = common.query_handler("UPDATE question SET view_number = view_number + 1 WHERE id=%s", (questionid,))
     return redirect('/question/' + questionid + "/")
@@ -43,17 +43,22 @@ def viewcount(questionid):
 
 @app.route("/search", methods=["POST"])
 def search():
-    search = True
     form_data = request.form
-    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id
-                                                FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %s || '%%'
-                                                OR answer.message ILIKE '%%' || %s || '%%'
-                                                OR question.message ILIKE '%%' || %s || '%%' ;""",
-                                             (form_data['asksearch'], form_data['asksearch'], form_data['asksearch'],))
-    database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
-    return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
-                           database=database, search=search)
+    replacement = {"search": form_data['asksearch'], "marks": '<span class="fancy">{}</span>'.format(form_data['asksearch'])}
+    search = True
+    questions = common.query_handler("""SELECT DISTINCT question.id, question.message, question.users_id, user_name,
+                                                        question.submission_time, question.view_number, question.vote_number,
+                                                        question.image, answer.question_id,
+                                                        Replace(question.title, %(search)s, %(marks)s) AS title
+                                                FROM question
+                                                  LEFT JOIN users ON question.users_id=users.id
+                                                  FULL JOIN answer ON question.id = answer.question_id
+                                                WHERE question.title ILIKE '%%' || %(search)s || '%%'
+                                                  OR answer.message ILIKE '%%' || %(search)s || '%%'
+                                                  OR question.message ILIKE '%%' || %(search)s || '%%' ;""", replacement)
+
+    return render_template("list.html", phrase=form_data["asksearch"], questions=questions,
+                           search=search)
 
 
 @app.route('/tags')
@@ -110,12 +115,12 @@ def route_save_question():
 @app.route('/question/<questionid>/')
 def route_question_page(questionid=None):
     id_num = questionid
-    question_database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, user_name
+    question_database = common.query_handler("""SELECT question.id, question.submission_time, users_id, view_number, vote_number, title, message, image, user_name
                                              FROM question LEFT JOIN users ON users.id=users_id
                                              WHERE question.id=%s""", (id_num,))
-    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, vote_number, question_id, message, image, accepted, user_name
+    answer_database = common.query_handler("""SELECT answer.id, answer.submission_time, users_id, vote_number, question_id, message, image, accepted, user_name
                                             FROM answer LEFT JOIN users ON users.id=users_id WHERE question_id=%s""", (id_num,))
-    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, comment.submission_time, message, user_name
+    comment_database = common.query_handler("""SELECT comment.id, question_id, answer_id, users_id, comment.submission_time, message, user_name
                                              FROM comment LEFT JOIN users ON users.id=users_id""")
     tag_database = common.query_handler("""SELECT * FROM tag INNER JOIN question_tag
                                            ON tag.id=question_tag.tag_id
@@ -351,7 +356,7 @@ def sort_questions(condition, direction):
         elif direction == "DESC":
             sort = False
             database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY vote_number DESC")
-    return render_template("list.html", database=database, search=search, sort=sort)
+    return render_template("list.html", questions=database, search=search, sort=sort)
 
 
 @app.route("/form_user/<user_id>/sort/<condition>/<direction>")
@@ -394,10 +399,17 @@ def sort_user_questions(condition, direction, user_id):
                                                WHERE users_id=%s
                                                ORDER BY vote_number
                                                DESC""", (user_id,))
-    answers = common.query_handler("""SELECT * FROM answer
-                                      WHERE users_id=%s""", (user_id,))
-    comments = common.query_handler("""SELECT * FROM comment
-                                       WHERE users_id=%s""", (user_id,))
+    answers = common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id,
+                                             answer.message, answer.image, question.title AS quest
+                                      FROM answer
+                                      JOIN question ON question_id=question.id
+                                      WHERE answer.users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT comment.question_id AS questid, comment.submission_time, comment.message,
+                                              answer.message AS ansme, question.title AS quest, answer.question_id
+                                       FROM comment
+                                       LEFT JOIN question ON comment.question_id=question.id
+                                       LEFT JOIN answer ON comment.answer_id=answer.id
+                                       WHERE comment.users_id=%s""", (user_id,))
     users = common.query_handler("""SELECT * FROM users
                                     WHERE id=%s""", (user_id,))
     return render_template("form_user.html", questions=database, sort=sort, anwers=answers, comments=comments, users=users)
@@ -420,10 +432,17 @@ def user_activity(user_id):
                                     WHERE id=%s""", (user_id,))
     questions = common.query_handler("""SELECT * FROM question
                                         WHERE users_id=%s""", (user_id,))
-    answers = common.query_handler("""SELECT * FROM answer
-                                      WHERE users_id=%s""", (user_id,))
-    comments = common.query_handler("""SELECT * FROM comment
-                                       WHERE users_id=%s""", (user_id,))
+    answers = common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id,
+                                             answer.message, answer.image, question.title AS quest
+                                      FROM answer
+                                      JOIN question ON question_id=question.id
+                                      WHERE answer.users_id=%s""", (user_id,))
+    comments = common.query_handler("""SELECT comment.question_id AS questid, comment.submission_time, comment.message,
+                                              answer.message AS ansme, question.title AS quest, answer.question_id
+                                       FROM comment
+                                       LEFT JOIN question ON comment.question_id=question.id
+                                       LEFT JOIN answer ON comment.answer_id=answer.id
+                                       WHERE comment.users_id=%s""", (user_id,))
     return render_template("form_user.html", questions=questions, answers=answers, comments=comments, users=users)
 
 
