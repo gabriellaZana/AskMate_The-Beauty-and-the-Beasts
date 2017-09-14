@@ -357,8 +357,8 @@ def sort_users(direction):
 def user_activity(user_id):
     users = queries.user_by_id(user_id)
     questions = queries.question_to_userid(user_id)
-    answers = queries.answer_to_userid(user_id)
-    comments = queries.comment_to_userid(user_id)
+    answers = queries.answer_question_to_userid(user_id)
+    comments = queries.comment_question_answer_to_userid(user_id)
     return render_template("form_user.html", questions=questions, answers=answers, comments=comments, users=users)
 
 

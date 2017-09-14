@@ -290,10 +290,18 @@ def sort_users(condition):
 def question_to_userid(user_id):    
     return common.query_handler("""SELECT * FROM question
                                         WHERE users_id=%s""", (user_id,))
-    # anwer_to_userid(user_id)
-    # answers = common.query_handler("""SELECT * FROM answer
-    #                                   WHERE users_id=%s""", (user_id,))
+def answer_question_to_userid(user_id):
+    return common.query_handler("""SELECT answer.submission_time, answer.vote_number,answer.question_id,
+                                             answer.message, answer.image, question.title AS quest
+                                      FROM answer
+                                      JOIN question ON question_id=question.id
+                                      WHERE answer.users_id=%s""", (user_id,))
     
-    # comment_to_userid
-    # comments = common.query_handler("""SELECT * FROM comment
-    #                                    WHERE users_id=%s""", (user_id,))
+
+def comment_question_answer_to_userid(user_id):
+    return common.query_handler("""SELECT comment.question_id AS questid, comment.submission_time, comment.message,
+                                              answer.message AS ansme, question.title AS quest, answer.question_id
+                                       FROM comment
+                                       LEFT JOIN question ON comment.question_id=question.id
+                                       LEFT JOIN answer ON comment.answer_id=answer.id
+                                       WHERE comment.users_id=%s""", (user_id,))    
