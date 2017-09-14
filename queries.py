@@ -207,8 +207,8 @@ def question_to_comment(comment_id):
 def delete_comment(comment_id):
     common.query_handler("DELETE FROM comment WHERE id=%s", (comment_id,))
     
-    # questionid_to_answer(question)
-    # answer = common.query_handler("SELECT question_id FROM answer WHERE id=%s", (question[0]["answer_id"],))
+def questionid_to_answer_from_dict(question):
+    return common.query_handler("SELECT question_id FROM answer WHERE id=%s", (question[0]["answer_id"],))
 
 # TAG
 
@@ -244,7 +244,7 @@ def delete_tag(questionid, tag_id):
 def sort_by_condition(condition):
     condition_list = ["submission_time ASC", "submission_time DESC", "view_number ASC", "view_number DESC", "vote_number ASC", "vote_number DESC"]
     if condition in condition_list:
-        return common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY " + conditon)
+        return common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY " + condition)
     else:
         return common.query_handler("SELECT question.id, title, message, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id ORDER BY submission_time ASC")
 
