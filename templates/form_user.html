@@ -8,8 +8,8 @@
     </head>
 
     <body>
-        <h1 id="top"> User Activity - {{ users[0]['user_name'] }} </h1>
-        <h3 id="top"> Questions </h3>
+        <h1> User Activity - {{ users[0]['user_name'] }} </h1>
+        <h3> Questions </h3>
         <br>
             <table border="1" align="center">
                 <tr>
@@ -48,11 +48,10 @@
             <table border="1" align="center">
             
                 <tr>
-                    <th>
-                        <form action="{{ url_for('viewcount', questionid=line['question_id']) }}" method="post" class="btn-link question-title">
-                        <button type="submit" name="question" class="btn-link question-title">{{line['quest']}}</button>
-                        </form>
-                    </th>
+                    <td>
+                        <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
+                    </td>
+                
                 </tr>
             </table>
 
@@ -68,14 +67,7 @@
                 <tbody>
             
                         <tr>
-<<<<<<< HEAD
-                            
-=======
-                            <td>
-                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
-                            </td>
-                            <td>{{ line['submission_time'] }}</td>
->>>>>>> 6de80cf48a00abb15a07ab2cfc40d3bb0716ba4d
+            
                             <td>{{ line['message'] }}</td>
 
                             {% if line['image'] %}
@@ -99,7 +91,7 @@
                 <thead>
                     <tr>
                         <td class="header"><strong>Question/Answer</strong></td>
-                        <td class="header"><strong>Comment message</strong></td>
+                        <td class="header"><strong>Comment</strong></td>
                         <td class="header"><strong>Submission time</strong></td>
                     </tr>
                 </thead>

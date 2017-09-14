@@ -16,7 +16,7 @@
             <button class=button type="submit" name="submitquestion"> Search  <img src="http://www.icone-png.com/png/2/1508.png" width="25" height="25"></button>
         </form>
         <br>
-        <table border="1" align="center">
+        <div><table border="1" align="center">
             <tr><th>ID</th>
                 <th>Question</th>
                 <th>Added by</th>
@@ -50,13 +50,7 @@
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
-<<<<<<< HEAD
-                            <form action="{{ url_for('viewcount', questionid=line['id']) }}" method="post" class="sort">
-                            <button type="submit" name="question" class="sort">{{line['title']}}</button>
-                            </form>
-=======
                             <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
->>>>>>> 6de80cf48a00abb15a07ab2cfc40d3bb0716ba4d
                         </td>
                         {% if not line['users_id'] %}
                         <td>{{line['user_name']}}</td>
@@ -100,7 +94,7 @@
                 </tr>
             {% endfor %}    
         {% endif %}
-        </table>
+        </table></div>
 
         <p><button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/new-question';"> Add new question </button>
             <button class="button" type="submit" onclick="location.href = 'http://127.0.0.1:5000/list';"> List all questions </button></p>
