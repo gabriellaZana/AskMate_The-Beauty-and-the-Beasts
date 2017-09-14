@@ -32,7 +32,7 @@
                     <tr class="highlight">
                         <td>{{line['id']}}</td>
                         <td>
-                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{line['title']}}</a>
+                            <a href="{{ url_for('viewcount', questionid=line['id']) }}" class="btn-link question-title">{{ line['title'] }}</a>
                         </td>
                         <td>{{line['message']}}</td>
                         <td>{{line['submission_time']}}</td>
@@ -65,22 +65,20 @@
                     </tr>
                 </thead>
                 <tbody>
-            
                         <tr>
+                            <td>
+                                <a href="{{ url_for('viewcount', questionid=line['question_id']) }}" class="btn-link question-title">{{line['quest']}}</a>
+                            </td>
             
                             <td>{{ line['message'] }}</td>
-
                             {% if line['image'] %}
                                 <td><img src="{{ line['image'] }}" width="200" heigth="150"></td>
                             {% else %}
                                 <td></td>
                             {% endif %}
-                            
                             <td>{{ line['vote_number'] }}</td>
                             <td>{{ line['submission_time'] }}</td>
                         </tr>
-                        
-                
                 </tbody>
             </table>
             <br><br>

@@ -167,4 +167,8 @@ button:hover, .sort:hover {
     vertical-align: middle;
 }
 
-
+.fancy {
+    color: yellow;
+    background-color: black;
+    padding: 5px;
+}

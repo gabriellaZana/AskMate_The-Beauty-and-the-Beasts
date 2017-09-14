@@ -14,19 +14,19 @@ app = Flask(__name__)
 @app.route("/")
 def latest_5():
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+    questions = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
                                      LEFT JOIN users ON users.id=users_id
                                      ORDER BY question.submission_time DESC LIMIT 5;""")
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=questions, search=search)
 
 
 @app.route("/list")
 def index():
     sort = None
     search = False
-    database = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
+    questions = common.query_handler("""SELECT question.id, question.submission_time, view_number, vote_number, title, message, image, users_id, user_name, reputation FROM question
                                      LEFT JOIN users ON users.id=users_id;""")
-    return render_template("list.html", database=database, search=search)
+    return render_template("list.html", questions=questions, search=search)
 
 
 @app.route("/all-users")
@@ -43,16 +43,22 @@ def viewcount(questionid):
 
 @app.route("/search", methods=["POST"])
 def search():
-    search = True
     form_data = request.form
-    question_database = common.query_handler("""SELECT DISTINCT question.id, answer.question_id, Replace(question.title, %{search}s, '<span class="fancy">%{search}s</span>')
-                                                FROM question FULL JOIN answer ON question.id = answer.question_id
-                                                WHERE question.title ILIKE '%%' || %{search}s || '%%'
-                                                OR answer.message ILIKE '%%' || %{search}s || '%%'
-                                                OR question.message ILIKE '%%' || %{search}s || '%%' ;""", {search: form_data['asksearch']})
-    database = common.query_handler("SELECT question.id, title, message, users_id, user_name, question.submission_time, view_number, vote_number, image FROM question LEFT JOIN users ON users.id=users_id;")
-    return render_template("list.html", phrase=form_data["asksearch"], question_database=question_database,
-                           database=database, search=search)
+    replacement = {"search": form_data['asksearch'], "marks": '<span class="fancy">{}</span>'.format(form_data['asksearch'])}
+    search = True
+    questions = common.query_handler("""SELECT DISTINCT question.id, question.message, question.users_id, user_name,
+                                                        question.submission_time, question.view_number, question.vote_number,
+                                                        question.image, answer.question_id,
+                                                        Replace(question.title, %(search)s, %(marks)s) AS title
+                                                FROM question
+                                                  LEFT JOIN users ON question.users_id=users.id
+                                                  FULL JOIN answer ON question.id = answer.question_id
+                                                WHERE question.title ILIKE '%%' || %(search)s || '%%'
+                                                  OR answer.message ILIKE '%%' || %(search)s || '%%'
+                                                  OR question.message ILIKE '%%' || %(search)s || '%%' ;""", replacement)
+
+    return render_template("list.html", phrase=form_data["asksearch"], questions=questions,
+                           search=search)
 
 
 @app.route('/tags')
