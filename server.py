@@ -336,8 +336,8 @@ def sort_user_questions(condition, direction, user_id):
         elif direction == "DESC":
             sort = False
             database = queries.user_sort("vote_number DESC", user_id)
-    answers = queries.answer_to_userid(user_id)
-    comments = queries.comment_to_userid(user_id)
+    answers = queries.answer_question_to_userid(user_id)
+    comments = queries.comment_question_answer_to_userid(user_id)
     users = queries.user_by_id(user_id)
     return render_template("form_user.html", questions=database, sort=sort, answers=answers, comments=comments, users=users)
 
