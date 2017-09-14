@@ -54,7 +54,7 @@
                         {% else %}
                         <td><strong><a href="/user/{{ question['users_id'] }}"> {{question['user_name']}} </a></strong></td>
                         {% endif %}
-                        <td>{{question['message']}}</td>
+                        <td>{{question['message'] | safe}}</td>
                         <td>{{question['submission_time']}}</td>
                         <td>{{question['view_number']}}</td>
                         <td>{{question['vote_number']}}</td>

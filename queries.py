@@ -24,10 +24,11 @@ def viewcount(questionid):
 
 # 5 /search
 def search(replacement):
-    return common.query_handler("""SELECT DISTINCT question.id, question.message, question.users_id, user_name,
+    return common.query_handler("""SELECT DISTINCT question.id, question.users_id, user_name,
                                                         question.submission_time, question.view_number, question.vote_number,
                                                         question.image, answer.question_id,
-                                                        Replace(question.title, %(search)s, %(marks)s) AS title
+                                                        Replace(question.title, %(search)s, %(marks)s) AS title, 
+                                                        Replace(question.message, %(search)s, %(marks)s) AS message
                                                 FROM question
                                                   LEFT JOIN users ON question.users_id=users.id
                                                   FULL JOIN answer ON question.id = answer.question_id
